@@ -1,0 +1,44 @@
+{
+    "name": "neuland.app-backend",
+    "module": "index.ts",
+    "type": "module",
+    "scripts": {
+        "start": "bun run index.ts",
+        "prepare": "husky"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "@apollo/server": "^4.10.2",
+        "@chrisenglert/as-integrations-bun": "^0.0.3",
+        "@types/node": "^20.12.5",
+        "cheerio": "^1.0.0-rc.12",
+        "graphql": "^16.8.1",
+        "graphql-tag": "^2.12.6",
+        "node-cache": "^5.1.2"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "@typescript-eslint/eslint-plugin": "^6.21.0",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-config-standard-with-typescript": "^43.0.1",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-n": "^16.6.2",
+        "eslint-plugin-promise": "^6.1.1",
+        "husky": "^9.0.11",
+        "lint-staged": "^15.2.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.4",
+        "@types/bun": "^1.0.12"
+    },
+    "lint-staged": {
+        "**/*.{js,jsx,ts,tsx}": [
+            "bunx eslint --fix"
+        ],
+        "**/*.{js,jsx,ts,tsx,json,yml}": [
+            "bunx prettier --write"
+        ]
+    }
+}
