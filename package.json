@@ -4,6 +4,7 @@
     "type": "module",
     "scripts": {
         "start": "bun run index.ts",
+        "hot": "bun --hot run index.ts",
         "prepare": "husky"
     },
     "peerDependencies": {
@@ -14,12 +15,19 @@
         "@chrisenglert/as-integrations-bun": "^0.0.3",
         "@types/node": "^20.12.5",
         "cheerio": "^1.0.0-rc.12",
+        "deepl": "^1.0.13",
         "graphql": "^16.8.1",
         "graphql-tag": "^2.12.6",
-        "node-cache": "^5.1.2"
+        "node-cache": "^5.1.2",
+        "object-hash": "^3.0.0",
+        "pdf-parse": "https://gitlab.com/roberteggl/pdf-parse",
+        "xml-js": "^1.6.11"
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "@types/bun": "^1.0.12",
+        "@types/object-hash": "^3.0.6",
+        "@types/pdf-parse": "^1.1.4",
         "@typescript-eslint/eslint-plugin": "^6.21.0",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.0.0",
@@ -30,8 +38,7 @@
         "husky": "^9.0.11",
         "lint-staged": "^15.2.2",
         "prettier": "^3.2.5",
-        "typescript": "^5.4.4",
-        "@types/bun": "^1.0.12"
+        "typescript": "^5.4.4"
     },
     "lint-staged": {
         "**/*.{js,jsx,ts,tsx}": [

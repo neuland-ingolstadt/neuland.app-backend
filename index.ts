@@ -17,7 +17,7 @@ await apolloServer.start()
 const server = Bun.serve(
     apolloIntegration({
         apolloServer,
-        port: 4040,
+        port: 4000,
         context: async (req) => {
             return {
                 req,
