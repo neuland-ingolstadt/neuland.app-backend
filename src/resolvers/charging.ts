@@ -6,7 +6,7 @@ const URL =
     'https://app.chargecloud.de/emobility:ocpi/7d25c525838f55d21766c0dfee5ad21f/app/2.0/locations?swlat=48.7555&swlng=11.4146&nelat=48.7767&nelng=11.4439'
 export const charging = async (): Promise<ChargingData[]> => {
     try {
-        const data = cache.get<ChargingData[]>('charging-stations')
+        const data = cache.get<ChargingData[]>('chargingStations')
         if (data == null) {
             const resp = await fetch(URL)
             const data = await resp.json()
@@ -46,7 +46,7 @@ export const charging = async (): Promise<ChargingData[]> => {
                             ?.freeParking ?? null,
                 })
             )
-            cache.set('charging-stations', result, 60)
+            cache.set('chargingStations', result, 60)
             return result
         }
         return data

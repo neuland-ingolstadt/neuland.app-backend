@@ -6,11 +6,11 @@ import { cache } from '../..'
 const CACHE_TTL = 60 * 60 * 24 // 24 hours
 
 export async function clEvents(): Promise<ClEvent[]> {
-    let clEvents: ClEvent[] | undefined = await cache.get('mensa')
+    let clEvents: ClEvent[] | undefined = await cache.get('clEvents')
 
     if (clEvents === undefined || clEvents === null) {
         clEvents = await getClEvents()
-        cache.set(`mensa`, clEvents, CACHE_TTL)
+        cache.set(`clEvents`, clEvents, CACHE_TTL)
     }
 
     return clEvents

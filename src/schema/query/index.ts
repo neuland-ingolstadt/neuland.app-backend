@@ -5,6 +5,7 @@ import { chargingType } from './charging'
 import { clEventsType } from './cl-events'
 import { foodType } from './food'
 import { parkingType } from './parking'
+import { trainType } from './train'
 
 export const queryType = gql`
     ${chargingType}
@@ -12,6 +13,7 @@ export const queryType = gql`
     ${foodType}
     ${clEventsType}
     ${busType}
+    ${trainType}
     "Root query"
     type Query {
         parking: ParkingData
@@ -19,5 +21,6 @@ export const queryType = gql`
         food(locations: [String!]): [Food!]!
         clEvents: [ClEvent!]!
         bus(station: String!): [Bus!]!
+        train(station: String!): [Train!]!
     }
 `
