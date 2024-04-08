@@ -3,7 +3,7 @@ import { apolloIntegration } from '@chrisenglert/as-integrations-bun'
 import NodeCache from 'node-cache'
 
 import { resolvers } from './src/resolvers'
-import { typeDefs } from './src/typeDefs'
+import { typeDefs } from './src/schema'
 
 const apolloServer = new ApolloServer({
     typeDefs,

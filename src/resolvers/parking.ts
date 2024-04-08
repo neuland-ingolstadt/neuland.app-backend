@@ -1,3 +1,4 @@
+import staticData from '@/data/mobility.json'
 import * as cheerio from 'cheerio'
 
 import { cache } from '../..'
@@ -30,16 +31,23 @@ export const parking = async (): Promise<{
                 date = new Date(dateStr)
             }
             const lots = $('.parkplatz-anzahl')
-                .map((_i, el) => ({
-                    name: $(el)
+                .map((_i, el) => {
+                    const name = $(el)
                         .parent()
                         .find('.parkplatz-name-kurz')
                         .text()
-                        .trim(),
-                    available: parseInt($(el).text().trim()),
-                }))
-                .get()
+                        .trim()
+                    const available = parseInt($(el).text().trim())
 
+                    return {
+                        name,
+                        available,
+                        priceLevel:
+                            staticData.parking.find((x) => x.name === name)
+                                ?.priceLevel ?? null,
+                    }
+                })
+                .get()
             data = {
                 lots,
                 updated: date,

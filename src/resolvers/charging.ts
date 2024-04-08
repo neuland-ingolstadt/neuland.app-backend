@@ -1,3 +1,5 @@
+import staticData from '@/data/mobility.json'
+
 import { cache } from '../..'
 
 const URL =
@@ -11,7 +13,6 @@ export const charging = async (): Promise<ChargingData[]> => {
             if (resp.status !== 200) {
                 throw new Error('Charging station data not available')
             }
-
             const result = data.data.map(
                 (entry: {
                     id: any
@@ -27,6 +28,7 @@ export const charging = async (): Promise<ChargingData[]> => {
                         }
                         length: any
                     }
+                    operator: { name: any }
                 }) => ({
                     id: entry.id,
                     name: entry.name.trim(),
@@ -34,10 +36,14 @@ export const charging = async (): Promise<ChargingData[]> => {
                     city: entry.city,
                     latitude: entry.coordinates.latitude,
                     longitude: entry.coordinates.longitude,
+                    operator: entry.operator.name,
                     available: entry.evses.filter(
                         (x) => x.status === 'AVAILABLE'
                     ).length,
                     total: entry.evses.length,
+                    freeParking:
+                        staticData.charging.find((x) => x.id === entry.id)
+                            ?.freeParking ?? null,
                 })
             )
             cache.set('charging-stations', result, 60)

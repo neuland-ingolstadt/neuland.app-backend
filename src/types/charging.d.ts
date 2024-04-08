@@ -7,4 +7,6 @@ interface ChargingData {
     longitude: number
     available: number
     total: number
+    freeParking: boolean | null
+    operator: string
 }

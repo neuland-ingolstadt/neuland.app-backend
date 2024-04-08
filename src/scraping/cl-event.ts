@@ -277,8 +277,6 @@ export default async function getClEvents(): Promise<ClEvent[]> {
     try {
         const username = process.env.MOODLE_USERNAME
         const password = process.env.MOODLE_PASSWORD
-        console.log('username', username)
-        console.log('password', password)
 
         if (username != null && password != null) {
             const events = await getAllEventDetails(username, password)

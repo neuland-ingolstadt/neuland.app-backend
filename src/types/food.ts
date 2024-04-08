@@ -1,13 +1,3 @@
-export interface FoodData extends FoodLocation {
-    timestamp: string
-}
-
-export interface FoodLocation {
-    mensa: MealData[]
-    reimanns: MealData[]
-    canisius: MealData[]
-}
-
 export interface PreFoodData {
     timestamp: string
     meals: PreMeal[]

@@ -13,11 +13,11 @@ Set the necessary environment variables in a `.env.local` file.
 ### Start the Development Server
 
 ```bash
-bun dev
+bun start
 ```
 
 > [!TIP]
-> Use `bun hot` to start the development server with hot reloading.
+> Use `bun dev` to start the development server with hot reloading.
 
 ### Documentation and Playground
 
@@ -33,6 +33,6 @@ http://localhost:4000/
 -   `src/` - Contains the source code for the GraphQL API.
 -   `src/data/` - Contains the static data for the API.
 -   `src/resolvers/` - Contains the resolvers for the API.
--   `src/typeDefs/` - Contains the type definitions for the API.
+-   `src/schema/` - Contains the type definitions for the API.
 -   `src/types/` - Contains the types for TypeScript.
 -   `src/utils/` - Contains utility functions for the API.

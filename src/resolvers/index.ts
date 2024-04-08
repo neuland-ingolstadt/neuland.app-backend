@@ -1,3 +1,4 @@
+import { bus } from './bus'
 import { charging } from './charging'
 import { clEvents } from './cl-events'
 import { food } from './food'
@@ -9,5 +10,6 @@ export const resolvers = {
         parking,
         food,
         clEvents,
+        bus,
     },
 }

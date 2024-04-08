@@ -4,7 +4,7 @@
     "type": "module",
     "scripts": {
         "start": "bun run index.ts",
-        "hot": "bun --hot run index.ts",
+        "dev": "bun --hot run index.ts",
         "prepare": "husky"
     },
     "peerDependencies": {

@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
 
 export const foodType = gql`
+    "Meal data"
     type Meal {
         name: Name
         id: ID!
@@ -15,6 +16,7 @@ export const foodType = gql`
         restaurant: String
     }
 
+    "Variants of a meal"
     type Variation {
         name: Name!
         additional: Boolean!
@@ -30,11 +32,13 @@ export const foodType = gql`
         variants: [Variation]
     }
 
+    "Name of a meal in different languages"
     type Name {
         de: String!
         en: String!
     }
 
+    "Nutritional values for a meal"
     type Nutrition {
         kj: Float!
         kcal: Float!
@@ -47,24 +51,26 @@ export const foodType = gql`
         salt: Float!
     }
 
+    "Original language of the meal name"
     enum OriginalLanguage {
         de
         en
     }
 
+    "Prices for different types of customers"
     type Prices {
         student: Float!
         employee: Float!
         guest: Float!
     }
 
+    "Provides a list of meals for a specific day"
     type Food {
         timestamp: String!
-        mensa: [Meal!]!
-        reimanns: [Meal!]!
-        canisius: [Meal!]!
+        meals: [Meal!]
     }
 
+    "Parent meal for a variant meal"
     type Parent {
         id: ID!
         category: String!

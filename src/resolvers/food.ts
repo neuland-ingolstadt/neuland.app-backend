@@ -2,54 +2,46 @@
 import { getCanisiusPlan } from '@/scraping/canisius'
 import { getMensaPlan } from '@/scraping/mensa'
 import { getReimannsPlan } from '@/scraping/reimanns'
-import type { FoodData, FoodLocation, MealData } from '@/types/food'
+import type { MealData } from '@/types/food'
+import { GraphQLError } from 'graphql'
 
 import { cache } from '../..'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
 
-export async function food(): Promise<FoodData[]> {
-    let [mensa, canisius, reimanns]: Array<MealData[] | undefined> =
-        await Promise.all([
-            cache.get('mensa'),
-            cache.get('canisius'),
-            cache.get('reimanns'),
-        ])
-    if (mensa === undefined || mensa === null) {
-        mensa = await getMensaPlan()
-        cache.set(`mensa`, mensa, CACHE_TTL)
+export async function food(
+    _: any,
+    args: { locations: string[] }
+): Promise<MealData[]> {
+    const validLocations = ['mensa', 'reimanns', 'canisius']
+    const locations = args?.locations.filter((arg) =>
+        validLocations.includes(arg)
+    )
+    if (locations.length !== args.locations.length) {
+        throw new GraphQLError(
+            'Invalid location provided. Valid locations are: mensa, reimanns, canisius'
+        )
     }
 
-    if (reimanns === undefined || reimanns === null) {
-        reimanns = await getReimannsPlan()
-        cache.set(`reimanns`, reimanns, CACHE_TTL)
-    }
+    let data: MealData[] = []
 
-    if (canisius === undefined || canisius === null) {
-        canisius = await getCanisiusPlan()
-        cache.set('canisius', canisius, CACHE_TTL)
-    }
-
-    const data = { mensa, reimanns, canisius }
-
-    const mergedData: Record<string, FoodData> = {}
-    for (const location in data) {
-        for (const food of data[location as keyof typeof data]) {
-            if (mergedData[food.timestamp] === undefined) {
-                mergedData[food.timestamp] = {
-                    timestamp: food.timestamp,
-                    mensa: [],
-                    reimanns: [],
-                    canisius: [],
-                }
+    for (const location of locations) {
+        let meals: MealData[] | undefined = await cache.get(location)
+        if (meals === undefined || meals === null) {
+            switch (location) {
+                case 'mensa':
+                    meals = await getMensaPlan()
+                    break
+                case 'reimanns':
+                    meals = await getReimannsPlan()
+                    break
+                case 'canisius':
+                    meals = await getCanisiusPlan()
+                    break
             }
-
-            mergedData[food.timestamp][location as keyof FoodLocation].push(
-                // @ts-expect-error food.meals is not a MealData[]
-                ...food.meals
-            )
+            cache.set(location, meals, CACHE_TTL)
         }
+        if (meals !== undefined) data = data.concat(meals)
     }
-
-    return Object.values(mergedData)
+    return data
 }
