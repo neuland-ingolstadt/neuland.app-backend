@@ -26,3 +26,13 @@ Use the interactive GraphQL Playground to explore the API and its documentation.
 ```bash
 http://localhost:4000/
 ```
+
+#### Project Structure
+
+-   `index.ts` - The entry point for the API.
+-   `src/` - Contains the source code for the GraphQL API.
+-   `src/data/` - Contains the static data for the API.
+-   `src/resolvers/` - Contains the resolvers for the API.
+-   `src/typeDefs/` - Contains the type definitions for the API.
+-   `src/types/` - Contains the types for TypeScript.
+-   `src/utils/` - Contains utility functions for the API.
