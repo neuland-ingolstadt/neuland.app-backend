@@ -1,4 +1,8 @@
 import { ApolloServer } from '@apollo/server'
+import {
+    ApolloServerPluginLandingPageLocalDefault,
+    ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default'
 import { apolloIntegration } from '@chrisenglert/as-integrations-bun'
 import NodeCache from 'node-cache'
 
@@ -8,6 +12,13 @@ import { typeDefs } from './src/schema'
 const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    plugins: [
+        process.env.NODE_ENV === 'production'
+            ? ApolloServerPluginLandingPageProductionDefault({
+                  footer: false,
+              })
+            : ApolloServerPluginLandingPageLocalDefault(),
+    ],
 })
 
 export const cache = new NodeCache({ stdTTL: 60 * 10 })

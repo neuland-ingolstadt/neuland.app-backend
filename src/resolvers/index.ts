@@ -1,3 +1,4 @@
+import { announcements } from './announcements'
 import { bus } from './bus'
 import { charging } from './charging'
 import { clEvents } from './cl-events'
@@ -13,5 +14,6 @@ export const resolvers = {
         clEvents,
         bus,
         train,
+        announcements,
     },
 }

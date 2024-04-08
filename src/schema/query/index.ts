@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 
+import { announcementsType } from './announcements'
 import { busType } from './bus'
 import { chargingType } from './charging'
 import { clEventsType } from './cl-events'
@@ -14,6 +15,7 @@ export const queryType = gql`
     ${clEventsType}
     ${busType}
     ${trainType}
+    ${announcementsType}
     "Root query"
     type Query {
         parking: ParkingData
@@ -22,5 +24,6 @@ export const queryType = gql`
         clEvents: [ClEvent!]!
         bus(station: String!): [Bus!]!
         train(station: String!): [Train!]!
+        announcements: [Announcement!]!
     }
 `
