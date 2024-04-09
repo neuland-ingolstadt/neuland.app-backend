@@ -1,8 +1,8 @@
 import demoData from '@/data/demo-data.json'
 import fs from 'fs/promises'
 
-const dataStore = `${process.env.STORE}/announcements.json`
-const isDev = process.env.NODE_ENV !== 'production'
+const dataStore = `${Bun.env.STORE}/announcements.json`
+const isDev = Bun.env.NODE_ENV !== 'production'
 
 /**
  * Announcement data.

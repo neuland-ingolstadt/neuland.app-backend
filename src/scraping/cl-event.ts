@@ -27,9 +27,9 @@ const MONTHS = {
 const LOGIN_URL = 'https://moodle.thi.de/login/index.php'
 const EVENT_LIST_URL = 'https://moodle.thi.de/mod/dataform/view.php?id=162869'
 const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
-const EVENT_STORE = `${process.env.STORE}/cl-events.json`
+const EVENT_STORE = `${Bun.env.STORE}/cl-events.json`
 
-const isDev = process.env.NODE_ENV !== 'production'
+const isDev = Bun.env.NODE_ENV !== 'production'
 
 /**
  * Parses a date like "Donnerstag, 15. Juni 2023, 10:00".
@@ -275,8 +275,8 @@ export async function getAllEventDetails(
 
 export default async function getClEvents(): Promise<ClEvent[]> {
     try {
-        const username = process.env.MOODLE_USERNAME
-        const password = process.env.MOODLE_PASSWORD
+        const username = Bun.env.MOODLE_USERNAME
+        const password = Bun.env.MOODLE_PASSWORD
 
         if (username != null && password != null) {
             const events = await getAllEventDetails(username, password)

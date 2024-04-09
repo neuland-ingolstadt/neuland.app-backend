@@ -21,7 +21,7 @@
         "graphql-tag": "^2.12.6",
         "node-cache": "^5.1.2",
         "object-hash": "^3.0.0",
-        "pdf-parse": "https://gitlab.com/roberteggl/pdf-parse",
+        "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {

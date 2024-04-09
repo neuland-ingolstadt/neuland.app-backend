@@ -13,7 +13,7 @@ const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
     plugins: [
-        process.env.NODE_ENV === 'production'
+        Bun.env.NODE_ENV === 'production'
             ? ApolloServerPluginLandingPageProductionDefault({
                   footer: false,
               })
