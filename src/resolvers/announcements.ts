@@ -12,6 +12,9 @@ export async function announcements(): Promise<Announcement[]> {
     if (isDev) {
         return demoData.announcements
     }
-    const data = await fs.readFile(dataStore)
-    return JSON.parse(data.toString())
+    const fileHandle = await fs.open(dataStore, 'a+')
+    const data = await fileHandle.readFile()
+    await fileHandle.close()
+    const fileContent = data.toString()
+    return fileContent.length > 0 ? JSON.parse(fileContent) : []
 }

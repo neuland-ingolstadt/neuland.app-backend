@@ -121,7 +121,7 @@ type Meal {
     """
     static: Boolean!
     """
-    Restaurant where the meal is available (mensa, reimanns or canisius)
+    Restaurant where the meal is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
     """
     restaurant: String!
 }

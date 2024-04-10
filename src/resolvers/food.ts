@@ -8,18 +8,28 @@ import { GraphQLError } from 'graphql'
 import { cache } from '../..'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
+const ulrMensa =
+    'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/mensa-ingolstadt.xml'
+const ulrNeuburg =
+    'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/cafeteria-neuburg.xml'
 
 export async function food(
     _: any,
     args: { locations: string[] }
 ): Promise<MealData[]> {
-    const validLocations = ['mensa', 'reimanns', 'canisius']
+    const validLocations = [
+        'IngolstadtMensa',
+        'NeuburgMensa',
+        'Reimanns',
+        'Canisius',
+    ]
     const locations = args?.locations.filter((arg) =>
         validLocations.includes(arg)
     )
     if (locations.length !== args.locations.length) {
         throw new GraphQLError(
-            'Invalid location provided. Valid locations are: mensa, reimanns, canisius'
+            'Invalid location provided. Valid locations are: ' +
+                validLocations.join(', ')
         )
     }
 
@@ -29,13 +39,16 @@ export async function food(
         let meals: MealData[] | undefined = await cache.get(location)
         if (meals === undefined || meals === null) {
             switch (location) {
-                case 'mensa':
-                    meals = await getMensaPlan()
+                case 'IngolstadtMensa':
+                    meals = await getMensaPlan(ulrMensa)
                     break
-                case 'reimanns':
+                case 'NeuburgMensa':
+                    meals = await getMensaPlan(ulrNeuburg)
+                    break
+                case 'Reimanns':
                     meals = await getReimannsPlan()
                     break
-                case 'canisius':
+                case 'Canisius':
                     meals = await getCanisiusPlan()
                     break
             }

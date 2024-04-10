@@ -11,9 +11,6 @@ import {
 } from '../utils/food-utils'
 import { translateMeals } from '../utils/translation-utils'
 
-const ulrMensa =
-    'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/mensa-ingolstadt.xml'
-
 /**
  * Parses the XML meal plan.
  * @param {string} xml The XML meal plan
@@ -124,7 +121,7 @@ function parseDataFromXml(xml: string): ExtendedMealData[] {
  * Fetches the mensa plan.
  * @returns {Promise<MealData[]>} The mensa plan
  */
-export async function getMensaPlan(): Promise<MealData[]> {
+export async function getMensaPlan(ulrMensa: string): Promise<MealData[]> {
     const resp = await fetch(ulrMensa)
 
     if (resp.status !== 200) {

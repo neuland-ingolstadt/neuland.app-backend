@@ -28,7 +28,6 @@ const LOGIN_URL = 'https://moodle.thi.de/login/index.php'
 const EVENT_LIST_URL = 'https://moodle.thi.de/mod/dataform/view.php?id=162869'
 const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
 const EVENT_STORE = `${Bun.env.STORE}/cl-events.json`
-
 const isDev = Bun.env.NODE_ENV !== 'production'
 
 /**
@@ -77,7 +76,13 @@ function parseLocalDateTime(str: string): Date {
  * Load persisted events from disk.
  */
 async function loadEvents(): Promise<ClEvent[]> {
-    const data = await fs.readFile(EVENT_STORE)
+    const fileHandle = await fs.open(EVENT_STORE, 'a+')
+    const data = await fileHandle.readFile()
+    const fileContent = data.toString()
+    await fileHandle.close()
+    if (fileContent.length === 0) {
+        return []
+    }
     return JSON.parse(data.toString()).map((event: ClEvent) => ({
         ...event,
         begin: event.begin == null ? null : new Date(event.begin),
@@ -217,6 +222,9 @@ export async function getAllEventDetails(
     username: string,
     password: string
 ): Promise<ClEvent[]> {
+    const now = new Date()
+    let events = !isDev ? await loadEvents() : []
+
     // create a fetch method that keeps cookies
     const fetch = fetchCookie(nodeFetch)
 
@@ -241,9 +249,6 @@ export async function getAllEventDetails(
                     : null,
         })
     }
-
-    const now = new Date()
-    let events = !isDev ? await loadEvents() : []
 
     if (remoteEvents.length > 0) {
         // remove all events which disappeared from the server
@@ -284,8 +289,8 @@ export default async function getClEvents(): Promise<ClEvent[]> {
         } else {
             throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error(e)
-        throw new GraphQLError('Unexpected/Malformed response from Moodle!')
+        throw new GraphQLError('Unexpected error' + e.toString())
     }
 }
