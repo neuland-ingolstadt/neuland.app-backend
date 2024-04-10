@@ -8,7 +8,7 @@ The API documentation is available [here](https://neuland-ingolstadt.github.io/n
 
 ### Endpoint
 
-https://api.neuland.app
+https://api.neuland.app/graphql
 
 > [!IMPORTANT]
 > Using the provided API endpoint outside of the neuland.app and Neuland Next app is not allowed.

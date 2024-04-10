@@ -1,15 +1,24 @@
 import { ApolloServer } from '@apollo/server'
+import { expressMiddleware } from '@apollo/server/express4'
 import {
     ApolloServerPluginLandingPageLocalDefault,
     ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
-import { apolloIntegration } from '@chrisenglert/as-integrations-bun'
+import cors from 'cors'
+import express from 'express'
 import { readFileSync } from 'fs'
 import NodeCache from 'node-cache'
 
 import { resolvers } from './src/resolvers'
 
 const typeDefs = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
+
+const app = express()
+app.use(
+    cors({
+        origin: 'https://studio.apollographql.com',
+    })
+)
 
 const apolloServer = new ApolloServer({
     typeDefs,
@@ -23,20 +32,15 @@ const apolloServer = new ApolloServer({
     ],
 })
 
-export const cache = new NodeCache({ stdTTL: 60 * 10 })
-
+export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
 await apolloServer.start()
 
-const server = Bun.serve(
-    apolloIntegration({
-        apolloServer,
-        port: 4000,
-        context: async (req) => {
-            return {
-                req,
-            }
-        },
-    })
-)
+app.get('/', (req, res) => {
+    res.redirect(301, 'https://docs.neuland.ing')
+})
 
-console.log(`🚀 Server ready at ${server.url.toString()}`)
+app.use('/graphql', cors(), express.json(), expressMiddleware(apolloServer))
+
+app.listen(4000, () => {
+    console.log(`🚀 Server ready at http://localhost:4000/graphql`)
+})

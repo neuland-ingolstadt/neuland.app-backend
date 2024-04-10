@@ -3,7 +3,7 @@ introspection:
         - ./src/schema.gql
 
 servers:
-    - url: https://api.neuland.app
+    - url: https://api.neuland.app/graphql
       description: Neuland API Server
       production: true
 info:
