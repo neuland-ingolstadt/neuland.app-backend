@@ -5,7 +5,8 @@
     "scripts": {
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
-        "prepare": "husky"
+        "prepare": "husky",
+        "docs": "bunx spectaql ./documentation/config.yml"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
@@ -42,10 +43,14 @@
         "typescript": "^5.4.4"
     },
     "lint-staged": {
+        "**/*.{gql,graphql}": [
+            "bun docs",
+            "git add documentation/generated"
+        ],
         "**/*.{js,jsx,ts,tsx}": [
             "bunx eslint --fix"
         ],
-        "**/*.{js,jsx,ts,tsx,json,yml}": [
+        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md}": [
             "bunx prettier --write"
         ]
     }

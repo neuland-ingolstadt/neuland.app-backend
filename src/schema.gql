@@ -1,0 +1,439 @@
+"""
+Charging station data
+"""
+type ChargingStation {
+    """
+    Unique identifier of the charging station
+    """
+    id: Int!
+    """
+    Name of the charging station
+    """
+    name: String!
+    """
+    Address of the charging station
+    """
+    address: String!
+    """
+    City of the charging station
+    """
+    city: String!
+    """
+    Latitude of the charging station
+    """
+    latitude: Float!
+    """
+    Longitude of the charging station
+    """
+    longitude: Float!
+    """
+    Number of available charging points
+    """
+    available: Int!
+    """
+    Number of total charging points
+    """
+    total: Int!
+    """
+    True if the charging is labeled as free parking
+    """
+    freeParking: Boolean
+    """
+    Operator of the charging station
+    """
+    operator: String
+}
+
+"""
+Parking data
+"""
+type ParkingData {
+    """
+    Timestamp of the last update from the source
+    """
+    updated: String!
+    """
+    List of parking lots
+    """
+    lots: [ParkingLot!]!
+}
+
+"""
+Parking lot data
+"""
+type ParkingLot {
+    """
+    Name of the parking lot
+    """
+    name: String!
+    """
+    Number of available parking spaces
+    """
+    available: Int!
+    """
+    Price level of the parking lot between 0 (free) and 3 (expensive)
+    """
+    priceLevel: Int
+}
+
+"""
+Meal data
+"""
+type Meal {
+    """
+    Name of the meal in different languages
+    """
+    name: MultiLanguageString!
+    """
+    Unique identifier of the meal
+    """
+    id: ID!
+    """
+    Category of the meal (main, soup or salad)
+    """
+    category: String!
+    """
+    Prices for different types of customers (student, employee, guest)
+    """
+    prices: Prices!
+    """
+    List of allergens (e.g. gluten, lactose, etc.)
+    """
+    allergens: [String]
+    """
+    List of flags (e.g. vegan, vegetarian, etc.)
+    """
+    flags: [String]
+    """
+    Nutritional values for the meal
+    """
+    nutrition: Nutrition
+    """
+    Variants or toppings of the meal, like bread, sauce, etc.
+    """
+    variants: [Variation!]
+    """
+    Original language of the meal name
+    """
+    originalLanguage: OriginalLanguage!
+    """
+    Static meals are always available, non-static meals are only available on specific days
+    """
+    static: Boolean!
+    """
+    Restaurant where the meal is available (mensa, reimanns or canisius)
+    """
+    restaurant: String!
+}
+
+"""
+Variants of a meal
+"""
+type Variation {
+    """
+    Name of the variant in different languages
+    """
+    name: MultiLanguageString!
+    """
+    True if the variant is an additional topping and not a variant of the meal
+    """
+    additional: Boolean!
+    """
+    Prices for different types of customers (student, employee, guest)
+    """
+    prices: Prices!
+    """
+    Unique identifier of the variant
+    """
+    id: ID!
+    """
+    List of allergens (e.g. gluten, lactose, etc.)
+    """
+    allergens: [String]
+    """
+    List of flags (e.g. vegan, vegetarian, etc.)
+    """
+    flags: [String]
+    """
+    Nutritional values for the variant
+    """
+    nutrition: Nutrition
+    """
+    Original language of the variant name
+    """
+    originalLanguage: OriginalLanguage!
+    """
+    Static variants are always available, non-static variants are only available on specific days
+    """
+    static: Boolean!
+    """
+    Restaurant where the variant is available (mensa, reimanns or canisius)
+    """
+    restaurant: String
+    """
+    Parent meal for a variant meal
+    """
+    parent: Parent
+}
+
+"""
+Nutritional values for a meal. Currently only available at Mensa. Values are per average portion.
+"""
+type Nutrition {
+    """
+    Energy in kilojoules
+    """
+    kj: Float!
+    """
+    Energy in kilocalories
+    """
+    kcal: Float!
+    """
+    Fat in grams
+    """
+    fat: Float!
+    """
+    Saturated fat in grams
+    """
+    fatSaturated: Float!
+    """
+    Carbohydrates in grams
+    """
+    carbs: Float!
+    """
+    Sugar in grams
+    """
+    sugar: Float!
+    """
+    Fiber in grams
+    """
+    fiber: Float!
+    """
+    Protein in grams
+    """
+    protein: Float!
+    """
+    Salt in grams
+    """
+    salt: Float!
+}
+
+"""
+Original language of the meal name
+"""
+enum OriginalLanguage {
+    """
+    German language code
+    """
+    de
+    """
+    English language code
+    """
+    en
+}
+
+"""
+Prices for different types of customers
+"""
+type Prices {
+    """
+    Price for students
+    """
+    student: Float!
+    """
+    Price for employees
+    """
+    employee: Float!
+    """
+    Price for guests
+    """
+    guest: Float!
+}
+
+"""
+Provides a list of meals for a specific day
+"""
+type Food {
+    """
+    Date of the meal list
+    """
+    timestamp: String!
+    """
+    List of meals
+    """
+    meals: [Meal!]
+}
+
+"""
+Parent meal for a variant meal
+"""
+type Parent {
+    """
+    Unique identifier of the parent meal
+    """
+    id: ID!
+    """
+    Category of the parent meal (main, soup or salad)
+    """
+    category: String!
+    """
+    Name of the parent meal in different languages
+    """
+    name: MultiLanguageString!
+}
+
+"""
+Campus Life Event
+"""
+type ClEvent {
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Organizer of the event
+    """
+    organizer: String!
+    """
+    Title of the event in German
+    """
+    title: String!
+    """
+    Begin of the event
+    """
+    begin: String
+    """
+    End of the event
+    """
+    end: String
+}
+
+"""
+Charging station data
+"""
+type Bus {
+    """
+    Code of the bus route, like 10, N1, etc.
+    """
+    route: String!
+    """
+    Destination of the bus route
+    """
+    destination: String!
+    """
+    Planned time at the station
+    """
+    time: String!
+}
+
+"""
+Train data
+"""
+type Train {
+    """
+    Name of the train
+    """
+    name: String!
+    """
+    Destination of the train
+    """
+    destination: String!
+    """
+    Planned departure time
+    """
+    plannedTime: String!
+    """
+    Actual departure time
+    """
+    actualTime: String!
+    """
+    True if the train is canceled
+    """
+    canceled: Boolean!
+    """
+    Track of the train
+    """
+    track: String
+    """
+    URL to the train information
+    """
+    url: String
+}
+
+"""
+Announcement data to display on top of the apps dashboard
+"""
+type Announcement {
+    """
+    Title of the announcement in different languages
+    """
+    title: MultiLanguageString!
+    """
+    Description of the announcement in different languages
+    """
+    description: MultiLanguageString!
+    """
+    Start date and time when the announcement is displayed
+    """
+    startDateTime: String!
+    """
+    End date and time when the announcement is displayed
+    """
+    endDateTime: String!
+    """
+    Priority of the announcement, higher are more important
+    """
+    priority: Int!
+    """
+    URL to the announcement
+    """
+    url: String
+}
+
+"""
+String in multiple languages (German and English)
+"""
+type MultiLanguageString {
+    """
+    German language code
+    """
+    de: String
+    """
+    English language code
+    """
+    en: String
+}
+
+"""
+Root query
+"""
+type Query {
+    """
+    Get the current parking data in Ingolstadt
+    """
+    parking: ParkingData
+    """
+    Get the current electric vehicle charging stations in Ingolstadt
+    """
+    charging: [ChargingStation!]!
+    """
+    Get the meal plan for a specific restaurant
+    """
+    food(locations: [String!]): [Food!]!
+    """
+    Get the campus life events
+    """
+    clEvents: [ClEvent!]!
+    """
+    Get the current bus departures at a specific station
+    """
+    bus(station: String!): [Bus!]!
+    """
+    Get the current train departures at a specific station
+    """
+    train(station: String!): [Train!]!
+    """
+    Get the current announcements
+    """
+    announcements: [Announcement!]!
+}

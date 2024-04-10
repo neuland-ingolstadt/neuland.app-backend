@@ -4,10 +4,12 @@ import {
     ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
 import { apolloIntegration } from '@chrisenglert/as-integrations-bun'
+import { readFileSync } from 'fs'
 import NodeCache from 'node-cache'
 
 import { resolvers } from './src/resolvers'
-import { typeDefs } from './src/schema'
+
+const typeDefs = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
 
 const apolloServer = new ApolloServer({
     typeDefs,
