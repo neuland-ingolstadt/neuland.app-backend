@@ -4,14 +4,11 @@ Neuland API uses GraphQL to provide a flexible and powerful API for neuland.app 
 
 ## API Documentation
 
-The API documentation is available [here](https://neuland-ingolstadt.github.io/neuland.app-backend/).
+The API documentation is available [here](https://api.neuland.app/).
 
 ### Endpoint
 
 https://api.neuland.app/graphql
-
-> [!IMPORTANT]
-> Using the provided API endpoint outside of the neuland.app and Neuland Next app is not allowed.
 
 ## Development
 

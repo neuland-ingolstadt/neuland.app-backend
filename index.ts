@@ -8,6 +8,7 @@ import cors from 'cors'
 import express from 'express'
 import { readFileSync } from 'fs'
 import NodeCache from 'node-cache'
+import path from 'path'
 
 import { resolvers } from './src/resolvers'
 
@@ -35,11 +36,15 @@ const apolloServer = new ApolloServer({
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
 await apolloServer.start()
 
-app.get('/', (req, res) => {
-    res.redirect(301, 'https://docs.neuland.ing')
-})
+// ...
+
+app.use('/', express.static(path.join(__dirname, 'documentation/generated')))
 
 app.use('/graphql', cors(), express.json(), expressMiddleware(apolloServer))
+
+app.get('*', (req, res) => {
+    res.redirect('/')
+})
 
 app.listen(4000, () => {
     console.log(`🚀 Server ready at http://localhost:4000/graphql`)

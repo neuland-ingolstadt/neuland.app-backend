@@ -11,7 +11,6 @@ info:
     description:
         Neuland API uses GraphQL to provide a flexible and powerful API for neuland.app and Neuland Next.
         This documentation provides a detailed overview of the API and its capabilities.
-        Using the provided API endpoint outside of the neuland.app and Neuland Next app is not allowed.
     termsOfService: 'https://assets.neuland.app/datenschutzerklaerung-app.pdf'
     contact:
         name: Neuland Ingolstadt e.V.
