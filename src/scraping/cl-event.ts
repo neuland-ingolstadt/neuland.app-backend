@@ -202,12 +202,13 @@ async function getEventDetails(
 
     // get rows from content table
     const rows = $('.entry tr:not(.lastrow)').get()
+
     // get two columns and map into object
     return Object.fromEntries(
         rows.map((elem) => {
             return [
-                $(elem).find('.c0 > b').text().trim(),
-                $(elem).find('.c1').text().trim(),
+                $(elem).find('.c0').text().trim().replace(/:$/, ''),
+                $(elem).find('.c1').text().trim().replace(/:$/, ''),
             ]
         })
     )
@@ -233,8 +234,9 @@ export async function getAllEventDetails(
     const remoteEvents: ClEvent[] = []
     for (const url of await getEventList(fetch)) {
         const details = await getEventDetails(fetch, url)
-        // do not include location and description
-        // since it may contain sensitive information
+        const publicKey = 'Veröffentlichung des Ortes & Bescheibung in Apps'
+        const publicEvent = details[publicKey] === 'Ja'
+
         remoteEvents.push({
             id: crypto.createHash('sha256').update(url).digest('hex'),
             organizer: details.Verein.trim().replace(/( \.)$/g, ''),
@@ -247,6 +249,8 @@ export async function getAllEventDetails(
                 details.Ende.length > 0
                     ? parseLocalDateTime(details.Ende)
                     : null,
+            location: publicEvent ? details.Ort : null,
+            description: publicEvent ? details.Beschreibung : null,
         })
     }
 

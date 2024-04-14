@@ -306,6 +306,14 @@ type ClEvent {
     End of the event
     """
     end: String
+    """
+    Location of the event (only available if it's eligible for external sharing)
+    """
+    location: String
+    """
+    Description of the event (only available if it's eligible for external sharing)
+    """
+    description: String
 }
 
 """
