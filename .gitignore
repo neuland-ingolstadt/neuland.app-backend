@@ -2,3 +2,4 @@
 .VSCodeCounter
 node_modules
 .DS_Store
+src/data/announcements.json

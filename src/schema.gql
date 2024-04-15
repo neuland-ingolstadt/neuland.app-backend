@@ -373,6 +373,10 @@ Announcement data to display on top of the apps dashboard
 """
 type Announcement {
     """
+    Unique identifier of the announcement
+    """
+    id: ID!
+    """
     Title of the announcement in different languages
     """
     title: MultiLanguageString!

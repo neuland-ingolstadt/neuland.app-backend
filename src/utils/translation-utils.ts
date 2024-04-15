@@ -109,7 +109,7 @@ export async function translateMeals(
     if (isDev && !enableDevTranslations) {
         console.warn('DeepL is disabled in development mode.')
         console.warn(
-            'To enable DeepL in development mode, set enableDevTranslations=true in your .env.local file.'
+            'To enable DeepL in development mode, set ENABLE_DEV_TRANSLATIONS=true in your .env.local file.'
         )
         return translateFallback(meals)
     }

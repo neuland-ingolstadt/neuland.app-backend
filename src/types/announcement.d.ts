@@ -1,4 +1,5 @@
 interface Announcement {
+    id: string
     title: {
         de: string
         en: string
@@ -7,8 +8,8 @@ interface Announcement {
         de: string
         en: string
     }
-    startDateTime: string
-    endDateTime: string
+    startDateTime: Date | string
+    endDateTime: Date | string
     priority: number
     url: string | null
 }
