@@ -28,6 +28,7 @@ COPY --from=prerelease /usr/src/app/index.ts .
 COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/src src
+COPY --from=prerelease /usr/src/app/documentation/generated documentation/generated
 
 # run the app
 USER bun
