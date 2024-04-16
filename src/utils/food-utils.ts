@@ -261,7 +261,8 @@ export function parseGermanFloat(str: string | undefined): number | null {
     if (str === undefined) {
         return null
     }
-    return parseFloat(str.replace(',', '.'))
+    const parsedFloat = parseFloat(str.replace(',', '.'))
+    return isNaN(parsedFloat) ? null : parsedFloat
 }
 
 /**

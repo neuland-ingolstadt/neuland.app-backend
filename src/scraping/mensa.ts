@@ -16,7 +16,7 @@ import { translateMeals } from '../utils/translation-utils'
  * @param {string} xml The XML meal plan
  * @returns {ExtendedMealData[]} The parsed meal plan
  */
-function parseDataFromXml(xml: string): ExtendedMealData[] {
+function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
     const sourceData = xmljs.xml2js(xml, { compact: true }) as any
     const now = Date.now()
 
@@ -103,7 +103,7 @@ function parseDataFromXml(xml: string): ExtendedMealData[] {
                     ),
                     flags,
                     nutrition,
-                    restaurant: 'mensa',
+                    restaurant: location,
                 }
             })
 
@@ -121,13 +121,22 @@ function parseDataFromXml(xml: string): ExtendedMealData[] {
  * Fetches the mensa plan.
  * @returns {Promise<MealData[]>} The mensa plan
  */
-export async function getMensaPlan(ulrMensa: string): Promise<MealData[]> {
-    const resp = await fetch(ulrMensa)
+export async function getMensaPlan(location: string): Promise<MealData[]> {
+    const urls = {
+        IngolstadtMensa:
+            'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/mensa-ingolstadt.xml',
+        NeuburgMensa:
+            'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/cafeteria-neuburg.xml',
+    }
+
+    const url = urls[location as keyof typeof urls]
+    const resp = await fetch(url)
 
     if (resp.status !== 200) {
         throw new Error('Data source returned an error: ' + (await resp.text()))
     }
-    const mealPlan = parseDataFromXml(await resp.text())
+    console.log('Mensa data fetched', location)
+    const mealPlan = parseDataFromXml(await resp.text(), location)
     const mergedMeals = mergeMealVariants(mealPlan)
     const translatedMeals = await translateMeals(mergedMeals)
     return unifyFoodEntries(translatedMeals)

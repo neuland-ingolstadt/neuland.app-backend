@@ -124,7 +124,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
     const hashedStaticMeals = (day: TempMealData): StaticMeal[] => {
         return staticMeals.map((meal) => ({
             ...meal,
-            restaurant: 'reimanns',
+            restaurant: 'Reimanns',
             id: getMealHash(day.timestamp, meal.name),
             variants: meal.variants?.map((variant) => ({
                 ...variant,

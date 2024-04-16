@@ -8,10 +8,6 @@ import { GraphQLError } from 'graphql'
 import { cache } from '../..'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
-const ulrMensa =
-    'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/mensa-ingolstadt.xml'
-const ulrNeuburg =
-    'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/cafeteria-neuburg.xml'
 
 export async function food(
     _: any,
@@ -40,10 +36,10 @@ export async function food(
         if (meals === undefined || meals === null) {
             switch (location) {
                 case 'IngolstadtMensa':
-                    meals = await getMensaPlan(ulrMensa)
+                    meals = await getMensaPlan('IngolstadtMensa')
                     break
                 case 'NeuburgMensa':
-                    meals = await getMensaPlan(ulrNeuburg)
+                    meals = await getMensaPlan('NeuburgMensa')
                     break
                 case 'Reimanns':
                     meals = await getReimannsPlan()

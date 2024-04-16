@@ -239,15 +239,15 @@ type Prices {
     """
     Price for students
     """
-    student: Float!
+    student: Float
     """
     Price for employees
     """
-    employee: Float!
+    employee: Float
     """
     Price for guests
     """
-    guest: Float!
+    guest: Float
 }
 
 """
