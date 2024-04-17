@@ -114,7 +114,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             allergens: null,
             flags: null,
             nutrition: null,
-            restaurant: 'reimanns',
+            restaurant: 'Reimanns',
         })),
     }))
 

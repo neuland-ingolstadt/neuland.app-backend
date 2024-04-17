@@ -167,7 +167,7 @@ type Variation {
     """
     static: Boolean!
     """
-    Restaurant where the variant is available (mensa, reimanns or canisius)
+    Restaurant where the variant is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
     """
     restaurant: String
     """

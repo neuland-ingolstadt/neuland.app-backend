@@ -148,7 +148,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
                     allergens: null,
                     flags: null,
                     nutrition: null,
-                    restaurant: 'canisius',
+                    restaurant: 'Canisius',
                 }))
 
                 return {

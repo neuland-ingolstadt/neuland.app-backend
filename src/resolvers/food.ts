@@ -29,7 +29,7 @@ export async function food(
         )
     }
 
-    let data: MealData[] = []
+    const data = new Map<string, MealData[]>()
 
     for (const location of locations) {
         let meals: MealData[] | undefined = await cache.get(location)
@@ -50,7 +50,15 @@ export async function food(
             }
             cache.set(location, meals, CACHE_TTL)
         }
-        if (meals !== undefined) data = data.concat(meals)
+        if (meals !== undefined) {
+            meals.forEach((meal) => {
+                const existingMeals = data.get(meal.timestamp) ?? ([] as any[])
+                data.set(meal.timestamp, existingMeals.concat(meal.meals))
+            })
+        }
     }
-    return data
+    return Array.from(data, ([timestamp, meals]) => ({
+        timestamp,
+        meals,
+    })) as any[]
 }

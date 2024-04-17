@@ -18,7 +18,6 @@ import { translateMeals } from '../utils/translation-utils'
  */
 function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
     const sourceData = xmljs.xml2js(xml, { compact: true }) as any
-    const now = Date.now()
 
     let sourceDays = sourceData.speiseplan.tag as XMLMensa[]
     if (sourceDays == null) {
@@ -29,10 +28,6 @@ function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
     const days = sourceDays
         .map((day: XMLMensa) => {
             const date = new Date(Number(day._attributes.timestamp) * 1000)
-
-            if (now - date.getTime() > 24 * 60 * 60 * 1000) {
-                return null
-            }
 
             let sourceItems = day.item
             if (!Array.isArray(sourceItems)) {

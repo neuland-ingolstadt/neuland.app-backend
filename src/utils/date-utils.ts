@@ -7,15 +7,19 @@ export function formatISODate(date: Date | undefined): string {
     if (date == null) {
         return ''
     }
-    return (
-        date.getFullYear().toString().padStart(4, '0') +
-        '-' +
-        (date.getMonth() + 1).toString().padStart(2, '0') +
-        '-' +
-        date.getDate().toString().padStart(2, '0')
+    const formatter = new Intl.DateTimeFormat('de-DE', {
+        timeZone: 'Europe/Berlin',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    })
+    const parts = formatter.formatToParts(date)
+    const { year, month, day } = parts.reduce<any>(
+        (allParts, part) => ({ ...allParts, [part.type]: part.value }),
+        {}
     )
+    return `${year}-${month}-${day}`
 }
-
 /**
  * Returns the start of the week
  * https://stackoverflow.com/a/4156516
