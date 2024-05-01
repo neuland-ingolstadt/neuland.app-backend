@@ -67,11 +67,23 @@ type ParkingLot {
     """
     name: String!
     """
+    Category of the parking lot (parking garage, parking lot, etc.)
+    """
+    category: String!
+    """
     Number of available parking spaces
     """
     available: Int!
     """
-    Price level of the parking lot between 0 (free) and 3 (expensive)
+    Total number of parking spaces
+    """
+    total: Int!
+    """
+    tendency of the parking lot (-1 : decreasing, 0 : stable, 1 : increasing) or null if not available
+    """
+    tendency: Int
+    """
+    Static price level of the parking lot between 0 (free) and 3 (expensive) or null if not available
     """
     priceLevel: Int
 }
@@ -423,7 +435,7 @@ type Query {
     """
     Get the current parking data in Ingolstadt
     """
-    parking: ParkingData
+    parking: ParkingData!
     """
     Get the current electric vehicle charging stations in Ingolstadt
     """

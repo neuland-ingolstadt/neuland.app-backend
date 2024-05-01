@@ -130,7 +130,6 @@ export async function getMensaPlan(location: string): Promise<MealData[]> {
     if (resp.status !== 200) {
         throw new Error('Data source returned an error: ' + (await resp.text()))
     }
-    console.log('Mensa data fetched', location)
     const mealPlan = parseDataFromXml(await resp.text(), location)
     const mergedMeals = mergeMealVariants(mealPlan)
     const translatedMeals = await translateMeals(mergedMeals)
