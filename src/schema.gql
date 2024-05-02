@@ -361,11 +361,11 @@ type Train {
     """
     Planned departure time
     """
-    plannedTime: String!
+    plannedTime: String
     """
     Actual departure time
     """
-    actualTime: String!
+    actualTime: String
     """
     True if the train is canceled
     """

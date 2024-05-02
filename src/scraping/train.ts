@@ -9,20 +9,24 @@ const stations: Record<string, string> = {
     audi: 'Ingolstadt Audi#008003074',
 }
 
-function dateFromTimestring(str: string): Date {
-    const match = str.match(/(\d\d):(\d\d)/) ?? []
+function dateFromTimestring(str: string): Date | null {
+    const match = str.match(/(\d\d):(\d\d)/)
+    if (match == null) {
+        return null
+    }
     const [, hourStr, minuteStr] = match
-    const hour = parseInt(String(hourStr))
-    const minute = parseInt(String(minuteStr))
+    const hour = parseInt(hourStr, 10)
+    const minute = parseInt(minuteStr, 10)
+    if (isNaN(hour) || isNaN(minute)) {
+        return null
+    }
     const now = new Date()
-
     if (
         now.getHours() > hour ||
         (now.getHours() === hour && now.getMinutes() > minute)
     ) {
         now.setDate(now.getDate() + 1)
     }
-
     now.setHours(hour)
     now.setMinutes(minute)
     return now
