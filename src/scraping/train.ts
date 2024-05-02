@@ -81,8 +81,8 @@ export default async function getTrain(station: string): Promise<Train[]> {
                     .trim()
                     .replace(/\s+/g, ' ')
                 const planned = $(el).find('.bold').eq(1).text().trim()
-                const actual =
-                    $(el).find('.delayOnTime').text().trim() ?? planned
+                const actualValue = $(el).find('.delayOnTime').text().trim()
+                const actual = actualValue.length > 0 ? actualValue : planned
                 const text = $(el).text().trim()
                 const canceled = $(el).find('.red').length > 0
                 const match = text.match(/>>\n(.*)/) ?? ['']
