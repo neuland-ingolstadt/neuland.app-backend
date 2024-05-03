@@ -7,7 +7,7 @@ interface ParkingData {
         priceLevel: number | null
         tendency: number | null
     }>
-    updated: Date | null
+    updated: moment.Moment
 }
 
 interface ParkingDataXML {

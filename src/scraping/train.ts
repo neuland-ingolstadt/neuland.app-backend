@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio'
 import { GraphQLError } from 'graphql'
+import moment from 'moment-timezone'
 
 const url =
     'https://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?ld=43120&protocol=https:&rt=1&use_realtime_filter=1&'
@@ -37,16 +38,12 @@ export default async function getTrain(station: string): Promise<Train[]> {
 
     try {
         const getTrainDepatures = async (): Promise<Train[]> => {
-            const now = new Date()
-            const pad2 = (x: number): string => x.toString().padStart(2, '0')
-
+            const now = moment().tz('Europe/Berlin')
             const paramObj = {
                 input: stations[station],
                 inputRef: '#',
-                date: `+${pad2(now.getDate())}.${pad2(
-                    now.getMonth() + 1
-                )}.${now.getFullYear()}`,
-                time: `${pad2(now.getHours())}:${pad2(now.getMinutes())}`, //
+                date: now.format('DD.MM.YYYY'),
+                time: now.format('HH:mm'),
                 productsFilter: '1111101000000000', // "Nur Bahn"
                 REQTrain_name: '',
                 maxJourneys: 10,

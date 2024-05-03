@@ -1,4 +1,5 @@
 import staticData from '@/data/mobility.json'
+import moment from 'moment-timezone'
 import xmljs from 'xml-js'
 
 const URL = 'https://www.ingolstadt-ifg.de/typo3temp/parkinfo.xml'
@@ -14,10 +15,8 @@ const getParking = async (): Promise<ParkingData> => {
         const xml = JSON.parse(
             xmljs.xml2json(body, { compact: true, spaces: 4 })
         ) as ParkingDataXML
-        const date = new Date(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            xml.parkInfo.parkInfoQuery._attributes.timestamp
-        )
+        const timestamp = xml.parkInfo.parkInfoQuery._attributes.timestamp
+        const date = moment.tz(timestamp, 'Europe/Berlin')
 
         const adjustedTendency = {
             '-1': null,
