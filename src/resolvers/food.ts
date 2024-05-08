@@ -19,9 +19,9 @@ export async function food(
         'Reimanns',
         'Canisius',
     ]
-    const locations = args?.locations.filter((arg) =>
-        validLocations.includes(arg)
-    )
+    const locations =
+        args?.locations?.filter((arg) => validLocations.includes(arg)) ?? []
+
     if (locations.length !== args.locations.length) {
         throw new GraphQLError(
             'Invalid location provided. Valid locations are: ' +

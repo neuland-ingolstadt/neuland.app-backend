@@ -135,6 +135,11 @@ export async function getReimannsPlan(): Promise<MealData[]> {
 
     // TODO: add allergens, flags, nutrition (ask Reimanns for data)
     scrapedMeals.forEach((day) => {
+        // skip days without meals (restaurant probably closed)
+        if (day.meals.length === 0) {
+            return
+        }
+
         day.meals.push(...(hashedStaticMeals(day) as TempMeal[]))
     })
 
