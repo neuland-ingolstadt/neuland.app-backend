@@ -11,7 +11,7 @@ const CACHE_TTL = 60 * 30 // 30 minutes
 
 export async function food(
     _: any,
-    args: { locations: string[] }
+    args: { locations: string[] | undefined }
 ): Promise<MealData[]> {
     const validLocations = [
         'IngolstadtMensa',
@@ -19,10 +19,14 @@ export async function food(
         'Reimanns',
         'Canisius',
     ]
-    const locations = args?.locations.filter((arg) =>
-        validLocations.includes(arg)
-    )
-    if (locations.length !== args.locations.length) {
+    const locations =
+        args?.locations?.filter((arg) => validLocations.includes(arg)) ??
+        validLocations
+
+    const invalidLocations =
+        args.locations?.filter((arg) => !validLocations.includes(arg)) ?? []
+
+    if (invalidLocations.length > 0) {
         throw new GraphQLError(
             'Invalid location provided. Valid locations are: ' +
                 validLocations.join(', ')
