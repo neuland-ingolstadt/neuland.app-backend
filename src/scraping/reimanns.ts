@@ -61,7 +61,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
 
     let day: string | null = null
     lines.forEach((content) => {
-        content = content.trim().replace(/^– /, '')
+        content = content.trim().replace(/^(–|-)\s?(?=\S)/, '')
         const dayNameMatch = content.match(
             /montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag/iu
         )
