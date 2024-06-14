@@ -192,23 +192,26 @@ async function getEventDetails(
     >,
     url: string
 ): Promise<Record<string, string>> {
-    // check URL just to make sure we're not fetching the wrong thing
     if (!url.startsWith(EVENT_DETAILS_PREFIX)) {
         throw new Error('Invalid URL')
     }
 
     const resp: nodeFetch.Response = await fetch(url)
     const $ = cheerio.load(await resp.text())
-
-    // get rows from content table
     const rows = $('.entry tr:not(.lastrow)').get()
 
-    // get two columns and map into object
     return Object.fromEntries(
         rows.map((elem) => {
+            const htmlContent = $(elem).find('.c1').html()
+            const adjustedC1 =
+                htmlContent === null
+                    ? ''
+                    : htmlContent
+                          .replace(/<br\s*\/?>/gi, '\n') // Replaces <br> with \n
+                          .replace(/<[^>]*>/g, '') // Removes other HTML tags
             return [
                 $(elem).find('.c0').text().trim().replace(/:$/, ''),
-                $(elem).find('.c1').text().trim().replace(/:$/, ''),
+                adjustedC1.trim().replace(/:$/, ''),
             ]
         })
     )
