@@ -8,6 +8,7 @@ import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import fs from 'fs/promises'
 import { GraphQLError } from 'graphql'
 import nodeFetch from 'node-fetch'
+import sanitizeHtml from 'sanitize-html'
 
 const MONTHS = {
     Januar: 1,
@@ -203,12 +204,16 @@ async function getEventDetails(
     return Object.fromEntries(
         rows.map((elem) => {
             const htmlContent = $(elem).find('.c1').html()
+
             const adjustedC1 =
                 htmlContent === null
                     ? ''
-                    : htmlContent
-                          .replace(/<br\s*\/?>/gi, '\n') // Replaces <br> with \n
-                          .replace(/<[^>]*>/g, '') // Removes other HTML tags
+                    : sanitizeHtml(htmlContent.replace(/<br\s*\/?>/gi, '\n'), {
+                          allowedTags: [],
+                          allowedAttributes: {},
+                          disallowedTagsMode: 'discard',
+                      })
+
             return [
                 $(elem).find('.c0').text().trim().replace(/:$/, ''),
                 adjustedC1.trim().replace(/:$/, ''),
