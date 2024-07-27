@@ -8,6 +8,11 @@ export interface MealData {
     meals: Meal[]
 }
 
+export interface ReturnData {
+    foodData: MealData[]
+    errors: Array<{ location: string; message: string }>
+}
+
 export interface ExtendedMealData {
     timestamp: string
     meals: ExtendedMeal[]

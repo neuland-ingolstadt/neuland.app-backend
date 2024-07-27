@@ -100,71 +100,62 @@ function getMealsFromBlock(text: string): CanisiusBlock[] {
  */
 export async function getCanisiusPlan(): Promise<MealData[]> {
     const pdfBuffer = await getPdf()
-    const mealPlan = await pdf(pdfBuffer)
-        .then(function (data) {
-            const text = data.text.replace(newLineRegex, ' ')
+    const mealPlan = await pdf(pdfBuffer).then(function (data) {
+        const text = data.text.replace(newLineRegex, ' ')
 
-            let days = text.split(titleRegex)
-            let dates: string[] | null = text.match(titleRegex)
+        let days = text.split(titleRegex)
+        let dates: string[] | null = text.match(titleRegex)
 
-            if (days === null || dates === null) {
-                throw new Error(
-                    'Unexpected/Malformed pdf from the Canisius website!'
-                )
-            }
-            dates = dates.map(getDateFromTitle)
-
-            // keep days only
-            days = days.slice(1, 6)
-
-            // split last day into friday and weekly salad menu
-            const fridaySaladSplit = days[4].split(
-                'Salate der Saison vom Büfett'
+        if (days === null || dates === null) {
+            throw new Error(
+                'Unexpected/Malformed pdf from the Canisius website!'
             )
+        }
+        dates = dates.map(getDateFromTitle)
 
-            days[4] = fridaySaladSplit[0]
+        // keep days only
+        days = days.slice(1, 6)
 
-            const salads = getMealsFromBlock(String(fridaySaladSplit[1]))
+        // split last day into friday and weekly salad menu
+        const fridaySaladSplit = days[4].split('Salate der Saison vom Büfett')
 
-            // trim whitespace and split into dishes
-            const dishes = days.map(getMealsFromBlock)
-            return dishes.map((day, index) => {
-                const dayDishes = day.map((dish) => ({
-                    name: dish.name,
-                    id: getMealHash(dates[index], dish.name),
-                    category: 'Essen',
-                    prices: dish.prices,
-                    allergens: null,
-                    flags: null,
-                    nutrition: null,
-                    restaurant: 'Canisius',
-                }))
+        days[4] = fridaySaladSplit[0]
 
-                const daySalads = salads.map((salad) => ({
-                    name: salad.name,
-                    id: getMealHash(dates[index], salad.name),
-                    originalLanguage: 'de',
-                    category: 'Salat',
-                    prices: salad.prices,
-                    allergens: null,
-                    flags: null,
-                    nutrition: null,
-                    restaurant: 'Canisius',
-                }))
+        const salads = getMealsFromBlock(String(fridaySaladSplit[1]))
 
-                return {
-                    timestamp: dates[index],
-                    meals:
-                        dayDishes.length > 0
-                            ? [...dayDishes, ...daySalads]
-                            : [],
-                }
-            })
+        // trim whitespace and split into dishes
+        const dishes = days.map(getMealsFromBlock)
+        return dishes.map((day, index) => {
+            const dayDishes = day.map((dish) => ({
+                name: dish.name,
+                id: getMealHash(dates[index], dish.name),
+                category: 'Essen',
+                prices: dish.prices,
+                allergens: null,
+                flags: null,
+                nutrition: null,
+                restaurant: 'Canisius',
+            }))
+
+            const daySalads = salads.map((salad) => ({
+                name: salad.name,
+                id: getMealHash(dates[index], salad.name),
+                originalLanguage: 'de',
+                category: 'Salat',
+                prices: salad.prices,
+                allergens: null,
+                flags: null,
+                nutrition: null,
+                restaurant: 'Canisius',
+            }))
+
+            return {
+                timestamp: dates[index],
+                meals: dayDishes.length > 0 ? [...dayDishes, ...daySalads] : [],
+            }
         })
-        .catch((err) => {
-            console.error(err)
-            return []
-        })
+    })
+
     const mergedMeal = mergeMealVariants(mealPlan)
     const translatedMeals = await translateMeals(mergedMeal)
     return unifyFoodEntries(translatedMeals)

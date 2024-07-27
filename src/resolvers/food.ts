@@ -2,7 +2,7 @@
 import { getCanisiusPlan } from '@/scraping/canisius'
 import { getMensaPlan } from '@/scraping/mensa'
 import { getReimannsPlan } from '@/scraping/reimanns'
-import type { MealData } from '@/types/food'
+import type { MealData, ReturnData } from '@/types/food'
 import { GraphQLError } from 'graphql'
 
 import { cache } from '../..'
@@ -12,7 +12,7 @@ const CACHE_TTL = 60 * 30 // 30 minutes
 export async function food(
     _: any,
     args: { locations: string[] }
-): Promise<MealData[]> {
+): Promise<ReturnData> {
     const validLocations = [
         'IngolstadtMensa',
         'NeuburgMensa',
@@ -30,25 +30,36 @@ export async function food(
     }
 
     const data = new Map<string, MealData[]>()
+    const errors: Array<{ location: string; message: string }> = []
 
     for (const location of locations) {
         let meals: MealData[] | undefined = await cache.get(location)
         if (meals === undefined || meals === null) {
-            switch (location) {
-                case 'IngolstadtMensa':
-                    meals = await getMensaPlan('IngolstadtMensa')
-                    break
-                case 'NeuburgMensa':
-                    meals = await getMensaPlan('NeuburgMensa')
-                    break
-                case 'Reimanns':
-                    meals = await getReimannsPlan()
-                    break
-                case 'Canisius':
-                    meals = await getCanisiusPlan()
-                    break
+            try {
+                switch (location) {
+                    case 'IngolstadtMensa':
+                        meals = await getMensaPlan('IngolstadtMensa')
+                        break
+                    case 'NeuburgMensa':
+                        meals = await getMensaPlan('NeuburgMensa')
+                        break
+                    case 'Reimanns':
+                        meals = await getReimannsPlan()
+                        break
+                    case 'Canisius':
+                        meals = await getCanisiusPlan()
+                        break
+                }
+                cache.set(location, meals, CACHE_TTL)
+            } catch (error) {
+                const typedError = error as Error
+                console.error(`Error fetching meals for ${location}:`, error)
+                errors.push({
+                    location,
+                    message: typedError.message ?? 'Unknown error',
+                })
+                continue
             }
-            cache.set(location, meals, CACHE_TTL)
         }
         if (meals !== undefined) {
             meals.forEach((meal) => {
@@ -57,8 +68,12 @@ export async function food(
             })
         }
     }
-    return Array.from(data, ([timestamp, meals]) => ({
-        timestamp,
-        meals,
-    })) as any[]
+
+    return {
+        foodData: Array.from(data, ([timestamp, meals]) => ({
+            timestamp,
+            meals,
+        })) as any[],
+        errors,
+    }
 }

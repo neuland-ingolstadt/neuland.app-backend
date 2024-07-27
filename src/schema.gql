@@ -277,6 +277,31 @@ type Food {
 }
 
 """
+Error message for the food query
+"""
+type FoodError {
+    """
+    Location of the restaurant
+    """
+    location: String!
+    """
+    Error message
+    """
+    message: String!
+}
+
+type FoodResponse {
+    """
+    List of meal days
+    """
+    foodData: [Food!]
+    """
+    Error message for the food query
+    """
+    errors: [FoodError!]
+}
+
+"""
 Parent meal for a variant meal
 """
 type Parent {
@@ -443,7 +468,7 @@ type Query {
     """
     Get the meal plan for a specific restaurant
     """
-    food(locations: [String!]): [Food!]!
+    food(locations: [String!]): FoodResponse!
     """
     Get the campus life events
     """
