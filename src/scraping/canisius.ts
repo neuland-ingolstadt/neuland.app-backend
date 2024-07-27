@@ -8,7 +8,8 @@ import { translateMeals } from '@/utils/translation-utils'
 import http from 'http'
 import pdf from 'pdf-parse'
 
-const url = 'http://www.canisiusstiftung.de/upload/speiseplan.pdf'
+const url =
+    'https://www.canisiusstiftung.de/wp-content/uploads/Speiseplan/speiseplan.pdf'
 const titleRegex = /[A-Z][a-z]*, den [0-9]{1,2}.[0-9]{1,2}.[0-9]{4}/gm
 const dateRegex = /[0-9]{1,2}.[0-9]{1,2}.[0-9]{4}/gm
 const newLineRegex = /(?:\r\n|\r|\n)/g
