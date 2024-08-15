@@ -276,3 +276,15 @@ export function parseXmlFloat(str: { _text?: string }): number {
             : null
     return parsedFloat ?? 0
 }
+
+/**
+ * Checks whether a value is empty.
+ * @param any value
+ * @returns {Boolean}
+ */
+export function isEmpty(value: any): boolean {
+    return (
+        value == null ||
+        (typeof value === 'string' && value.trim().length === 0)
+    )
+}

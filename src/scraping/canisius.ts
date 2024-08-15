@@ -1,6 +1,7 @@
 import type { CanisiusBlock, MealData } from '@/types/food'
 import {
     getMealHash,
+    isEmpty,
     mergeMealVariants,
     unifyFoodEntries,
 } from '@/utils/food-utils'
@@ -102,7 +103,11 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
     const pdfBuffer = await getPdf()
     const mealPlan = await pdf(pdfBuffer).then(function (data) {
         const text = data.text.replace(newLineRegex, ' ')
-
+        if (isEmpty(text)) {
+            // during the summer break the pdf is completely empty
+            console.warn('Canisius pdf is empty, returning empty array')
+            return []
+        }
         let days = text.split(titleRegex)
         let dates: string[] | null = text.match(titleRegex)
 
