@@ -20,8 +20,8 @@ app.use(
         origin: [
             'https://studio.apollographql.com',
             'http://localhost:3000',
-            'http://dev.neuland.app',
-            'http://neuland.app',
+            'https://dev.neuland.app',
+            'https://neuland.app',
         ],
     })
 )
