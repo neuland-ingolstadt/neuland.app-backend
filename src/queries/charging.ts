@@ -1,6 +1,5 @@
+import { cache } from '@/index'
 import { getCharging } from '@/scraping/charging'
-
-import { cache } from '../..'
 
 export const charging = async (): Promise<ChargingData[]> => {
     const data = cache.get<ChargingData[]>('chargingStations')

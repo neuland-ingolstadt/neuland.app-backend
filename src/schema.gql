@@ -485,14 +485,23 @@ type Query {
     Get the current announcements
     """
     announcements: [Announcement!]!
+    """
+    Get the university sports events
+    """
+    universitySports: [UniversitySports!] # This returns a list of all sports
 }
 
-# Enums for campus and weekday
+"""
+Enum representing the different locations of THI.
+"""
 enum CampusType {
     Ingolstadt
     Neuburg
 }
 
+"""
+Enum representing the different weekdays.
+"""
 enum WeekdayType {
     Monday
     Tuesday
@@ -503,19 +512,57 @@ enum WeekdayType {
     Sunday
 }
 
-# The UniversitySports type that maps to the table
+"""
+University sports event data
+"""
 type UniversitySports {
+    """
+    Unique identifier of the sports event
+    """
     id: ID!
+    """
+    Title of the sports event in different languages
+    """
     title: MultiLanguageString!
+    """
+    Description of the sports event in different languages
+    """
     description: MultiLanguageString
+    """
+    Campus where the sports event belongs to. This is not the location of the event itself.
+    """
     campus: CampusType!
+    """
+    Location of the sports event
+    """
     location: String!
+    """
+    Weekday of the sports event
+    """
     weekday: WeekdayType!
+    """
+    Start time of the sports event
+    """
     startTime: String!
+    """
+    End time of the sports event
+    """
     endTime: String
+    """
+    True if the sports event requires registration
+    """
     requiresRegistration: Boolean!
+    """
+    Contact information for the sports event like an email address or phone number
+    """
     contact: String
+    """
+    Creation date of the sports event
+    """
     createdAt: String!
+    """
+    Last update date of the sports event
+    """
     updatedAt: String!
 }
 
@@ -524,38 +571,65 @@ input MultiLanguageStringInput {
     de: String!
 }
 
-# Input type for creating or updating UniversitySports
+"""
+Input type for the university sports event
+"""
 input UniversitySportsInput {
+    """
+    Title of the sports event in different languages
+    """
     title: MultiLanguageStringInput!
+    """
+    Description of the sports event in different languages
+    """
     description: MultiLanguageStringInput
+    """
+    Campus where the sports event belongs to. This is not the location of the event itself.
+    """
     campus: CampusType!
+    """
+    Location of the sports event
+    """
     location: String!
+    """
+    Weekday of the sports event
+    """
     weekday: WeekdayType!
+    """
+    Start time of the sports event
+    """
     startTime: String!
+    """
+    End time of the sports event
+    """
     endTime: String
+    """
+    True if the sports event requires registration
+    """
     requiresRegistration: Boolean!
+    """
+    Contact information for the sports event, like an email address or phone number
+    """
     contact: String
 }
 
-# Queries to get sports data
-type Query {
-    # Get all sports
-    universitySports: [UniversitySports!] # This returns a list of all sports
-    # Get a single sport by ID
-    universitySport(id: ID!): UniversitySports # Renamed to 'universitySport' (singular) to avoid conflict
-}
-
-# Mutations to add/update sports data
+"""
+Mutation type to update data
+"""
 type Mutation {
-    # Create a new sport
+    """
+    Create a new university sports event
+    """
     createUniversitySport(input: UniversitySportsInput!): UniversitySports
-
-    # # Update an existing sport
-    # updateUniversitySport(
-    #     id: ID!
-    #     input: UniversitySportsInput!
-    # ): UniversitySports
-
-    # # Delete a sport
-    # deleteUniversitySport(id: ID!): Boolean
+    """
+    Update a university sports event by ID
+    """
+    updateUniversitySport(
+        id: ID!
+        input: UniversitySportsInput!
+    ): UniversitySports
+    """
+    Delete a university sports event by ID
+    """
+    deleteUniversitySport(id: ID!): Boolean
 }

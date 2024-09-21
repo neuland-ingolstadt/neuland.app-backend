@@ -1,6 +1,5 @@
+import { cache } from '@/index'
 import getBus from '@/scraping/bus'
-
-import { cache } from '../..'
 
 const CACHE_TTL = 60 // 1 minute
 

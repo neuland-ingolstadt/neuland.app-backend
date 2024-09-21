@@ -1,8 +1,8 @@
-import { db } from '../..'
+import { db } from '@/index'
 
 export async function createUniversitySport(
     _: any,
-    { input }: { input: CreateUniversitySportInput }
+    { input }: { input: UniversitySportInput }
 ): Promise<UniversitySports> {
     const {
         title,
@@ -20,7 +20,7 @@ export async function createUniversitySport(
         .toISOString()
         .replace('Z', '')
         .replace('T', ' ')
-    console.log('formattedStartTime', formattedStartTime)
+
     const formattedEndTime =
         endTime != null
             ? new Date(Number(endTime) * 1000)
@@ -28,12 +28,13 @@ export async function createUniversitySport(
                   .replace('Z', '')
                   .replace('T', ' ')
             : null
+
     const [newEvent] = await db('university_sports')
         .insert({
             title_de: title.de,
             title_en: title.en,
-            description_de: description.de,
-            description_en: description.en,
+            description_de: description?.de ?? null,
+            description_en: description?.en ?? null,
             campus,
             location,
             weekday,

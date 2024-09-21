@@ -34,7 +34,7 @@ interface UniversitySports {
     updatedAt: string
 }
 
-interface CreateUniversitySportInput {
+interface UniversitySportInput {
     title: {
         de: string
         en: string

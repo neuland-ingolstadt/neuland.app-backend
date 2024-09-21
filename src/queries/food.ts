@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { cache } from '@/index'
 import { getCanisiusPlan } from '@/scraping/canisius'
 import { getMensaPlan } from '@/scraping/mensa'
 import { getReimannsPlan } from '@/scraping/reimanns'
 import type { MealData, ReturnData } from '@/types/food'
 import { GraphQLError } from 'graphql'
-
-import { cache } from '../..'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
 

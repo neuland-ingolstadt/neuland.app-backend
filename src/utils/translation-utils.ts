@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { cache } from '@/index'
 import type {
     ExtendedMealData,
     MealData,
@@ -6,8 +7,6 @@ import type {
     TempMealData,
 } from '@/types/food'
 import translate, { type DeeplLanguages } from 'deepl'
-
-import { cache } from '../..'
 
 const deeplEndpoint = 'https://api-free.deepl.com/v2/translate'
 const deeplApiKey = Bun.env.DEEPL_API_KEY ?? ''

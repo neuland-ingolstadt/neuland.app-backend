@@ -1,7 +1,6 @@
+import { cache } from '@/index'
 import getClEvents from '@/scraping/cl-event'
 import type { ClEvent } from '@/types/clEvents'
-
-import { cache } from '../..'
 
 const CACHE_TTL = 60 * 60 * 24 // 24 hours
 
