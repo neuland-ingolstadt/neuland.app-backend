@@ -5,8 +5,7 @@ export async function deleteUniversitySport(
     { id }: { id: number }
 ): Promise<boolean> {
     try {
-        const rowsDeleted = await db('university_sports').where({ id }).del()
-
+        const rowsDeleted = await db('app_announcements').where({ id }).del()
         return rowsDeleted > 0
     } catch (error) {
         throw new Error('Failed to delete the sports event')

@@ -9,6 +9,9 @@ import { parking } from '@/queries/parking'
 import { sports } from '@/queries/sports'
 import { train } from '@/queries/train'
 
+import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
+import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
+
 export const resolvers = {
     Query: {
         charging,
@@ -23,5 +26,7 @@ export const resolvers = {
     Mutation: {
         deleteUniversitySport,
         upsertUniversitySport,
+        deleteAppAnnouncement,
+        upsertAppAnnouncement,
     },
 }

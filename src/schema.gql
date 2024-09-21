@@ -614,6 +614,36 @@ input UniversitySportsInput {
 }
 
 """
+Input type for the announcement
+"""
+input AnnouncementInput {
+    """
+    Title of the announcement in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the announcement in different languages
+    """
+    description: MultiLanguageStringInput!
+    """
+    Start date and time when the announcement is displayed
+    """
+    startDateTime: String!
+    """
+    End date and time when the announcement is displayed
+    """
+    endDateTime: String!
+    """
+    Priority of the announcement, higher are more important
+    """
+    priority: Int!
+    """
+    URL to the announcement
+    """
+    url: String
+}
+
+"""
 Mutation type to update data
 """
 type Mutation {
@@ -628,4 +658,12 @@ type Mutation {
     Delete a university sports event by ID
     """
     deleteUniversitySport(id: ID!): Boolean
+    """
+    Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created.
+    """
+    upsertAppAnnouncement(id: ID, input: AnnouncementInput!): Announcement
+    """
+    Delete an announcement by ID
+    """
+    deleteAppAnnouncement(id: ID!): Boolean
 }
