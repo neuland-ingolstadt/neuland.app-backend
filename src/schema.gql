@@ -486,3 +486,76 @@ type Query {
     """
     announcements: [Announcement!]!
 }
+
+# Enums for campus and weekday
+enum CampusType {
+    Ingolstadt
+    Neuburg
+}
+
+enum WeekdayType {
+    Monday
+    Tuesday
+    Wednesday
+    Thursday
+    Friday
+    Saturday
+    Sunday
+}
+
+# The UniversitySports type that maps to the table
+type UniversitySports {
+    id: ID!
+    title: MultiLanguageString!
+    description: MultiLanguageString
+    campus: CampusType!
+    location: String!
+    weekday: WeekdayType!
+    startTime: String!
+    endTime: String
+    requiresRegistration: Boolean!
+    contact: String
+    createdAt: String!
+    updatedAt: String!
+}
+
+input MultiLanguageStringInput {
+    en: String!
+    de: String!
+}
+
+# Input type for creating or updating UniversitySports
+input UniversitySportsInput {
+    title: MultiLanguageStringInput!
+    description: MultiLanguageStringInput
+    campus: CampusType!
+    location: String!
+    weekday: WeekdayType!
+    startTime: String!
+    endTime: String
+    requiresRegistration: Boolean!
+    contact: String
+}
+
+# Queries to get sports data
+type Query {
+    # Get all sports
+    universitySports: [UniversitySports!] # This returns a list of all sports
+    # Get a single sport by ID
+    universitySport(id: ID!): UniversitySports # Renamed to 'universitySport' (singular) to avoid conflict
+}
+
+# Mutations to add/update sports data
+type Mutation {
+    # Create a new sport
+    createUniversitySport(input: UniversitySportsInput!): UniversitySports
+
+    # # Update an existing sport
+    # updateUniversitySport(
+    #     id: ID!
+    #     input: UniversitySportsInput!
+    # ): UniversitySports
+
+    # # Delete a sport
+    # deleteUniversitySport(id: ID!): Boolean
+}

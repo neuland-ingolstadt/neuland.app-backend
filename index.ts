@@ -7,6 +7,7 @@ import {
 import cors from 'cors'
 import express from 'express'
 import { readFileSync } from 'fs'
+import knex from 'knex'
 import NodeCache from 'node-cache'
 import path from 'path'
 
@@ -39,6 +40,20 @@ const apolloServer = new ApolloServer({
 })
 
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
+
+const connection = {
+    host: process.env.DB_HOST,
+    port: 5432,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+}
+
+export const db = knex({
+    client: 'pg',
+    connection,
+})
+
 await apolloServer.start()
 
 app.use('/', express.static(path.join(__dirname, 'documentation/generated')))
