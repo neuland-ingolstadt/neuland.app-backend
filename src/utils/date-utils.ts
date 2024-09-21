@@ -74,3 +74,12 @@ export function addWeek(date: Date, delta: number): Date {
     date.setDate(date.getDate() + delta * 7)
     return date
 }
+
+/**
+ * Converts a iso date string to a postgres date string
+ * @param {number} isoDate
+ * @returns {string}
+ */
+export function isoToPostgres(isoDate: number): string {
+    return new Date(isoDate).toISOString().replace('Z', '').replace('T', ' ')
+}

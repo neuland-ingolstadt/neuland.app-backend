@@ -1,4 +1,5 @@
 import { db } from '@/index'
+import { isoToPostgres } from '@/utils/date-utils'
 
 export async function upsertUniversitySport(
     _: any,
@@ -16,18 +17,9 @@ export async function upsertUniversitySport(
         contact,
     } = input
 
-    const formattedStartTime = new Date(Number(startTime) * 1000)
-        .toISOString()
-        .replace('Z', '')
-        .replace('T', ' ')
+    const formattedStartTime = isoToPostgres(startTime)
 
-    const formattedEndTime =
-        endTime != null
-            ? new Date(Number(endTime) * 1000)
-                  .toISOString()
-                  .replace('Z', '')
-                  .replace('T', ' ')
-            : null
+    const formattedEndTime = endTime != null ? isoToPostgres(endTime) : null
 
     let event
 

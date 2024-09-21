@@ -1,4 +1,5 @@
 import { db } from '@/index'
+import { isoToPostgres } from '@/utils/date-utils'
 
 export async function upsertAppAnnouncement(
     _: any,
@@ -7,15 +8,8 @@ export async function upsertAppAnnouncement(
     const { title, description, startDateTime, endDateTime, priority, url } =
         input
 
-    const formattedStartTime = new Date(Number(startDateTime) * 1000)
-        .toISOString()
-        .replace('Z', '')
-        .replace('T', ' ')
-
-    const formattedEndTime = new Date(Number(endDateTime) * 1000)
-        .toISOString()
-        .replace('Z', '')
-        .replace('T', ' ')
+    const formattedStartTime = isoToPostgres(startDateTime)
+    const formattedEndTime = isoToPostgres(endDateTime)
 
     let announcement
 

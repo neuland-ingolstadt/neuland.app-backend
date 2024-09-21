@@ -596,13 +596,13 @@ input UniversitySportsInput {
     """
     weekday: WeekdayType!
     """
-    Start time of the sports event
+    Start time of the sports event as Unix timestamp
     """
-    startTime: String!
+    startTime: Int!
     """
-    End time of the sports event
+    End time of the sports event as Unix timestamp
     """
-    endTime: String
+    endTime: Int
     """
     True if the sports event requires registration
     """
@@ -628,11 +628,11 @@ input AnnouncementInput {
     """
     Start date and time when the announcement is displayed
     """
-    startDateTime: String!
+    startDateTime: Int!
     """
     End date and time when the announcement is displayed
     """
-    endDateTime: String!
+    endDateTime: Int!
     """
     Priority of the announcement, higher are more important
     """

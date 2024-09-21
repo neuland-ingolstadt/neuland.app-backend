@@ -46,8 +46,8 @@ interface UniversitySportInput {
     campus: CampusType
     location: string
     weekday: WeekdayType
-    startTime: string
-    endTime?: string
+    startTime: number
+    endTime?: number
     requiresRegistration: boolean
     contact?: string
 }
