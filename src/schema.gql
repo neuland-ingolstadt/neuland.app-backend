@@ -618,14 +618,10 @@ Mutation type to update data
 """
 type Mutation {
     """
-    Create a new university sports event
+    Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created.
     """
-    createUniversitySport(input: UniversitySportsInput!): UniversitySports
-    """
-    Update a university sports event by ID
-    """
-    updateUniversitySport(
-        id: ID!
+    upsertUniversitySport(
+        id: ID
         input: UniversitySportsInput!
     ): UniversitySports
     """

@@ -1,6 +1,5 @@
-import { createUniversitySport } from '@/mutations/university-sports/create'
 import { deleteUniversitySport } from '@/mutations/university-sports/delete'
-import { updateUniversitySport } from '@/mutations/university-sports/update'
+import { upsertUniversitySport } from '@/mutations/university-sports/upsert'
 import { announcements } from '@/queries/announcements'
 import { bus } from '@/queries/bus'
 import { charging } from '@/queries/charging'
@@ -22,8 +21,7 @@ export const resolvers = {
         universitySports: sports,
     },
     Mutation: {
-        createUniversitySport,
         deleteUniversitySport,
-        updateUniversitySport,
+        upsertUniversitySport,
     },
 }
