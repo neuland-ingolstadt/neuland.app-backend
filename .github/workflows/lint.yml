@@ -15,6 +15,6 @@ jobs:
             - name: Install modules
               run: bun install
             - name: Run ESLint
-              run: bunx eslint . --ext .js,.jsx,.ts,.tsx
+              run: bunx eslint .
             - name: Run Prettier
               run: npx prettier --check .

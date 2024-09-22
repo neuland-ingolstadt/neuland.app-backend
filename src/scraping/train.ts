@@ -56,7 +56,7 @@ export default async function getTrain(station: string): Promise<Train[]> {
             for (const key in paramObj) {
                 params.append(
                     key,
-                    (paramObj as unknown as Record<any, string>)[key]
+                    (paramObj as unknown as Record<string, string>)[key]
                 )
             }
 
@@ -98,7 +98,11 @@ export default async function getTrain(station: string): Promise<Train[]> {
             return departures.get()
         }
         return await getTrainDepatures()
-    } catch (e: any) {
-        throw new GraphQLError('Failed to fetch data: ' + e.message)
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            throw new GraphQLError('Failed to fetch data: ' + e.message)
+        } else {
+            throw new GraphQLError('Failed to fetch data: Unknown error')
+        }
     }
 }

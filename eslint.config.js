@@ -13,7 +13,6 @@ export default [
             ecmaVersion: 'latest',
             sourceType: 'module',
             parserOptions: {
-                project: '**/tsconfig.json',
                 tsconfigRootDir: './',
                 noUnusedLocals: true,
                 noUnusedParameters: true,

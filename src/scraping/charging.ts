@@ -18,6 +18,7 @@ export const getCharging = async (): Promise<ChargingData[]> => {
                 city: string
                 coordinates: { latitude: number; longitude: number }
                 evses: {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     filter: (arg0: (x: any) => boolean) => {
                         (): number
                         new (): number
