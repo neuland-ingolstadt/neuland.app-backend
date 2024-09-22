@@ -618,7 +618,7 @@ input UniversitySportsInput {
     """
     E-Mail address for registration or contact
     """
-    eMail: String
+    eMail: EmailAddress
 }
 
 """

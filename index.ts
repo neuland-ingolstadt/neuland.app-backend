@@ -8,11 +8,6 @@ import {
 import cors from 'cors'
 import express from 'express'
 import { readFileSync } from 'fs'
-import {
-    DateTimeTypeDefinition,
-    EmailAddressTypeDefinition,
-    LocalTimeTypeDefinition,
-} from 'graphql-scalars'
 import knex from 'knex'
 import NodeCache from 'node-cache'
 import path from 'path'
@@ -20,12 +15,8 @@ import path from 'path'
 import { resolvers } from './src/resolvers'
 
 const schema = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
-const typeDefs = [
-    schema,
-    LocalTimeTypeDefinition,
-    DateTimeTypeDefinition,
-    EmailAddressTypeDefinition,
-]
+const typeDefs = schema
+const port = process.env.PORT || 4000
 
 const app = express()
 app.use(
@@ -49,6 +40,7 @@ const apolloServer = new ApolloServer({
               })
             : ApolloServerPluginLandingPageLocalDefault(),
     ],
+    introspection: Bun.env.NODE_ENV !== 'production',
 })
 
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
@@ -89,6 +81,6 @@ app.use(
     })
 )
 
-app.listen(4000, () => {
-    console.log('🚀 Server ready at http://localhost:4000/graphql')
+app.listen(port, () => {
+    console.log('🚀 Server ready at http://localhost:' + port + '/graphql')
 })

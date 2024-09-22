@@ -6,7 +6,7 @@
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
         "prepare": "husky",
-        "docs": "bunx spectaql ./documentation/config.yml"
+        "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 bun run start\" \"bunx spectaql ./documentation/config.yml\""
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
@@ -43,6 +43,8 @@
         "@types/pdf-parse": "^1.1.4",
         "@types/sanitize-html": "^2.13.0",
         "@typescript-eslint/eslint-plugin": "^8.6.0",
+        "concurrently": "^9.0.1",
+        "cross-env": "^7.0.3",
         "eslint": "^9.11.0",
         "eslint-config-prettier": "^9.1.0",
         "globals": "^15.9.0",
