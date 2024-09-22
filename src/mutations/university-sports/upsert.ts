@@ -28,7 +28,7 @@ export async function upsertUniversitySport(
         contact,
     } = input
 
-    if (contextValue.authRole !== 'admin') {
+    if (contextValue.authRole.includes('Manager') === false) {
         throw new GraphQLError('Not authorized')
     }
 

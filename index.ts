@@ -44,11 +44,11 @@ const apolloServer = new ApolloServer({
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
 
 const connection = {
-    host: process.env.DB_HOST,
-    port: 5432,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    host: Bun.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    database: Bun.env.DB_NAME,
+    user: Bun.env.DB_USERNAME,
+    password: Bun.env.DB_PASSWORD,
 }
 
 export const db = knex({
@@ -72,7 +72,7 @@ app.use(
                 }
             } else {
                 return {
-                    authRole: 'guest', // or any default role you want to assign
+                    authRole: 'guest',
                 }
             }
         },
