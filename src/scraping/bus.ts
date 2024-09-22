@@ -57,7 +57,11 @@ export default async function getBus(station: string): Promise<Bus[]> {
             }
         }
         return await departures()
-    } catch (e: any) {
-        throw new GraphQLError('Failed to fetch data: ' + e.message)
+    } catch (e) {
+        if (e instanceof Error) {
+            throw new GraphQLError('Failed to fetch data: ' + e.message)
+        } else {
+            throw new GraphQLError('Failed to fetch data: Unknown error')
+        }
     }
 }

@@ -1,10 +1,13 @@
 import { db } from '@/index'
 import { isoToPostgres } from '@/utils/date-utils'
 
-export async function upsertAppAnnouncement(
-    _: any,
-    { id, input }: { id: string | undefined; input: AnnouncementInput }
-): Promise<Announcement> {
+export async function upsertAppAnnouncement({
+    id,
+    input,
+}: {
+    id: string | undefined
+    input: AnnouncementInput
+}): Promise<Announcement> {
     const { title, description, startDateTime, endDateTime, priority, url } =
         input
 

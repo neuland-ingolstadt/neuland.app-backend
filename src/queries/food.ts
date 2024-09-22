@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cache } from '@/index'
 import { getCanisiusPlan } from '@/scraping/canisius'
 import { getMensaPlan } from '@/scraping/mensa'
@@ -8,10 +8,7 @@ import { GraphQLError } from 'graphql'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
 
-export async function food(
-    _: any,
-    args: { locations: string[] }
-): Promise<ReturnData> {
+export async function food(args: { locations: string[] }): Promise<ReturnData> {
     const validLocations = [
         'IngolstadtMensa',
         'NeuburgMensa',

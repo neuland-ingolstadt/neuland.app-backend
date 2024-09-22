@@ -1,3 +1,9 @@
+interface DateParts {
+    year?: string
+    month?: string
+    day?: string
+}
+
 /**
  * Formats a date like "2020-10-01"
  * @param {Date} date
@@ -14,7 +20,7 @@ export function formatISODate(date: Date | undefined): string {
         day: '2-digit',
     })
     const parts = formatter.formatToParts(date)
-    const { year, month, day } = parts.reduce<any>(
+    const { year, month, day } = parts.reduce<DateParts>(
         (allParts, part) => ({ ...allParts, [part.type]: part.value }),
         {}
     )
@@ -55,7 +61,7 @@ export function getWeek(date: Date): [Date, Date] {
 export function getDays(begin: Date, end: Date): Date[] {
     const days = []
     const date = new Date(begin)
-    // eslint-disable-next-line no-unmodified-loop-condition
+
     while (date < end) {
         days.push(new Date(date))
         date.setDate(date.getDate() + 1)

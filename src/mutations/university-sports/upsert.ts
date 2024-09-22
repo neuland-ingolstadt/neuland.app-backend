@@ -1,9 +1,20 @@
 import { db } from '@/index'
 import { isoToPostgres } from '@/utils/date-utils'
+import { GraphQLError } from 'graphql'
 
+interface AuthPayload {
+    authRole: string
+}
 export async function upsertUniversitySport(
-    _: any,
-    { id, input }: { id: string | undefined; input: UniversitySportInput }
+    _: unknown,
+    {
+        id,
+        input,
+    }: {
+        id: string | undefined
+        input: UniversitySportInput
+    },
+    contextValue: AuthPayload
 ): Promise<UniversitySports> {
     const {
         title,
@@ -16,6 +27,10 @@ export async function upsertUniversitySport(
         requiresRegistration,
         contact,
     } = input
+
+    if (contextValue.authRole !== 'admin') {
+        throw new GraphQLError('Not authorized')
+    }
 
     const formattedStartTime = isoToPostgres(startTime)
 

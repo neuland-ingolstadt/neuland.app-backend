@@ -1,3 +1,4 @@
+import { getAuthRole } from '@/utils/auth-utils'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import {
@@ -30,6 +31,7 @@ app.use(
 const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+
     plugins: [
         Bun.env.NODE_ENV === 'production'
             ? ApolloServerPluginLandingPageProductionDefault({
@@ -58,7 +60,18 @@ await apolloServer.start()
 
 app.use('/', express.static(path.join(__dirname, 'documentation/generated')))
 
-app.use('/graphql', cors(), express.json(), expressMiddleware(apolloServer))
+app.use(
+    '/graphql',
+    cors(),
+    express.json(),
+    expressMiddleware(apolloServer, {
+        context: async ({ req }): Promise<{ authRole: string }> => {
+            return {
+                authRole: getAuthRole(req.headers.authorization || ''),
+            }
+        },
+    })
+)
 
 app.listen(4000, () => {
     console.log('🚀 Server ready at http://localhost:4000/graphql')

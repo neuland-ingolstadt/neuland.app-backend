@@ -4,7 +4,7 @@ import getTrain from '@/scraping/train'
 const CACHE_TTL = 60 // 1 minute
 
 export async function train(
-    _: any,
+    _: unknown,
     args: { station: string }
 ): Promise<Train[]> {
     let trainData: Train[] | undefined = await cache.get(
