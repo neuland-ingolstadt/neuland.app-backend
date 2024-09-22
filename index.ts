@@ -59,15 +59,21 @@ export const db = knex({
 await apolloServer.start()
 
 app.use('/', express.static(path.join(__dirname, 'documentation/generated')))
-
 app.use(
     '/graphql',
     cors(),
     express.json(),
     expressMiddleware(apolloServer, {
         context: async ({ req }): Promise<{ authRole: string }> => {
-            return {
-                authRole: getAuthRole(req.headers.authorization || ''),
+            const authHeader = req.headers.authorization
+            if (authHeader) {
+                return {
+                    authRole: getAuthRole(authHeader),
+                }
+            } else {
+                return {
+                    authRole: 'guest', // or any default role you want to assign
+                }
             }
         },
     })

@@ -4,8 +4,7 @@ export function getUserFromToken(token: string): JwtPayload {
     try {
         const res = jwt.verify(token, 'your-secret-key')
         return res as JwtPayload
-    } catch (error) {
-        console.error(error)
+    } catch {
         throw new Error('Invalid or expired token')
     }
 }
