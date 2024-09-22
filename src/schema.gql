@@ -424,11 +424,11 @@ type Announcement {
     """
     Start date and time when the announcement is displayed
     """
-    startDateTime: String!
+    startDateTime: DateTime!
     """
     End date and time when the announcement is displayed
     """
-    endDateTime: String!
+    endDateTime: DateTime!
     """
     Priority of the announcement, higher are more important
     """
@@ -543,27 +543,31 @@ type UniversitySports {
     """
     Start time of the sports event
     """
-    startTime: String!
+    startTime: LocalTime!
     """
     End time of the sports event
     """
-    endTime: String
+    endTime: LocalTime
     """
     True if the sports event requires registration
     """
     requiresRegistration: Boolean!
     """
-    Contact information for the sports event like an email address or phone number
+    Invitation link for the sports event, e.g. a WhatsApp group
     """
-    contact: String
+    invitationLink: String
+    """
+    E-Mail address for registration or contact
+    """
+    eMail: EmailAddress
     """
     Creation date of the sports event
     """
-    createdAt: String!
+    createdAt: DateTime!
     """
     Last update date of the sports event
     """
-    updatedAt: String!
+    updatedAt: DateTime!
 }
 
 input MultiLanguageStringInput {
@@ -598,19 +602,23 @@ input UniversitySportsInput {
     """
     Start time of the sports event as Unix timestamp
     """
-    startTime: Int!
+    startTime: LocalTime!
     """
     End time of the sports event as Unix timestamp
     """
-    endTime: Int
+    endTime: LocalTime
     """
     True if the sports event requires registration
     """
     requiresRegistration: Boolean!
     """
-    Contact information for the sports event, like an email address or phone number
+    Invitation link for the sports event, e.g. a WhatsApp group
     """
-    contact: String
+    invitationLink: String
+    """
+    E-Mail address for registration or contact
+    """
+    eMail: String
 }
 
 """
@@ -628,11 +636,11 @@ input AnnouncementInput {
     """
     Start date and time when the announcement is displayed
     """
-    startDateTime: Int!
+    startDateTime: DateTime!
     """
     End date and time when the announcement is displayed
     """
-    endDateTime: Int!
+    endDateTime: DateTime!
     """
     Priority of the announcement, higher are more important
     """
@@ -667,3 +675,7 @@ type Mutation {
     """
     deleteAppAnnouncement(id: ID!): Boolean
 }
+
+scalar DateTime
+scalar LocalTime
+scalar EmailAddress

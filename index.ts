@@ -8,13 +8,24 @@ import {
 import cors from 'cors'
 import express from 'express'
 import { readFileSync } from 'fs'
+import {
+    DateTimeTypeDefinition,
+    EmailAddressTypeDefinition,
+    LocalTimeTypeDefinition,
+} from 'graphql-scalars'
 import knex from 'knex'
 import NodeCache from 'node-cache'
 import path from 'path'
 
 import { resolvers } from './src/resolvers'
 
-const typeDefs = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
+const schema = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
+const typeDefs = [
+    schema,
+    LocalTimeTypeDefinition,
+    DateTimeTypeDefinition,
+    EmailAddressTypeDefinition,
+]
 
 const app = express()
 app.use(
@@ -31,7 +42,6 @@ app.use(
 const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-
     plugins: [
         Bun.env.NODE_ENV === 'production'
             ? ApolloServerPluginLandingPageProductionDefault({

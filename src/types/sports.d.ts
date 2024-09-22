@@ -29,9 +29,10 @@ interface UniversitySports {
     startTime: string
     endTime?: string
     requiresRegistration: boolean
-    contact?: string
-    createdAt: string
-    updatedAt: string
+    invitationLink?: string
+    eMail?: string
+    createdAt: Date
+    updatedAt: Date
 }
 
 interface UniversitySportInput {
@@ -49,5 +50,6 @@ interface UniversitySportInput {
     startTime: number
     endTime?: number
     requiresRegistration: boolean
-    contact?: string
+    invitationLink?: string
+    eMail?: string
 }

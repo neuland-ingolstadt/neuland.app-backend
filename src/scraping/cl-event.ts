@@ -301,8 +301,16 @@ export default async function getClEvents(): Promise<ClEvent[]> {
         } else {
             throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
         }
-    } catch (e: any) {
-        console.error(e)
-        throw new GraphQLError('Unexpected error' + e.toString())
+    } catch (e: unknown) {
+        if (e instanceof GraphQLError) {
+            console.error(e)
+            throw e
+        } else if (e instanceof Error) {
+            console.error(e)
+            throw new GraphQLError('Unexpected error: ' + e.message)
+        } else {
+            console.error('Unexpected error:', e)
+            throw new GraphQLError('Unexpected error')
+        }
     }
 }

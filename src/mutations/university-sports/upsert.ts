@@ -1,5 +1,4 @@
 import { db } from '@/index'
-import { isoToPostgres } from '@/utils/date-utils'
 import { GraphQLError } from 'graphql'
 
 interface AuthPayload {
@@ -25,16 +24,13 @@ export async function upsertUniversitySport(
         startTime,
         endTime,
         requiresRegistration,
-        contact,
+        invitationLink,
+        eMail,
     } = input
 
     if (contextValue.authRole.includes('Manager') === false) {
         throw new GraphQLError('Not authorized')
     }
-
-    const formattedStartTime = isoToPostgres(startTime)
-
-    const formattedEndTime = endTime != null ? isoToPostgres(endTime) : null
 
     let event
 
@@ -50,10 +46,11 @@ export async function upsertUniversitySport(
                 campus,
                 location,
                 weekday,
-                start_time: formattedStartTime,
-                end_time: formattedEndTime,
+                start_time: startTime,
+                end_time: endTime,
                 requires_registration: requiresRegistration,
-                contact,
+                invitation_link: invitationLink ?? null,
+                e_mail: eMail ?? null,
                 updated_at: db.fn.now(),
             })
             .returning('*')
@@ -68,16 +65,16 @@ export async function upsertUniversitySport(
                 campus,
                 location,
                 weekday,
-                start_time: formattedStartTime,
-                end_time: formattedEndTime,
+                start_time: startTime,
+                end_time: endTime,
                 requires_registration: requiresRegistration,
-                contact,
+                invitation_link: invitationLink ?? null,
+                e_mail: eMail ?? null,
                 created_at: db.fn.now(),
                 updated_at: db.fn.now(),
             })
             .returning('*')
     }
-
     return {
         id: event.id,
         title: {
@@ -94,8 +91,9 @@ export async function upsertUniversitySport(
         startTime: event.start_time,
         endTime: event.end_time,
         requiresRegistration: event.requires_registration,
-        contact: event.contact,
-        createdAt: event.created_at,
-        updatedAt: event.updated_at,
+        invitationLink: event.invitation_link,
+        eMail: event.e_mail,
+        createdAt: new Date(event.created_at),
+        updatedAt: new Date(event.updated_at),
     }
 }

@@ -1,18 +1,17 @@
 import { db } from '@/index'
-import { isoToPostgres } from '@/utils/date-utils'
 
-export async function upsertAppAnnouncement({
-    id,
-    input,
-}: {
-    id: string | undefined
-    input: AnnouncementInput
-}): Promise<Announcement> {
+export async function upsertAppAnnouncement(
+    _: unknown,
+    {
+        id,
+        input,
+    }: {
+        id: string | undefined
+        input: AnnouncementInput
+    }
+): Promise<Announcement> {
     const { title, description, startDateTime, endDateTime, priority, url } =
         input
-
-    const formattedStartTime = isoToPostgres(startDateTime)
-    const formattedEndTime = isoToPostgres(endDateTime)
 
     let announcement
 
@@ -25,8 +24,8 @@ export async function upsertAppAnnouncement({
                 title_en: title.en,
                 description_de: description.de,
                 description_en: description.en,
-                start_time: formattedStartTime,
-                end_time: formattedEndTime,
+                start_time: startDateTime,
+                end_time: endDateTime,
                 priority,
                 url,
             })
@@ -39,8 +38,8 @@ export async function upsertAppAnnouncement({
                 title_en: title.en,
                 description_de: description.de,
                 description_en: description.en,
-                start_time: formattedStartTime,
-                end_time: formattedEndTime,
+                start_date_time: startDateTime,
+                end_date_time: endDateTime,
                 priority,
                 url,
             })
@@ -57,8 +56,8 @@ export async function upsertAppAnnouncement({
             de: announcement.description_de,
             en: announcement.description_en,
         },
-        startDateTime: announcement.start_time,
-        endDateTime: announcement.end_time,
+        startDateTime: announcement.start_date_time,
+        endDateTime: announcement.end_date_time,
         priority: announcement.priority,
         url: announcement.url,
     }

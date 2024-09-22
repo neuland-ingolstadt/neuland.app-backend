@@ -8,6 +8,11 @@ import { food } from '@/queries/food'
 import { parking } from '@/queries/parking'
 import { sports } from '@/queries/sports'
 import { train } from '@/queries/train'
+import {
+    DateTimeResolver,
+    EmailAddressResolver,
+    LocalEndTimeResolver,
+} from 'graphql-scalars'
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
@@ -29,4 +34,8 @@ export const resolvers = {
         deleteAppAnnouncement,
         upsertAppAnnouncement,
     },
+
+    LocalTime: LocalEndTimeResolver,
+    DateTime: DateTimeResolver,
+    EmailAddress: EmailAddressResolver,
 }

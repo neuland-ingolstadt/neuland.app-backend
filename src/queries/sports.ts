@@ -19,7 +19,8 @@ export async function sports(): Promise<UniversitySports[]> {
         startTime: sport.start_time,
         endTime: sport.end_time,
         requiresRegistration: sport.requires_registration,
-        contact: sport.contact,
+        invitationLink: sport.invitation_link,
+        eMail: sport.e_mail,
         createdAt: sport.created_at,
         updatedAt: sport.updated_at,
     }))
