@@ -1,4 +1,6 @@
-import { db } from '@/index'
+import { appAnnouncements } from '@/db/schema'
+import { drizzleDB } from '@/index'
+import { eq } from 'drizzle-orm'
 
 export async function upsertAppAnnouncement(
     _: unknown,
@@ -6,10 +8,12 @@ export async function upsertAppAnnouncement(
         id,
         input,
     }: {
-        id: string | undefined
+        id: number | undefined
         input: AnnouncementInput
     }
-): Promise<Announcement> {
+): Promise<{
+    id: number
+}> {
     const { title, description, startDateTime, endDateTime, priority, url } =
         input
 
@@ -17,23 +21,9 @@ export async function upsertAppAnnouncement(
 
     if (id != null) {
         // Perform update
-        ;[announcement] = await db('app_announcements')
-            .where({ id })
-            .update({
-                title_de: title.de,
-                title_en: title.en,
-                description_de: description.de,
-                description_en: description.en,
-                start_time: startDateTime,
-                end_time: endDateTime,
-                priority,
-                url,
-            })
-            .returning('*')
-    } else {
-        // Perform insert
-        ;[announcement] = await db('app_announcements')
-            .insert({
+        ;[announcement] = await drizzleDB
+            .update(appAnnouncements)
+            .set({
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description.de,
@@ -43,22 +33,32 @@ export async function upsertAppAnnouncement(
                 priority,
                 url,
             })
-            .returning('*')
+            .where(eq(appAnnouncements.id, id))
+
+            .returning({
+                id: appAnnouncements.id,
+            })
+    } else {
+        // Perform insert
+        ;[announcement] = await drizzleDB
+            .insert(appAnnouncements)
+            .values({
+                title_de: title.de,
+                title_en: title.en,
+                description_de: description.de,
+                description_en: description.en,
+                start_date_time: startDateTime,
+                end_date_time: endDateTime,
+                priority,
+                url,
+            })
+
+            .returning({
+                id: appAnnouncements.id,
+            })
     }
 
     return {
         id: announcement.id,
-        title: {
-            de: announcement.title_de,
-            en: announcement.title_en,
-        },
-        description: {
-            de: announcement.description_de,
-            en: announcement.description_en,
-        },
-        startDateTime: announcement.start_date_time,
-        endDateTime: announcement.end_date_time,
-        priority: announcement.priority,
-        url: announcement.url,
     }
 }

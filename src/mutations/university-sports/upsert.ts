@@ -1,4 +1,6 @@
-import { db } from '@/index'
+import { universitySports } from '@/db/schema'
+import { drizzleDB } from '@/index'
+import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
 interface AuthPayload {
@@ -10,11 +12,11 @@ export async function upsertUniversitySport(
         id,
         input,
     }: {
-        id: string | undefined
+        id: number | undefined
         input: UniversitySportInput
     },
     contextValue: AuthPayload
-): Promise<UniversitySports> {
+): Promise<{ id: number }> {
     const {
         title,
         description,
@@ -35,10 +37,9 @@ export async function upsertUniversitySport(
     let event
 
     if (id != null) {
-        // Perform update
-        ;[event] = await db('university_sports')
-            .where({ id })
-            .update({
+        ;[event] = await drizzleDB
+            .update(universitySports)
+            .set({
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description?.de ?? null,
@@ -51,13 +52,16 @@ export async function upsertUniversitySport(
                 requires_registration: requiresRegistration,
                 invitation_link: invitationLink ?? null,
                 e_mail: eMail ?? null,
-                updated_at: db.fn.now(),
+                updated_at: new Date(),
             })
-            .returning('*')
+            .where(eq(universitySports.id, id))
+            .returning({
+                id: universitySports.id,
+            })
     } else {
-        // Perform insert
-        ;[event] = await db('university_sports')
-            .insert({
+        ;[event] = await drizzleDB
+            .insert(universitySports)
+            .values({
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description?.de ?? null,
@@ -70,30 +74,14 @@ export async function upsertUniversitySport(
                 requires_registration: requiresRegistration,
                 invitation_link: invitationLink ?? null,
                 e_mail: eMail ?? null,
-                created_at: db.fn.now(),
-                updated_at: db.fn.now(),
+                created_at: new Date(),
+                updated_at: new Date(),
             })
-            .returning('*')
+            .returning({
+                id: universitySports.id,
+            })
     }
     return {
         id: event.id,
-        title: {
-            de: event.title_de,
-            en: event.title_en,
-        },
-        description: {
-            de: event.description_de,
-            en: event.description_en,
-        },
-        campus: event.campus,
-        location: event.location,
-        weekday: event.weekday,
-        startTime: event.start_time,
-        endTime: event.end_time,
-        requiresRegistration: event.requires_registration,
-        invitationLink: event.invitation_link,
-        eMail: event.e_mail,
-        createdAt: new Date(event.created_at),
-        updatedAt: new Date(event.updated_at),
     }
 }

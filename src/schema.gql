@@ -658,10 +658,7 @@ type Mutation {
     """
     Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created.
     """
-    upsertUniversitySport(
-        id: ID
-        input: UniversitySportsInput!
-    ): UniversitySports
+    upsertUniversitySport(id: ID, input: UniversitySportsInput!): UpsertResponse
     """
     Delete a university sports event by ID
     """
@@ -669,11 +666,15 @@ type Mutation {
     """
     Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created.
     """
-    upsertAppAnnouncement(id: ID, input: AnnouncementInput!): Announcement
+    upsertAppAnnouncement(id: ID, input: AnnouncementInput!): UpsertResponse
     """
     Delete an announcement by ID
     """
     deleteAppAnnouncement(id: ID!): Boolean
+}
+
+type UpsertResponse {
+    id: ID
 }
 
 scalar DateTime

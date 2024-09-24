@@ -1,4 +1,6 @@
-import { db } from '@/index'
+import { appAnnouncements } from '@/db/schema'
+import { drizzleDB } from '@/index'
+import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
 export async function deleteAppAnnouncement(
@@ -10,9 +12,11 @@ export async function deleteAppAnnouncement(
     }
 ): Promise<boolean> {
     try {
-        const rowsDeleted = await db('app_announcements').where({ id }).del()
+        const rowsDeleted = await drizzleDB
+            .delete(appAnnouncements)
+            .where(eq(appAnnouncements.id, id))
 
-        return rowsDeleted > 0
+        return rowsDeleted.length > 0
     } catch (error) {
         throw new GraphQLError(
             `Failed to delete the app announcement with id ${id}: ${error}`

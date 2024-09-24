@@ -6,7 +6,8 @@
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
         "prepare": "husky",
-        "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 bun run start\" \"bunx spectaql ./documentation/config.yml\""
+        "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 bun run start\" \"bunx spectaql ./documentation/config.yml\"",
+        "drizzle-kit": " drizzle-kit generate --schema ./src/db/schema.ts --dialect postgresql"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
@@ -16,44 +17,44 @@
         "axios": "^1.7.7",
         "cheerio": "^1.0.0",
         "deepl": "^1.0.13",
+        "drizzle-orm": "^0.33.0",
         "fetch-cookie": "^3.0.1",
         "graphql": "^16.9.0",
         "graphql-scalars": "^1.23.0",
         "graphql-tag": "^2.12.6",
         "jsonwebtoken": "^9.0.2",
-        "knex": "^3.1.0",
         "moment": "^2.30.1",
         "moment-timezone": "^0.5.45",
         "node-cache": "^5.1.2",
         "object-hash": "^3.0.0",
         "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
-        "pg": "^8.13.0",
+        "postgres": "^3.4.4",
         "sanitize-html": "^2.13.0",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.1.0",
-        "@eslint/js": "^9.11.0",
+        "@eslint/js": "^9.11.1",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/bun": "latest",
         "@types/cors": "^2.8.17",
         "@types/jsonwebtoken": "^9.0.7",
-        "@types/node": "^22.5.5",
+        "@types/node": "^22.6.1",
         "@types/object-hash": "^3.0.6",
         "@types/pdf-parse": "^1.1.4",
         "@types/sanitize-html": "^2.13.0",
-        "@typescript-eslint/eslint-plugin": "^8.6.0",
+        "@typescript-eslint/eslint-plugin": "^8.7.0",
         "concurrently": "^9.0.1",
         "cross-env": "^7.0.3",
-        "eslint": "^9.11.0",
+        "drizzle-kit": "^0.24.2",
+        "eslint": "^9.11.1",
         "eslint-config-prettier": "^9.1.0",
         "globals": "^15.9.0",
         "husky": "^9.1.6",
         "lint-staged": "^15.2.10",
         "prettier": "^3.3.3",
-        "prettier-plugin-sql": "^0.18.1",
         "typescript": "^5.6.2",
-        "typescript-eslint": "^8.6.0"
+        "typescript-eslint": "^8.7.0"
     },
     "lint-staged": {
         "**/*.{gql,graphql}": [
@@ -63,7 +64,7 @@
         "**/*.{js,jsx,ts,tsx}": [
             "bunx eslint --fix"
         ],
-        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,sql}": [
+        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md}": [
             "bunx prettier --write"
         ]
     }

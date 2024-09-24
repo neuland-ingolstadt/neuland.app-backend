@@ -1,17 +1,13 @@
-enum CampusType {
-    INGOLSTADT = 'Ingolstadt',
-    NEUBURG = 'Neuburg',
-}
+type CampusType = 'Ingolstadt' | 'Neuburg'
 
-enum WeekdayType {
-    MONDAY = 'Monday',
-    TUESDAY = 'Tuesday',
-    WEDNESDAY = 'Wednesday',
-    THURSDAY = 'Thursday',
-    FRIDAY = 'Friday',
-    SATURDAY = 'Saturday',
-    SUNDAY = 'Sunday',
-}
+type WeekdayType =
+    | 'Monday'
+    | 'Tuesday'
+    | 'Wednesday'
+    | 'Thursday'
+    | 'Friday'
+    | 'Saturday'
+    | 'Sunday'
 
 interface UniversitySports {
     id: number
@@ -20,17 +16,17 @@ interface UniversitySports {
         en: string
     }
     description: {
-        de: string
-        en: string
+        de: string | null
+        en: string | null
     }
     campus: CampusType
     location: string
     weekday: WeekdayType
     startTime: string
-    endTime?: string
+    endTime: string | null
     requiresRegistration: boolean
-    invitationLink?: string
-    eMail?: string
+    invitationLink: string | null
+    eMail: string | null
     createdAt: Date
     updatedAt: Date
 }
@@ -47,8 +43,8 @@ interface UniversitySportInput {
     campus: CampusType
     location: string
     weekday: WeekdayType
-    startTime: number
-    endTime?: number
+    startTime: string
+    endTime?: string
     requiresRegistration: boolean
     invitationLink?: string
     eMail?: string

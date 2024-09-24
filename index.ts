@@ -6,13 +6,20 @@ import {
     ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
 import cors from 'cors'
+import { drizzle } from 'drizzle-orm/postgres-js'
 import express from 'express'
 import { readFileSync } from 'fs'
-import knex from 'knex'
 import NodeCache from 'node-cache'
 import path from 'path'
+import postgres from 'postgres'
 
+import * as dbSchema from './src/db/schema'
 import { resolvers } from './src/resolvers'
+
+export const queryClient = postgres(
+    `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
+)
+export const drizzleDB = drizzle(queryClient, { schema: dbSchema })
 
 const schema = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
 const typeDefs = schema
@@ -44,19 +51,6 @@ const apolloServer = new ApolloServer({
 })
 
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
-
-const connection = {
-    host: Bun.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    database: Bun.env.DB_NAME,
-    user: Bun.env.DB_USERNAME,
-    password: Bun.env.DB_PASSWORD,
-}
-
-export const db = knex({
-    client: 'pg',
-    connection,
-})
 
 await apolloServer.start()
 
