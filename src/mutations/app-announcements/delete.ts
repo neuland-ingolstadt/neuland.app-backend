@@ -1,5 +1,5 @@
-import { appAnnouncements } from '@/db/schema'
-import { drizzleDB } from '@/index'
+import { db } from '@/db'
+import { appAnnouncements } from '@/db/schema/universitySports'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
@@ -12,7 +12,7 @@ export async function deleteAppAnnouncement(
     }
 ): Promise<boolean> {
     try {
-        const rowsDeleted = await drizzleDB
+        const rowsDeleted = await db
             .delete(appAnnouncements)
             .where(eq(appAnnouncements.id, id))
 

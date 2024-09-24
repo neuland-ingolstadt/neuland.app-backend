@@ -6,20 +6,12 @@ import {
     ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
 import cors from 'cors'
-import { drizzle } from 'drizzle-orm/postgres-js'
 import express from 'express'
 import { readFileSync } from 'fs'
 import NodeCache from 'node-cache'
 import path from 'path'
-import postgres from 'postgres'
 
-import * as dbSchema from './src/db/schema'
 import { resolvers } from './src/resolvers'
-
-export const queryClient = postgres(
-    `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
-)
-export const drizzleDB = drizzle(queryClient, { schema: dbSchema })
 
 const schema = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
 const typeDefs = schema

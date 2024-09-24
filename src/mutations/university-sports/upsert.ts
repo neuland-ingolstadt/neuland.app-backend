@@ -1,5 +1,5 @@
-import { universitySports } from '@/db/schema'
-import { drizzleDB } from '@/index'
+import { db } from '@/db'
+import { universitySports } from '@/db/schema/appAnnouncements'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
@@ -37,7 +37,7 @@ export async function upsertUniversitySport(
     let event
 
     if (id != null) {
-        ;[event] = await drizzleDB
+        ;[event] = await db
             .update(universitySports)
             .set({
                 title_de: title.de,
@@ -59,7 +59,7 @@ export async function upsertUniversitySport(
                 id: universitySports.id,
             })
     } else {
-        ;[event] = await drizzleDB
+        ;[event] = await db
             .insert(universitySports)
             .values({
                 title_de: title.de,

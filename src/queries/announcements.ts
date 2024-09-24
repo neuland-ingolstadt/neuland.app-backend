@@ -1,9 +1,8 @@
-import { appAnnouncements } from '@/db/schema'
-
-import { drizzleDB } from '../..'
+import { db } from '@/db'
+import { appAnnouncements } from '@/db/schema/universitySports'
 
 export async function announcements(): Promise<Announcement[]> {
-    const data = await drizzleDB.select().from(appAnnouncements)
+    const data = await db.select().from(appAnnouncements)
 
     return data.map((announcement) => ({
         id: announcement.id,

@@ -1,5 +1,5 @@
-import { appAnnouncements } from '@/db/schema'
-import { drizzleDB } from '@/index'
+import { db } from '@/db'
+import { appAnnouncements } from '@/db/schema/universitySports'
 import { eq } from 'drizzle-orm'
 
 export async function upsertAppAnnouncement(
@@ -21,7 +21,7 @@ export async function upsertAppAnnouncement(
 
     if (id != null) {
         // Perform update
-        ;[announcement] = await drizzleDB
+        ;[announcement] = await db
             .update(appAnnouncements)
             .set({
                 title_de: title.de,
@@ -40,7 +40,7 @@ export async function upsertAppAnnouncement(
             })
     } else {
         // Perform insert
-        ;[announcement] = await drizzleDB
+        ;[announcement] = await db
             .insert(appAnnouncements)
             .values({
                 title_de: title.de,
