@@ -1,4 +1,4 @@
-import { getAuthRole } from '@/utils/auth-utils'
+import { getAuthRoles } from '@/utils/auth-utils'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import {
@@ -52,15 +52,15 @@ app.use(
     cors(),
     express.json(),
     expressMiddleware(apolloServer, {
-        context: async ({ req }): Promise<{ authRole: string }> => {
+        context: async ({ req }): Promise<{ authRoles: string[] }> => {
             const authHeader = req.headers.authorization
             if (authHeader) {
                 return {
-                    authRole: getAuthRole(authHeader),
+                    authRoles: getAuthRoles(authHeader),
                 }
             } else {
                 return {
-                    authRole: 'guest',
+                    authRoles: ['guest'],
                 }
             }
         },

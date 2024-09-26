@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
 interface AuthPayload {
-    authRole: string
+    authRoles: string[]
 }
 export async function upsertUniversitySport(
     _: unknown,
@@ -30,7 +30,10 @@ export async function upsertUniversitySport(
         eMail,
     } = input
 
-    if (contextValue.authRole.includes('Manager') === false) {
+    if (
+        contextValue.authRoles.includes('authentik Application Manager') ===
+        false
+    ) {
         throw new GraphQLError('Not authorized')
     }
 

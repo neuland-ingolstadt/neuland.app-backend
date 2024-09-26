@@ -7,7 +7,8 @@
         "dev": "bun --hot run index.ts",
         "prepare": "husky",
         "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 bun run start\" \"bunx spectaql ./documentation/config.yml\"",
-        "drizzle-kit": "drizzle-kit generate --schema ./src/db/schema.ts --dialect postgresql --out ./src/db/migrations"
+        "drizzle-kit": "drizzle-kit generate --schema ./src/db/schema/ --dialect postgresql --out ./src/db/migrations",
+        "migrate": "bun run ./src/db/migrate.ts"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
