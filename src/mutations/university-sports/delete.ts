@@ -3,11 +3,14 @@ import { universitySports } from '@/db/schema/appAnnouncements'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
-export async function deleteUniversitySport({
-    id,
-}: {
-    id: number
-}): Promise<boolean> {
+export async function deleteUniversitySport(
+    _: unknown,
+    {
+        id,
+    }: {
+        id: number
+    }
+): Promise<boolean> {
     try {
         const rowsDeleted = await db
             .delete(universitySports)
