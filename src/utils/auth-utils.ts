@@ -13,12 +13,14 @@ async function getPublicKey(): Promise<string> {
     return jwkToPem(jwk)
 }
 
-export async function getUserFromToken(token: string): Promise<JwtPayload> {
+export async function getUserFromToken(bearer: string): Promise<JwtPayload> {
+    const publicKey = await getPublicKey()
     try {
-        const publicKey = await getPublicKey()
-        const res = jwt.verify(token, publicKey, { algorithms: ['RS256'] })
-        return res as JwtPayload
-    } catch {
-        throw new Error('Invalid or expired token')
+        const token = bearer.split(' ')[1]
+        const payload = jwt.verify(token, publicKey, { algorithms: ['RS256'] })
+        return payload as JwtPayload
+    } catch (error) {
+        console.error('Failed to verify token:', error)
+        throw new Error('Failed to verify token')
     }
 }
