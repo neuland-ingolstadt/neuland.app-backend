@@ -1,4 +1,4 @@
-import { getAuthRoles } from '@/utils/auth-utils'
+import { getUserFromToken } from '@/utils/auth-utils'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import {
@@ -8,6 +8,7 @@ import {
 import cors from 'cors'
 import express from 'express'
 import { readFileSync } from 'fs'
+import type { JwtPayload } from 'jsonwebtoken'
 import NodeCache from 'node-cache'
 import path from 'path'
 
@@ -52,16 +53,14 @@ app.use(
     cors(),
     express.json(),
     expressMiddleware(apolloServer, {
-        context: async ({ req }): Promise<{ authRoles: string[] }> => {
+        context: async ({ req }): Promise<{ jwtPayload?: JwtPayload }> => {
             const authHeader = req.headers.authorization
             if (authHeader) {
                 return {
-                    authRoles: getAuthRoles(authHeader),
+                    jwtPayload: await getUserFromToken(authHeader),
                 }
             } else {
-                return {
-                    authRoles: ['guest'],
-                }
+                return {}
             }
         },
     })

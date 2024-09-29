@@ -1,11 +1,10 @@
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/appAnnouncements'
+import { sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
+import type { JwtPayload } from 'jsonwebtoken'
 
-interface AuthPayload {
-    authRoles: string[]
-}
 export async function upsertUniversitySport(
     _: unknown,
     {
@@ -15,7 +14,7 @@ export async function upsertUniversitySport(
         id: number | undefined
         input: UniversitySportInput
     },
-    contextValue: AuthPayload
+    contextValue: { jwtPayload?: JwtPayload }
 ): Promise<{ id: number }> {
     const {
         title,
@@ -30,11 +29,12 @@ export async function upsertUniversitySport(
         eMail,
     } = input
 
-    if (
-        contextValue.authRoles.includes('authentik Application Manager') ===
-        false
-    ) {
-        throw new GraphQLError('Not authorized')
+    if (!contextValue.jwtPayload) {
+        throw new GraphQLError('Not authorized: Missing JWT payload')
+    }
+
+    if (!contextValue.jwtPayload.groups.includes(sportRole)) {
+        throw new GraphQLError('Not authorized: Insufficient permissions')
     }
 
     let event

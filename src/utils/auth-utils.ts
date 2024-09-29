@@ -1,17 +1,24 @@
+import axios from 'axios'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
+import jwkToPem from 'jwk-to-pem'
 
-const secret = Bun.env.JWT_SECRET || ''
+export const sportRole = 'Neuland Next Hochschulsport'
+export const announcementRole = 'Neuland Next Announcements'
+const jwkUrl =
+    'https://sso.informatik.sexy/application/o/neulandnextpanel/jwks/'
 
-export function getUserFromToken(token: string): JwtPayload {
+async function getPublicKey(): Promise<string> {
+    const response = await axios.get(jwkUrl)
+    const jwk = response.data.keys[0]
+    return jwkToPem(jwk)
+}
+
+export async function getUserFromToken(token: string): Promise<JwtPayload> {
     try {
-        const res = jwt.verify(token, secret)
+        const publicKey = await getPublicKey()
+        const res = jwt.verify(token, publicKey, { algorithms: ['RS256'] })
         return res as JwtPayload
     } catch {
         throw new Error('Invalid or expired token')
     }
-}
-
-export function getAuthRoles(token: string): string[] {
-    const user = getUserFromToken(token)
-    return user.groups
 }
