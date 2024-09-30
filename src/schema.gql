@@ -493,6 +493,11 @@ type Query {
     Get the current announcements
     """
     announcements: [Announcement!]!
+        @deprecated(reason: "Use appAnnouncements query instead")
+    """
+    Get the current in app announcements
+    """
+    appAnnouncements: [Announcement!]!
     """
     Get the university sports events
     """

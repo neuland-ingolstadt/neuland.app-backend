@@ -43,6 +43,7 @@ export async function upsertAppAnnouncement(
                 end_date_time: endDateTime,
                 priority,
                 url,
+                updated_at: new Date(),
             })
             .where(eq(appAnnouncements.id, id))
 
@@ -62,6 +63,8 @@ export async function upsertAppAnnouncement(
                 end_date_time: endDateTime,
                 priority,
                 url,
+                created_at: new Date(),
+                updated_at: new Date(),
             })
 
             .returning({

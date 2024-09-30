@@ -1,7 +1,7 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/universitySports'
 
-export async function announcements(): Promise<Announcement[]> {
+export async function appAnnouncementsQuery(): Promise<Announcement[]> {
     const data = await db.select().from(appAnnouncements)
 
     return data.map((announcement) => ({

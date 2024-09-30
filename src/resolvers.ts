@@ -1,6 +1,5 @@
 import { deleteUniversitySport } from '@/mutations/university-sports/delete'
 import { upsertUniversitySport } from '@/mutations/university-sports/upsert'
-import { announcements } from '@/queries/announcements'
 import { bus } from '@/queries/bus'
 import { charging } from '@/queries/charging'
 import { clEvents } from '@/queries/cl-events'
@@ -16,6 +15,7 @@ import {
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
+import { appAnnouncementsQuery } from './queries/appAnnouncements'
 
 export const resolvers = {
     Query: {
@@ -25,7 +25,8 @@ export const resolvers = {
         clEvents,
         bus,
         train,
-        announcements,
+        appAnnouncements: appAnnouncementsQuery,
+        announcements: appAnnouncementsQuery,
         universitySports: sports,
     },
     Mutation: {
