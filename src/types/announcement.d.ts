@@ -12,6 +12,8 @@ interface Announcement {
     endDateTime: Date | string
     priority: number
     url: string | null
+    createdAt: Date
+    updatedAt: Date
 }
 
 interface AnnouncementInput {

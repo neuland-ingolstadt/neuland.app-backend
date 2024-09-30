@@ -437,6 +437,14 @@ type Announcement {
     URL to the announcement
     """
     url: String
+    """
+    Creation date of the announcement
+    """
+    createdAt: DateTime!
+    """
+    Last update date of the announcement
+    """
+    updatedAt: DateTime!
 }
 
 """

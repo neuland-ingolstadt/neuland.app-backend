@@ -18,5 +18,7 @@ export async function announcements(): Promise<Announcement[]> {
         endDateTime: announcement.end_date_time,
         priority: announcement.priority,
         url: announcement.url,
+        createdAt: announcement.created_at,
+        updatedAt: announcement.updated_at,
     }))
 }
