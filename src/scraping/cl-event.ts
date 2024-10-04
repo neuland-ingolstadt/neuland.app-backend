@@ -7,6 +7,7 @@ import crypto from 'crypto'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import fs from 'fs/promises'
 import { GraphQLError } from 'graphql'
+import moment from 'moment-timezone'
 import nodeFetch from 'node-fetch'
 import sanitizeHtml from 'sanitize-html'
 
@@ -37,8 +38,6 @@ const isDev = Bun.env.NODE_ENV !== 'production'
  * @returns {Date}
  */
 function parseLocalDateTime(str: string): Date {
-    // use \p{Letter} because \w doesnt match umlauts
-    // https://stackoverflow.com/a/70273329
     type Month =
         | 'Januar'
         | 'Februar'
@@ -65,13 +64,13 @@ function parseLocalDateTime(str: string): Date {
     ) {
         throw new Error('Invalid date string')
     }
-    return new Date(
-        Number(year),
-        MONTHS[typedMonth] - 1,
-        Number(day),
-        Number(hour),
-        Number(minute)
-    )
+
+    // Create a date string and parse it in the Europe/Berlin time zone
+    const dateString = `${day}-${MONTHS[typedMonth]}-${year} ${hour}:${minute}`
+    const date = moment.tz(dateString, 'D-M-YYYY H:mm', 'Europe/Berlin')
+
+    // Convert to UTC and return a JavaScript Date
+    return date.utc().toDate()
 }
 /**
  * Load persisted events from disk.
