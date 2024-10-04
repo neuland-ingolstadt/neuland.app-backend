@@ -2,11 +2,10 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import postgres from 'postgres'
 
+import { CONNECTION_STRING } from '.'
+
 async function main() {
-    const client = postgres(
-        `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-        { max: 1 }
-    )
+    const client = postgres(CONNECTION_STRING, { max: 1 })
     await migrate(drizzle(client), { migrationsFolder: './src/db/migrations' })
 
     await client.end()
