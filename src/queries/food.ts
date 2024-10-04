@@ -8,7 +8,10 @@ import { GraphQLError } from 'graphql'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
 
-export async function food(args: { locations: string[] }): Promise<ReturnData> {
+export async function food(
+    _: unknown,
+    args: { locations: string[] }
+): Promise<ReturnData> {
     const validLocations = [
         'IngolstadtMensa',
         'NeuburgMensa',
