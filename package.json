@@ -31,14 +31,14 @@
         "object-hash": "^3.0.0",
         "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
         "postgres": "^3.4.4",
-        "sanitize-html": "^2.13.0",
+        "sanitize-html": "^2.13.1",
         "xml-js": "^1.6.11"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.11.1",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-        "@types/bun": "latest",
+        "@types/bun": "^1.1.10",
         "@types/cors": "^2.8.17",
         "@types/jsonwebtoken": "^9.0.7",
         "@types/jwk-to-pem": "^2.0.3",
@@ -46,18 +46,18 @@
         "@types/object-hash": "^3.0.6",
         "@types/pdf-parse": "^1.1.4",
         "@types/sanitize-html": "^2.13.0",
-        "@typescript-eslint/eslint-plugin": "^8.7.0",
+        "@typescript-eslint/eslint-plugin": "^8.8.0",
         "concurrently": "^9.0.1",
         "cross-env": "^7.0.3",
         "drizzle-kit": "^0.24.2",
         "eslint": "^9.11.1",
         "eslint-config-prettier": "^9.1.0",
-        "globals": "^15.9.0",
+        "globals": "^15.10.0",
         "husky": "^9.1.6",
         "lint-staged": "^15.2.10",
         "prettier": "^3.3.3",
         "typescript": "^5.6.2",
-        "typescript-eslint": "^8.7.0"
+        "typescript-eslint": "^8.8.0"
     },
     "lint-staged": {
         "**/*.{gql,graphql}": [
