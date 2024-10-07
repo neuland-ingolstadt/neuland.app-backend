@@ -24,6 +24,7 @@ app.use(
         origin: [
             'https://studio.apollographql.com',
             'http://localhost:3000',
+            'https://dashboard.neuland.app',
             'https://dev.neuland.app',
             'https://neuland.app',
         ],
