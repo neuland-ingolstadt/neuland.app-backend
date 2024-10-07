@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface PreFoodData {
     timestamp: string
     meals: PreMeal[]
@@ -115,7 +116,13 @@ export interface XMLMensa {
     _attributes: Attributes
     item: Item[]
 }
+interface XMLSpeiseplan {
+    tag: XMLMensa[]
+}
 
+interface XMLSourceData {
+    speiseplan: XMLSpeiseplan
+}
 interface Attributes {
     timestamp: string
 }

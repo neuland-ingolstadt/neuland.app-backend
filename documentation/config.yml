@@ -1,7 +1,5 @@
 introspection:
-    schemaFile:
-        - ./src/schema.gql
-
+    url: http://localhost:4321/graphql
 servers:
     - url: https://api.neuland.app/graphql
       description: Neuland API Server
@@ -19,6 +17,8 @@ info:
     license:
         name: AGPL-3.0
         url: 'https://www.gnu.org/licenses/agpl-3.0.html'
+extensions:
+    scalarGraphql: true
 spectaql:
     faviconFile: ./documentation/icon.svg
     theme: spectaql

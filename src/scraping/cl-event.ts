@@ -246,7 +246,9 @@ export async function getAllEventDetails(
 
         remoteEvents.push({
             id: crypto.createHash('sha256').update(url).digest('hex'),
-            organizer: details.Verein.trim().replace(/( \.)$/g, ''),
+            organizer: details.Verein.trim()
+                .replace(/( \.)$/g, '')
+                .replace(/e\. V\./g, 'e.V.'),
             title: details.Event,
             begin:
                 details.Start.length > 0
@@ -300,8 +302,16 @@ export default async function getClEvents(): Promise<ClEvent[]> {
         } else {
             throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
         }
-    } catch (e: any) {
-        console.error(e)
-        throw new GraphQLError('Unexpected error' + e.toString())
+    } catch (e: unknown) {
+        if (e instanceof GraphQLError) {
+            console.error(e)
+            throw e
+        } else if (e instanceof Error) {
+            console.error(e)
+            throw new GraphQLError('Unexpected error: ' + e.message)
+        } else {
+            console.error('Unexpected error:', e)
+            throw new GraphQLError('Unexpected error')
+        }
     }
 }

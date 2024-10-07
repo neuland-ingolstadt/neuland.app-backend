@@ -424,11 +424,11 @@ type Announcement {
     """
     Start date and time when the announcement is displayed
     """
-    startDateTime: String!
+    startDateTime: DateTime!
     """
     End date and time when the announcement is displayed
     """
-    endDateTime: String!
+    endDateTime: DateTime!
     """
     Priority of the announcement, higher are more important
     """
@@ -437,6 +437,14 @@ type Announcement {
     URL to the announcement
     """
     url: String
+    """
+    Creation date of the announcement
+    """
+    createdAt: DateTime!
+    """
+    Last update date of the announcement
+    """
+    updatedAt: DateTime!
 }
 
 """
@@ -485,4 +493,203 @@ type Query {
     Get the current announcements
     """
     announcements: [Announcement!]!
+        @deprecated(reason: "Use appAnnouncements query instead")
+    """
+    Get the current in app announcements
+    """
+    appAnnouncements: [Announcement!]!
+    """
+    Get the university sports events
+    """
+    universitySports: [UniversitySports!] # This returns a list of all sports
 }
+
+"""
+Enum representing the different locations of THI.
+"""
+enum CampusType {
+    Ingolstadt
+    Neuburg
+}
+
+"""
+Enum representing the different weekdays.
+"""
+enum WeekdayType {
+    Monday
+    Tuesday
+    Wednesday
+    Thursday
+    Friday
+    Saturday
+    Sunday
+}
+
+"""
+University sports event data
+"""
+type UniversitySports {
+    """
+    Unique identifier of the sports event
+    """
+    id: ID!
+    """
+    Title of the sports event in different languages
+    """
+    title: MultiLanguageString!
+    """
+    Description of the sports event in different languages
+    """
+    description: MultiLanguageString
+    """
+    Campus where the sports event belongs to. This is not the location of the event itself.
+    """
+    campus: CampusType!
+    """
+    Location of the sports event
+    """
+    location: String!
+    """
+    Weekday of the sports event
+    """
+    weekday: WeekdayType!
+    """
+    Start time of the sports event
+    """
+    startTime: LocalTime!
+    """
+    End time of the sports event
+    """
+    endTime: LocalTime
+    """
+    True if the sports event requires registration
+    """
+    requiresRegistration: Boolean!
+    """
+    Invitation link for the sports event, e.g. a WhatsApp group
+    """
+    invitationLink: String
+    """
+    E-Mail address for registration or contact
+    """
+    eMail: EmailAddress
+    """
+    Creation date of the sports event
+    """
+    createdAt: DateTime!
+    """
+    Last update date of the sports event
+    """
+    updatedAt: DateTime!
+}
+
+input MultiLanguageStringInput {
+    en: String!
+    de: String!
+}
+
+"""
+Input type for the university sports event
+"""
+input UniversitySportsInput {
+    """
+    Title of the sports event in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the sports event in different languages
+    """
+    description: MultiLanguageStringInput
+    """
+    Campus where the sports event belongs to. This is not the location of the event itself.
+    """
+    campus: CampusType!
+    """
+    Location of the sports event
+    """
+    location: String!
+    """
+    Weekday of the sports event
+    """
+    weekday: WeekdayType!
+    """
+    Start time of the sports event as Unix timestamp
+    """
+    startTime: LocalTime!
+    """
+    End time of the sports event as Unix timestamp
+    """
+    endTime: LocalTime
+    """
+    True if the sports event requires registration
+    """
+    requiresRegistration: Boolean!
+    """
+    Invitation link for the sports event, e.g. a WhatsApp group
+    """
+    invitationLink: String
+    """
+    E-Mail address for registration or contact
+    """
+    eMail: EmailAddress
+}
+
+"""
+Input type for the announcement
+"""
+input AnnouncementInput {
+    """
+    Title of the announcement in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the announcement in different languages
+    """
+    description: MultiLanguageStringInput!
+    """
+    Start date and time when the announcement is displayed
+    """
+    startDateTime: DateTime!
+    """
+    End date and time when the announcement is displayed
+    """
+    endDateTime: DateTime!
+    """
+    Priority of the announcement, higher are more important
+    """
+    priority: Int!
+    """
+    URL to the announcement
+    """
+    url: String
+}
+
+"""
+Mutation type to update data
+"""
+type Mutation {
+    """
+    Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created.
+    """
+    upsertUniversitySport(id: ID, input: UniversitySportsInput!): UpsertResponse
+    """
+    Delete a university sports event by ID
+    """
+    deleteUniversitySport(id: ID!): Boolean
+    """
+    Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created.
+    """
+    upsertAppAnnouncement(id: ID, input: AnnouncementInput!): UpsertResponse
+    """
+    Delete an announcement by ID
+    """
+    deleteAppAnnouncement(id: ID!): Boolean
+}
+
+type UpsertResponse {
+    id: ID
+}
+
+scalar DateTime
+scalar LocalTime
+scalar EmailAddress

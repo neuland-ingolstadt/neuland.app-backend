@@ -1,11 +1,10 @@
+import { cache } from '@/index'
 import getTrain from '@/scraping/train'
-
-import { cache } from '../..'
 
 const CACHE_TTL = 60 // 1 minute
 
 export async function train(
-    _: any,
+    _: unknown,
     args: { station: string }
 ): Promise<Train[]> {
     let trainData: Train[] | undefined = await cache.get(

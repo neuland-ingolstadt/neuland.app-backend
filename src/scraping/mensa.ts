@@ -1,4 +1,9 @@
-import type { ExtendedMealData, MealData, XMLMensa } from '@/types/food'
+import type {
+    ExtendedMealData,
+    MealData,
+    XMLMensa,
+    XMLSourceData,
+} from '@/types/food'
 import xmljs from 'xml-js'
 
 import { formatISODate } from '../utils/date-utils'
@@ -17,7 +22,7 @@ import { translateMeals } from '../utils/translation-utils'
  * @returns {ExtendedMealData[]} The parsed meal plan
  */
 function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
-    const sourceData = xmljs.xml2js(xml, { compact: true }) as any
+    const sourceData = xmljs.xml2js(xml, { compact: true }) as XMLSourceData
 
     let sourceDays = sourceData.speiseplan.tag as XMLMensa[]
     if (sourceDays == null) {

@@ -279,10 +279,10 @@ export function parseXmlFloat(str: { _text?: string }): number {
 
 /**
  * Checks whether a value is empty.
- * @param any value
+ * @param {*} value
  * @returns {Boolean}
  */
-export function isEmpty(value: any): boolean {
+export function isEmpty(value: unknown): boolean {
     return (
         value == null ||
         (typeof value === 'string' && value.trim().length === 0)
