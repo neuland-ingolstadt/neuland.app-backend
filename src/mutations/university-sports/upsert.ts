@@ -30,12 +30,10 @@ export async function upsertUniversitySport(
     } = input
 
     if (!contextValue.jwtPayload) {
-        console.error('Not authorized: Missing JWT payload')
         throw new GraphQLError('Not authorized: Missing JWT payload')
     }
 
     if (!contextValue.jwtPayload.groups.includes(sportRole)) {
-        console.error('Not authorized: Insufficient permissions')
         throw new GraphQLError('Not authorized: Insufficient permissions')
     }
 

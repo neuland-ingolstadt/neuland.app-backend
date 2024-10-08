@@ -14,12 +14,10 @@ export async function deleteUniversitySport(
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<boolean> {
     if (!contextValue.jwtPayload) {
-        console.error('Not authorized: Missing JWT payload')
         throw new GraphQLError('Not authorized: Missing JWT payload')
     }
 
     if (!contextValue.jwtPayload.groups.includes(sportRole)) {
-        console.error('Not authorized: Insufficient permissions')
         throw new GraphQLError('Not authorized: Insufficient permissions')
     }
 

@@ -42,6 +42,10 @@ const apolloServer = new ApolloServer({
             : ApolloServerPluginLandingPageLocalDefault(),
     ],
     introspection: Bun.env.NODE_ENV !== 'production',
+    formatError(formattedError, error) {
+        console.error(error)
+        return formattedError
+    },
 })
 
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
