@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { universitySports } from '@/db/schema/appAnnouncements'
+import { universitySports } from '@/db/schema/universitySports'
 import { sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
@@ -27,6 +27,7 @@ export async function upsertUniversitySport(
         requiresRegistration,
         invitationLink,
         eMail,
+        sportsCategory,
     } = input
 
     if (!contextValue.jwtPayload) {
@@ -55,6 +56,7 @@ export async function upsertUniversitySport(
                 requires_registration: requiresRegistration,
                 invitation_link: invitationLink ?? null,
                 e_mail: eMail ?? null,
+                sports_category: sportsCategory ?? null,
                 updated_at: new Date(),
             })
             .where(eq(universitySports.id, id))
@@ -77,6 +79,7 @@ export async function upsertUniversitySport(
                 requires_registration: requiresRegistration,
                 invitation_link: invitationLink ?? null,
                 e_mail: eMail ?? null,
+                sports_category: sportsCategory ?? null,
                 created_at: new Date(),
                 updated_at: new Date(),
             })

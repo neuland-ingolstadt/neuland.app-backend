@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { appAnnouncements } from '@/db/schema/universitySports'
+import { appAnnouncements } from '@/db/schema/appAnnouncements'
 
 export async function appAnnouncementsQuery(): Promise<Announcement[]> {
     const data = await db.select().from(appAnnouncements)

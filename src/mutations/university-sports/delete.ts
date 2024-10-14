@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { universitySports } from '@/db/schema/appAnnouncements'
+import { universitySports } from '@/db/schema/universitySports'
 import { sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'

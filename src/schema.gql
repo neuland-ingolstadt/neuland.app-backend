@@ -526,6 +526,43 @@ enum WeekdayType {
 }
 
 """
+Enum representing the different sports categories.
+"""
+enum SportsCategoryType {
+    Basketball
+    Soccer
+    Calisthenics
+    Dancing
+    StrengthTraining
+    Running
+    Jogging
+    Handball
+    Frisbee
+    Volleyball
+    Spikeball
+    FullBodyWorkout
+    Defense
+    Yoga
+    Meditation
+    Tennis
+    Badminton
+    Swimming
+    Waterpolo
+    Cycling
+    Climbing
+    Boxing
+    Kickboxing
+    MartialArts
+    TableTennis
+    Rowing
+    Baseball
+    Skateboarding
+    Parkour
+    Hiking
+    Other
+}
+
+"""
 University sports event data
 """
 type UniversitySports {
@@ -573,6 +610,10 @@ type UniversitySports {
     E-Mail address for registration or contact
     """
     eMail: EmailAddress
+    """
+    Category of the sports event (e.g. soccer, basketball, etc.)
+    """
+    sportsCategory: SportsCategoryType!
     """
     Creation date of the sports event
     """
@@ -632,6 +673,10 @@ input UniversitySportsInput {
     E-Mail address for registration or contact
     """
     eMail: EmailAddress
+    """
+    Category of the sports event (e.g. soccer, basketball, etc.)
+    """
+    sportsCategory: SportsCategoryType!
 }
 
 """

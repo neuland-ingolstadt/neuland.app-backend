@@ -15,6 +15,20 @@
             "when": 1727650069941,
             "tag": "0001_free_midnight",
             "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "7",
+            "when": 1728922353122,
+            "tag": "0002_slippery_ezekiel",
+            "breakpoints": true
+        },
+        {
+            "idx": 3,
+            "version": "7",
+            "when": 1728925804726,
+            "tag": "0003_youthful_umar",
+            "breakpoints": true
         }
     ]
 }
