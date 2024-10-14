@@ -49,6 +49,7 @@ export const sportsCategoryEnum = pgEnum('sports_category', [
     'Skateboarding',
     'Parkour',
     'Hiking',
+    'Other',
 ])
 
 export const universitySports = pgTable('university_sports', {
@@ -65,7 +66,7 @@ export const universitySports = pgTable('university_sports', {
     requires_registration: boolean('requires_registration').notNull(),
     invitation_link: text('invitation_link'),
     e_mail: text('e_mail'),
-    sports_category: sportsCategoryEnum('sports_category'),
+    sports_category: sportsCategoryEnum('sports_category').notNull(),
     created_at: timestamp('created_at', { withTimezone: true }).notNull(),
     updated_at: timestamp('updated_at', { withTimezone: true }).notNull(),
 })

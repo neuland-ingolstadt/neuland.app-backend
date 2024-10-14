@@ -40,6 +40,7 @@ type SportsCategoryType =
     | 'Skateboarding'
     | 'Parkour'
     | 'Hiking'
+    | 'Other'
 
 interface UniversitySports {
     id: number
@@ -81,5 +82,5 @@ interface UniversitySportInput {
     requiresRegistration: boolean
     invitationLink?: string
     eMail?: string
-    sportsCategory?: SportsCategoryType
+    sportsCategory: SportsCategoryType
 }
