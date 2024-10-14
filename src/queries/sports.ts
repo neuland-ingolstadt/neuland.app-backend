@@ -1,5 +1,5 @@
 import { db } from '@/db'
-import { universitySports } from '@/db/schema/appAnnouncements'
+import { universitySports } from '@/db/schema/universitySports'
 
 export async function sports(): Promise<UniversitySports[]> {
     const data = await db.select().from(universitySports)
@@ -22,6 +22,7 @@ export async function sports(): Promise<UniversitySports[]> {
         requiresRegistration: sport.requires_registration,
         invitationLink: sport.invitation_link,
         eMail: sport.e_mail,
+        sportsCategory: sport.sports_category,
         createdAt: sport.created_at,
         updatedAt: sport.updated_at,
     }))
