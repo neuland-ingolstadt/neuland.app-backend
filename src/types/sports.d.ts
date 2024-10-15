@@ -40,6 +40,7 @@ type SportsCategoryType =
     | 'Skateboarding'
     | 'Parkour'
     | 'Hiking'
+    | 'Hockey'
     | 'Other'
 
 interface UniversitySports {

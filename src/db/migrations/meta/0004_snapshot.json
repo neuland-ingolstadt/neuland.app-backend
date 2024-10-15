@@ -1,6 +1,6 @@
 {
-    "id": "70de3346-bbb9-47ca-a47a-00f6e687fc78",
-    "prevId": "e10398bc-25c2-4f1f-b4e2-fdbdc613b8f3",
+    "id": "6ba274fb-ed5a-49b7-9f98-ac5a167cbf68",
+    "prevId": "70de3346-bbb9-47ca-a47a-00f6e687fc78",
     "version": "7",
     "dialect": "postgresql",
     "tables": {
@@ -229,8 +229,8 @@
                 "Baseball",
                 "Skateboarding",
                 "Parkour",
-                "Hiking",
                 "Hockey",
+                "Hiking",
                 "Other"
             ]
         },

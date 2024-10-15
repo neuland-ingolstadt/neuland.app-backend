@@ -48,6 +48,7 @@ export const sportsCategoryEnum = pgEnum('sports_category', [
     'Baseball',
     'Skateboarding',
     'Parkour',
+    'Hockey',
     'Hiking',
     'Other',
 ])

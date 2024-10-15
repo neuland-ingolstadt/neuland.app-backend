@@ -1,0 +1,1 @@
+ALTER TYPE "sports_category" ADD VALUE 'Hockey';
