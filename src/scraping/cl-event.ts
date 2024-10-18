@@ -7,6 +7,7 @@ import crypto from 'crypto'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import fs from 'fs/promises'
 import { GraphQLError } from 'graphql'
+import he from 'he'
 import moment from 'moment-timezone'
 import nodeFetch from 'node-fetch'
 import sanitizeHtml from 'sanitize-html'
@@ -207,11 +208,16 @@ async function getEventDetails(
             const adjustedC1 =
                 htmlContent === null
                     ? ''
-                    : sanitizeHtml(htmlContent.replace(/<br\s*\/?>/gi, '\n'), {
-                          allowedTags: [],
-                          allowedAttributes: {},
-                          disallowedTagsMode: 'discard',
-                      })
+                    : he.decode(
+                          sanitizeHtml(
+                              htmlContent.replace(/<br\s*\/?>/gi, '\n'),
+                              {
+                                  allowedTags: [],
+                                  allowedAttributes: {},
+                                  disallowedTagsMode: 'discard',
+                              }
+                          )
+                      )
 
             return [
                 $(elem).find('.c0').text().trim().replace(/:$/, ''),
