@@ -1,6 +1,9 @@
-# neuland.app-backend
+# Neuland App Backend
 
-Neuland API uses GraphQL to provide a flexible and powerful API for neuland.app and Neuland Next.
+[![Uptime](https://status.neuland.app/api/badge/6/uptime/24)](https://status.neuland.app)
+[![Uptime](https://status.neuland.app/api/badge/6/avg-response/24)](https://status.neuland.app)
+
+Neuland API uses **GraphQL** to provide a flexible and powerful API for neuland.app and Neuland Next.
 
 ## API Documentation
 
@@ -21,13 +24,11 @@ bun i
 Set the necessary environment variables in a `.env.local` file.
 You can use the `.env.local.example` file as a template.
 
-````bash
-
 ### Start the Development Server
 
 ```bash
 bun start
-````
+```
 
 > [!TIP]
 > Use `bun dev` to start the development server with hot reloading.
