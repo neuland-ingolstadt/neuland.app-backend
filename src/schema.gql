@@ -524,6 +524,10 @@ type Query {
     Get the university sports events
     """
     universitySports: [UniversitySports!] # This returns a list of all sports
+    """
+    Get the room reports. Protected by authentication.
+    """
+    roomReports: [RoomReport!]!
 }
 
 """
@@ -733,6 +737,54 @@ input AnnouncementInput {
 }
 
 """
+Room reports. Contains user reports of wrong room data.
+"""
+type RoomReport {
+    """
+    Unique identifier of the report
+    """
+    id: ID!
+    """
+    Room name
+    """
+    room: String!
+    """
+    Reason for the report. This is a enum wiht report categories.
+    """
+    reason: String!
+    """
+    description of the report
+    """
+    description: String
+    """
+    Creation date of the report
+    """
+    createdAt: DateTime!
+    """
+    Resolved date of the report or null if not resolved
+    """
+    resolvedAt: DateTime
+}
+
+"""
+Room report input type. Used to create a new report.
+"""
+input RoomReportInput {
+    """
+    Room name
+    """
+    room: String!
+    """
+    Reason for the report. This is a enum with report categories: 'WRONG_DESCRIPTION', 'WRONG_LOCATION', 'NOT_EXISTING', 'MISSING', 'OTHER'
+    """
+    reason: String!
+    """
+    description of the report
+    """
+    description: String
+}
+
+"""
 Mutation type to update data
 """
 type Mutation {
@@ -752,6 +804,14 @@ type Mutation {
     Delete an announcement by ID
     """
     deleteAppAnnouncement(id: ID!): Boolean
+    """
+    Create a new room report
+    """
+    createRoomReport(input: RoomReportInput!): UpsertResponse
+    """
+    Resolve a room report by ID
+    """
+    resolveRoomReport(id: ID!): UpsertResponse
 }
 
 type UpsertResponse {
