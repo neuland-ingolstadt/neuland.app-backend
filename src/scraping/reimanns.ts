@@ -144,6 +144,5 @@ export async function getReimannsPlan(): Promise<MealData[]> {
     })
 
     const unifyedMeals = unifyFoodEntries(scrapedMeals)
-    console.log('Reimanns meals:', unifyedMeals)
     return unifyedMeals
 }
