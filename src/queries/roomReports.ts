@@ -1,20 +1,13 @@
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
-import { adminRole } from '@/utils/auth-utils'
-import { GraphQLError } from 'graphql'
+import { adminRole, checkAuthorization } from '@/utils/auth-utils'
 
 export async function roomReportsQuery(
     _: unknown,
     __: unknown,
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<RoomReport[]> {
-    if (!contextValue.jwtPayload) {
-        throw new GraphQLError('Not authorized: Missing JWT payload')
-    }
-
-    if (!contextValue.jwtPayload.groups.includes(adminRole)) {
-        throw new GraphQLError('Not authorized: Insufficient permissions')
-    }
+    checkAuthorization(contextValue, adminRole)
     const data = await db.select().from(roomReports)
 
     return data.map((report) => ({

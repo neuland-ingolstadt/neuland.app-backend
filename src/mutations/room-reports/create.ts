@@ -10,8 +10,19 @@ export async function createRoomReport(
         input: RoomReportInput
     }
 ): Promise<{ id: number }> {
+    const validReasons = [
+        'WRONG_DESCRIPTION',
+        'WRONG_LOCATION',
+        'NOT_EXISTING',
+        'MISSING',
+        'OTHER',
+    ]
     const { room, reason, description } = input
-    console.log(input)
+    if (!validReasons.includes(reason)) {
+        throw new GraphQLError(
+            'Invalid report reason. Must be one of: ' + validReasons.join(', ')
+        )
+    }
     try {
         const [report] = await db
             .insert(roomReports)

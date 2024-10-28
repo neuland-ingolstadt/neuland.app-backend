@@ -15,7 +15,8 @@ import {
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
-import { createRoomReport } from './mutations/createRoomReport'
+import { createRoomReport } from './mutations/room-reports/create'
+import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
 import { roomReportsQuery } from './queries/roomReports'
 
@@ -38,6 +39,7 @@ export const resolvers = {
         deleteAppAnnouncement,
         upsertAppAnnouncement,
         createRoomReport,
+        resolveRoomReport,
     },
 
     LocalTime: LocalEndTimeResolver,

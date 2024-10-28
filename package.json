@@ -5,8 +5,9 @@
     "scripts": {
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
+        "graphiql": "cd graphiql && react-scripts start",
         "prepare": "husky",
-        "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 bun run start\" \"bunx spectaql ./documentation/config.yml\"",
+        "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 npm run start\" \"npx spectaql ./documentation/config.yml\"",
         "drizzle-kit": "drizzle-kit generate --schema ./src/db/schema/ --dialect postgresql --out ./src/db/migrations",
         "migrate": "bun run ./src/db/migrate.ts"
     },

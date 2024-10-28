@@ -753,7 +753,7 @@ input RoomReportInput {
     """
     room: String!
     """
-    Reason for the report. This is a enum wiht report categories.
+    Reason for the report. This is a enum with report categories: 'WRONG_DESCRIPTION', 'WRONG_LOCATION', 'NOT_EXISTING', 'MISSING', 'OTHER'
     """
     reason: String!
     """
@@ -786,6 +786,10 @@ type Mutation {
     Create a new room report
     """
     createRoomReport(input: RoomReportInput!): UpsertResponse
+    """
+    Resolve a room report by ID
+    """
+    resolveRoomReport(id: ID!): UpsertResponse
 }
 
 type UpsertResponse {

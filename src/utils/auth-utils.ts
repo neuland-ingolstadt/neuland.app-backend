@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { GraphQLError } from 'graphql'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import jwkToPem from 'jwk-to-pem'
 
@@ -23,5 +24,28 @@ export async function getUserFromToken(bearer: string): Promise<JwtPayload> {
     } catch (error) {
         console.error('Failed to verify token:', error)
         throw new Error('Failed to verify token')
+    }
+}
+
+export function checkAuthorization(
+    contextValue: {
+        jwtPayload?: { groups: string[] }
+    },
+    requiredRole: string
+): void {
+    if (
+        process.env.NODE_ENV !== 'production' &&
+        Bun.env.BYPASS_AUTH_IN_DEV === 'true'
+    ) {
+        console.warn('Authorization check skipped in development environment')
+        return
+    }
+
+    if (!contextValue.jwtPayload) {
+        throw new GraphQLError('Not authorized: Missing JWT payload')
+    }
+
+    if (!contextValue.jwtPayload.groups.includes(requiredRole)) {
+        throw new GraphQLError('Not authorized: Insufficient permissions')
     }
 }
