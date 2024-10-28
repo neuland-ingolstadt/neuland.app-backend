@@ -34,11 +34,12 @@ bun start
 
 ### Documentation and Playground
 
-Use the interactive GraphQL Playground to explore the API and its documentation.
+The static documentation is generated using the `spectaql` package and available at the root of the API.
 
-```bash
-http://localhost:4000/
-```
+To explore the API and access the dynamic documentation and schema you can use the Apollo GraphQL Playground.\
+The Playground is available at the `/graphql` endpoint.
+
+Alternatively, you can use the GraphiQL interface at the `/graphiql` endpoint, which has improved support for autocompletion and syntax highlighting.\
 
 #### Project Structure
 

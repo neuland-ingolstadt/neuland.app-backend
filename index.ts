@@ -71,6 +71,18 @@ app.use(
     })
 )
 
+if (Bun.env.NODE_ENV !== 'production') {
+    app.use(
+        '/graphiql',
+        express.static(path.join(__dirname, 'src', 'utils', 'graphiql.html'))
+    )
+}
+
 app.listen(port, () => {
     console.log('🚀 Server ready at http://localhost:' + port + '/graphql')
+    if (Bun.env.NODE_ENV !== 'production') {
+        console.log(
+            '🔮 GraphiQL ready at http://localhost:' + port + '/graphiql'
+        )
+    }
 })
