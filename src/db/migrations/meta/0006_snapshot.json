@@ -1,0 +1,342 @@
+{
+    "id": "bac092a0-141a-43a5-8c68-f76e2be28a7b",
+    "prevId": "b85d110e-f795-46a3-8090-99928653875b",
+    "version": "7",
+    "dialect": "postgresql",
+    "tables": {
+        "public.app_announcements": {
+            "name": "app_announcements",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "serial",
+                    "primaryKey": true,
+                    "notNull": true
+                },
+                "platform": {
+                    "name": "platform",
+                    "type": "app_platform[]",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "user_kind": {
+                    "name": "user_kind",
+                    "type": "user_kind[]",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "title_de": {
+                    "name": "title_de",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "title_en": {
+                    "name": "title_en",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "description_de": {
+                    "name": "description_de",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "description_en": {
+                    "name": "description_en",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "start_date_time": {
+                    "name": "start_date_time",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "end_date_time": {
+                    "name": "end_date_time",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "priority": {
+                    "name": "priority",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "url": {
+                    "name": "url",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        },
+        "public.room_reports": {
+            "name": "room_reports",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "serial",
+                    "primaryKey": true,
+                    "notNull": true
+                },
+                "room": {
+                    "name": "room",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "reason": {
+                    "name": "reason",
+                    "type": "room_report_reason",
+                    "typeSchema": "public",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "description": {
+                    "name": "description",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "resolved_at": {
+                    "name": "resolved_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": false
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        },
+        "public.university_sports": {
+            "name": "university_sports",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "serial",
+                    "primaryKey": true,
+                    "notNull": true
+                },
+                "title_de": {
+                    "name": "title_de",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "description_de": {
+                    "name": "description_de",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "title_en": {
+                    "name": "title_en",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "description_en": {
+                    "name": "description_en",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "campus": {
+                    "name": "campus",
+                    "type": "campus",
+                    "typeSchema": "public",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "location": {
+                    "name": "location",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "weekday": {
+                    "name": "weekday",
+                    "type": "weekday",
+                    "typeSchema": "public",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "start_time": {
+                    "name": "start_time",
+                    "type": "time",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "end_time": {
+                    "name": "end_time",
+                    "type": "time",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "requires_registration": {
+                    "name": "requires_registration",
+                    "type": "boolean",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "invitation_link": {
+                    "name": "invitation_link",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "e_mail": {
+                    "name": "e_mail",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "sports_category": {
+                    "name": "sports_category",
+                    "type": "sports_category",
+                    "typeSchema": "public",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        }
+    },
+    "enums": {
+        "public.app_platform": {
+            "name": "app_platform",
+            "schema": "public",
+            "values": ["ANDROID", "IOS", "WEB", "WEB_DEV"]
+        },
+        "public.user_kind": {
+            "name": "user_kind",
+            "schema": "public",
+            "values": ["STUDENT", "EMPLOYEE", "GUEST"]
+        },
+        "public.room_report_reason": {
+            "name": "room_report_reason",
+            "schema": "public",
+            "values": [
+                "WRONG_DESCRIPTION",
+                "WRONG_LOCATION",
+                "NOT_EXISTING",
+                "MISSING",
+                "OTHER"
+            ]
+        },
+        "public.campus": {
+            "name": "campus",
+            "schema": "public",
+            "values": ["Ingolstadt", "Neuburg"]
+        },
+        "public.sports_category": {
+            "name": "sports_category",
+            "schema": "public",
+            "values": [
+                "Basketball",
+                "Soccer",
+                "Calisthenics",
+                "Dancing",
+                "StrengthTraining",
+                "Running",
+                "Jogging",
+                "Handball",
+                "Frisbee",
+                "Volleyball",
+                "Spikeball",
+                "FullBodyWorkout",
+                "Defense",
+                "Yoga",
+                "Meditation",
+                "Tennis",
+                "Badminton",
+                "Swimming",
+                "Waterpolo",
+                "Cycling",
+                "Climbing",
+                "Boxing",
+                "Kickboxing",
+                "MartialArts",
+                "TableTennis",
+                "Rowing",
+                "Baseball",
+                "Skateboarding",
+                "Parkour",
+                "Hockey",
+                "Hiking",
+                "Other"
+            ]
+        },
+        "public.weekday": {
+            "name": "weekday",
+            "schema": "public",
+            "values": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
+            ]
+        }
+    },
+    "schemas": {},
+    "sequences": {},
+    "views": {},
+    "_meta": {
+        "columns": {},
+        "schemas": {},
+        "tables": {}
+    }
+}
