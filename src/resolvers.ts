@@ -11,6 +11,7 @@ import {
     DateTimeResolver,
     EmailAddressResolver,
     LocalEndTimeResolver,
+    URLResolver,
 } from 'graphql-scalars'
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
@@ -39,4 +40,5 @@ export const resolvers = {
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
     EmailAddress: EmailAddressResolver,
+    URL: URLResolver,
 }

@@ -330,7 +330,11 @@ type ClEvent {
     """
     Organizer of the event
     """
-    organizer: String!
+    organizer: String! @deprecated(reason: "Use organizer field instead")
+    """
+    Host of the event
+    """
+    host: Host!
     """
     Title of the event in German
     """
@@ -351,6 +355,24 @@ type ClEvent {
     Description of the event (only available if it's eligible for external sharing)
     """
     description: String
+}
+
+"""
+Host of the event, usually a club or student group
+"""
+type Host {
+    """
+    Name of the event host
+    """
+    name: String!
+    """
+    URL to the event host website
+    """
+    website: URL
+    """
+    Instagram URL of the event host
+    """
+    instagram: URL
 }
 
 """
@@ -739,3 +761,4 @@ type UpsertResponse {
 scalar DateTime
 scalar LocalTime
 scalar EmailAddress
+scalar URL
