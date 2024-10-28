@@ -330,7 +330,7 @@ type ClEvent {
     """
     Organizer of the event
     """
-    organizer: String! @deprecated(reason: "Use organizer field instead")
+    organizer: String! @deprecated(reason: "Use host field instead")
     """
     Host of the event
     """
