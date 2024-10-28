@@ -18,8 +18,16 @@ export async function upsertAppAnnouncement(
 }> {
     checkAuthorization(contextValue, announcementRole)
 
-    const { title, description, startDateTime, endDateTime, priority, url } =
-        input
+    const {
+        platform,
+        userKind,
+        title,
+        description,
+        startDateTime,
+        endDateTime,
+        priority,
+        url,
+    } = input
 
     let announcement
 
@@ -28,6 +36,8 @@ export async function upsertAppAnnouncement(
         ;[announcement] = await db
             .update(appAnnouncements)
             .set({
+                platform,
+                user_kind: userKind,
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description.de,
@@ -48,6 +58,8 @@ export async function upsertAppAnnouncement(
         ;[announcement] = await db
             .insert(appAnnouncements)
             .values({
+                platform,
+                user_kind: userKind,
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description.de,
