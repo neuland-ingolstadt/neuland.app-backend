@@ -4,6 +4,7 @@ import jwkToPem from 'jwk-to-pem'
 
 export const sportRole = 'Neuland Next Hochschulsport'
 export const announcementRole = 'Neuland Next Announcements'
+export const adminRole = 'Neuland Next Admin'
 const jwkUrl =
     'https://sso.informatik.sexy/application/o/neulandnextpanel/jwks/'
 

@@ -71,6 +71,19 @@ app.use(
     })
 )
 
+if (Bun.env.NODE_ENV !== 'production') {
+    app.use('/graphiql', (_, res) => {
+        res.sendFile(path.join(__dirname, 'graphiql.html'))
+    })
+}
+
 app.listen(port, () => {
     console.log('🚀 Server ready at http://localhost:' + port + '/graphql')
+    if (Bun.env.NODE_ENV !== 'production') {
+        console.log(
+            '🔮 GraphiQL Explorer is ready at http://localhost:' +
+                port +
+                '/graphiql'
+        )
+    }
 })
