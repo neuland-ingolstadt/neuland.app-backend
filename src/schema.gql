@@ -245,6 +245,46 @@ enum OriginalLanguage {
 }
 
 """
+UserKind enum to target announcements to specific user groups
+"""
+enum UserKind {
+    """
+    Student
+    """
+    STUDENT
+    """
+    Employee
+    """
+    EMPLOYEE
+    """
+    Guest
+    """
+    GUEST
+}
+
+"""
+Platform enum to target announcements to specific platforms
+"""
+enum Platform {
+    """
+    Android
+    """
+    ANDROID
+    """
+    iOS
+    """
+    IOS
+    """
+    Web
+    """
+    WEB
+    """
+    Web Development Version
+    """
+    WEB_DEV
+}
+
+"""
 Prices for different types of customers
 """
 type Prices {
@@ -413,6 +453,14 @@ type Announcement {
     Unique identifier of the announcement
     """
     id: ID!
+    """
+    Platform where the announcement is displayed
+    """
+    platform: [Platform!]!
+    """
+    UserKind to target the announcement to specific user groups
+    """
+    userKind: [UserKind!]!
     """
     Title of the announcement in different languages
     """
@@ -684,6 +732,14 @@ input UniversitySportsInput {
 Input type for the announcement
 """
 input AnnouncementInput {
+    """
+    Platform where the announcement is displayed
+    """
+    platform: [Platform!]!
+    """
+    UserKind to target the announcement to specific user groups
+    """
+    userKind: [UserKind!]!
     """
     Title of the announcement in different languages
     """
