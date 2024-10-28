@@ -1,5 +1,5 @@
 {
-    "id": "e9767543-3f83-42b4-b28f-2bcece82f503",
+    "id": "b85d110e-f795-46a3-8090-99928653875b",
     "prevId": "6ba274fb-ed5a-49b7-9f98-ac5a167cbf68",
     "version": "7",
     "dialect": "postgresql",
@@ -81,302 +81,6 @@
             "uniqueConstraints": {},
             "checkConstraints": {}
         },
-        "public.error_reports": {
-            "name": "error_reports",
-            "schema": "",
-            "columns": {
-                "id": {
-                    "name": "id",
-                    "type": "serial",
-                    "primaryKey": true,
-                    "notNull": true
-                },
-                "meal_day_id": {
-                    "name": "meal_day_id",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "user_id": {
-                    "name": "user_id",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "reason": {
-                    "name": "reason",
-                    "type": "meal_report_reason",
-                    "typeSchema": "public",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "created_at": {
-                    "name": "created_at",
-                    "type": "timestamp",
-                    "primaryKey": false,
-                    "notNull": false
-                }
-            },
-            "indexes": {},
-            "foreignKeys": {
-                "error_reports_meal_day_id_meal_days_id_fk": {
-                    "name": "error_reports_meal_day_id_meal_days_id_fk",
-                    "tableFrom": "error_reports",
-                    "tableTo": "meal_days",
-                    "columnsFrom": ["meal_day_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "no action",
-                    "onUpdate": "no action"
-                },
-                "error_reports_user_id_users_id_fk": {
-                    "name": "error_reports_user_id_users_id_fk",
-                    "tableFrom": "error_reports",
-                    "tableTo": "users",
-                    "columnsFrom": ["user_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "no action",
-                    "onUpdate": "no action"
-                }
-            },
-            "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
-            "checkConstraints": {}
-        },
-        "public.meal_days": {
-            "name": "meal_days",
-            "schema": "",
-            "columns": {
-                "id": {
-                    "name": "id",
-                    "type": "serial",
-                    "primaryKey": true,
-                    "notNull": true
-                },
-                "meal_id": {
-                    "name": "meal_id",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "date": {
-                    "name": "date",
-                    "type": "timestamp",
-                    "primaryKey": false,
-                    "notNull": false
-                }
-            },
-            "indexes": {},
-            "foreignKeys": {
-                "meal_days_meal_id_meals_id_fk": {
-                    "name": "meal_days_meal_id_meals_id_fk",
-                    "tableFrom": "meal_days",
-                    "tableTo": "meals",
-                    "columnsFrom": ["meal_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "no action",
-                    "onUpdate": "no action"
-                }
-            },
-            "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
-            "checkConstraints": {}
-        },
-        "public.meals": {
-            "name": "meals",
-            "schema": "",
-            "columns": {
-                "id": {
-                    "name": "id",
-                    "type": "serial",
-                    "primaryKey": true,
-                    "notNull": true
-                },
-                "name_de": {
-                    "name": "name_de",
-                    "type": "text",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "name_en": {
-                    "name": "name_en",
-                    "type": "text",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "category": {
-                    "name": "category",
-                    "type": "meal_category",
-                    "typeSchema": "public",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "restaurant": {
-                    "name": "restaurant",
-                    "type": "restaurant",
-                    "typeSchema": "public",
-                    "primaryKey": false,
-                    "notNull": false
-                }
-            },
-            "indexes": {},
-            "foreignKeys": {},
-            "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
-            "checkConstraints": {}
-        },
-        "public.price_history": {
-            "name": "price_history",
-            "schema": "",
-            "columns": {
-                "id": {
-                    "name": "id",
-                    "type": "serial",
-                    "primaryKey": true,
-                    "notNull": true
-                },
-                "meal_day_id": {
-                    "name": "meal_day_id",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "price_guest": {
-                    "name": "price_guest",
-                    "type": "numeric(10, 2)",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "price_student": {
-                    "name": "price_student",
-                    "type": "numeric(10, 2)",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "price_employee": {
-                    "name": "price_employee",
-                    "type": "numeric(10, 2)",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "change_date": {
-                    "name": "change_date",
-                    "type": "timestamp",
-                    "primaryKey": false,
-                    "notNull": false
-                }
-            },
-            "indexes": {},
-            "foreignKeys": {
-                "price_history_meal_day_id_meal_days_id_fk": {
-                    "name": "price_history_meal_day_id_meal_days_id_fk",
-                    "tableFrom": "price_history",
-                    "tableTo": "meal_days",
-                    "columnsFrom": ["meal_day_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "no action",
-                    "onUpdate": "no action"
-                }
-            },
-            "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
-            "checkConstraints": {}
-        },
-        "public.reviews": {
-            "name": "reviews",
-            "schema": "",
-            "columns": {
-                "id": {
-                    "name": "id",
-                    "type": "serial",
-                    "primaryKey": true,
-                    "notNull": true
-                },
-                "meal_id": {
-                    "name": "meal_id",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "user_id": {
-                    "name": "user_id",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "rating": {
-                    "name": "rating",
-                    "type": "integer",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "report": {
-                    "name": "report",
-                    "type": "boolean",
-                    "primaryKey": false,
-                    "notNull": false,
-                    "default": false
-                },
-                "created_at": {
-                    "name": "created_at",
-                    "type": "timestamp",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "updated_at": {
-                    "name": "updated_at",
-                    "type": "timestamp",
-                    "primaryKey": false,
-                    "notNull": false
-                }
-            },
-            "indexes": {},
-            "foreignKeys": {
-                "reviews_meal_id_meals_id_fk": {
-                    "name": "reviews_meal_id_meals_id_fk",
-                    "tableFrom": "reviews",
-                    "tableTo": "meals",
-                    "columnsFrom": ["meal_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "no action",
-                    "onUpdate": "no action"
-                },
-                "reviews_user_id_users_id_fk": {
-                    "name": "reviews_user_id_users_id_fk",
-                    "tableFrom": "reviews",
-                    "tableTo": "users",
-                    "columnsFrom": ["user_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "no action",
-                    "onUpdate": "no action"
-                }
-            },
-            "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
-            "checkConstraints": {}
-        },
-        "public.users": {
-            "name": "users",
-            "schema": "",
-            "columns": {
-                "id": {
-                    "name": "id",
-                    "type": "serial",
-                    "primaryKey": true,
-                    "notNull": true
-                },
-                "created_at": {
-                    "name": "created_at",
-                    "type": "timestamp",
-                    "primaryKey": false,
-                    "notNull": false
-                }
-            },
-            "indexes": {},
-            "foreignKeys": {},
-            "compositePrimaryKeys": {},
-            "uniqueConstraints": {},
-            "checkConstraints": {}
-        },
         "public.room_reports": {
             "name": "room_reports",
             "schema": "",
@@ -404,13 +108,19 @@
                     "name": "description",
                     "type": "text",
                     "primaryKey": false,
-                    "notNull": false
+                    "notNull": true
                 },
                 "created_at": {
                     "name": "created_at",
                     "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": true
+                },
+                "resolved_at": {
+                    "name": "resolved_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": false
                 }
             },
             "indexes": {},
@@ -531,31 +241,6 @@
         }
     },
     "enums": {
-        "public.meal_category": {
-            "name": "meal_category",
-            "schema": "public",
-            "values": ["MAIN", "SIDE", "SOUP", "SALAD", "DESSERT"]
-        },
-        "public.meal_report_reason": {
-            "name": "meal_report_reason",
-            "schema": "public",
-            "values": [
-                "WRONG_PRICE",
-                "WRONG_INGREDIENTS",
-                "NOT_AVAILABLE",
-                "OTHER"
-            ]
-        },
-        "public.restaurant": {
-            "name": "restaurant",
-            "schema": "public",
-            "values": [
-                "IngolstadtMensa",
-                "NeuburgMensa",
-                "Reimanns",
-                "Canisius"
-            ]
-        },
         "public.room_report_reason": {
             "name": "room_report_reason",
             "schema": "public",
