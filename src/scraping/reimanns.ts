@@ -143,5 +143,6 @@ export async function getReimannsPlan(): Promise<MealData[]> {
         day.meals.push(...(hashedStaticMeals(day) as TempMeal[]))
     })
 
-    return unifyFoodEntries(scrapedMeals)
+    const unifyedMeals = unifyFoodEntries(scrapedMeals)
+    return unifyedMeals
 }

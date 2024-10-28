@@ -11,11 +11,15 @@ import {
     DateTimeResolver,
     EmailAddressResolver,
     LocalEndTimeResolver,
+    URLResolver,
 } from 'graphql-scalars'
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
+import { createRoomReport } from './mutations/room-reports/create'
+import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
+import { roomReportsQuery } from './queries/roomReports'
 
 export const resolvers = {
     Query: {
@@ -28,15 +32,19 @@ export const resolvers = {
         appAnnouncements: appAnnouncementsQuery,
         announcements: appAnnouncementsQuery,
         universitySports: sports,
+        roomReports: roomReportsQuery,
     },
     Mutation: {
         deleteUniversitySport,
         upsertUniversitySport,
         deleteAppAnnouncement,
         upsertAppAnnouncement,
+        createRoomReport,
+        resolveRoomReport,
     },
 
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
     EmailAddress: EmailAddressResolver,
+    URL: URLResolver,
 }

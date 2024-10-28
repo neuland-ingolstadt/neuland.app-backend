@@ -1,6 +1,6 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
-import { announcementRole } from '@/utils/auth-utils'
+import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
@@ -13,13 +13,7 @@ export async function deleteAppAnnouncement(
     },
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<boolean> {
-    if (!contextValue.jwtPayload) {
-        throw new GraphQLError('Not authorized: Missing JWT payload')
-    }
-
-    if (!contextValue.jwtPayload.groups.includes(announcementRole)) {
-        throw new GraphQLError('Not authorized: Insufficient permissions')
-    }
+    checkAuthorization(contextValue, announcementRole)
     try {
         const rowsDeleted = await db
             .delete(appAnnouncements)

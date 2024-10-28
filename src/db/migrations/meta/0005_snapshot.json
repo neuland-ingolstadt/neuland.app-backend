@@ -1,5 +1,5 @@
 {
-    "id": "753c5c7b-ec27-43d3-86b1-bb0f54b22a43",
+    "id": "b85d110e-f795-46a3-8090-99928653875b",
     "prevId": "6ba274fb-ed5a-49b7-9f98-ac5a167cbf68",
     "version": "7",
     "dialect": "postgresql",
@@ -13,18 +13,6 @@
                     "type": "serial",
                     "primaryKey": true,
                     "notNull": true
-                },
-                "platform": {
-                    "name": "platform",
-                    "type": "app_platform[]",
-                    "primaryKey": false,
-                    "notNull": false
-                },
-                "user_kind": {
-                    "name": "user_kind",
-                    "type": "user_kind[]",
-                    "primaryKey": false,
-                    "notNull": false
                 },
                 "title_de": {
                     "name": "title_de",
@@ -85,6 +73,54 @@
                     "type": "timestamp with time zone",
                     "primaryKey": false,
                     "notNull": true
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {}
+        },
+        "public.room_reports": {
+            "name": "room_reports",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "serial",
+                    "primaryKey": true,
+                    "notNull": true
+                },
+                "room": {
+                    "name": "room",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "reason": {
+                    "name": "reason",
+                    "type": "room_report_reason",
+                    "typeSchema": "public",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "description": {
+                    "name": "description",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "resolved_at": {
+                    "name": "resolved_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": false
                 }
             },
             "indexes": {},
@@ -205,15 +241,16 @@
         }
     },
     "enums": {
-        "public.app_platform": {
-            "name": "app_platform",
+        "public.room_report_reason": {
+            "name": "room_report_reason",
             "schema": "public",
-            "values": ["ANDROID", "IOS", "WEB", "WEB_DEV"]
-        },
-        "public.user_kind": {
-            "name": "user_kind",
-            "schema": "public",
-            "values": ["STUDENT", "EMPLOYEE", "GUEST"]
+            "values": [
+                "WRONG_DESCRIPTION",
+                "WRONG_LOCATION",
+                "NOT_EXISTING",
+                "MISSING",
+                "OTHER"
+            ]
         },
         "public.campus": {
             "name": "campus",

@@ -1,7 +1,8 @@
 /**
  * @file Scrapes events from the `Campus Life` Moodle course and serves them at `/api/events`.
  */
-import type { ClEvent } from '@/types/clEvents'
+import clubsData from '@/data/clubs.json'
+import type { ClEvent, ClHost } from '@/types/clEvents'
 import * as cheerio from 'cheerio'
 import crypto from 'crypto'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
@@ -227,6 +228,27 @@ async function getEventDetails(
     )
 }
 
+function getHostDetails(host: string): ClHost {
+    const trimmed = host
+        .trim()
+        .replace(/( \.)$/g, '')
+        .replace(/e\. V\./g, 'e.V.')
+    const club = clubsData.find((club) => club.club === trimmed)
+    if (club == null) {
+        return {
+            name: trimmed,
+            website: null,
+            instagram: null,
+        }
+    }
+
+    return {
+        name: club.club,
+        website: club.website,
+        instagram: club.instagram,
+    }
+}
+
 /**
  * Fetches all event details from Moodle.
  * @param {string} username
@@ -255,6 +277,7 @@ export async function getAllEventDetails(
             organizer: details.Verein.trim()
                 .replace(/( \.)$/g, '')
                 .replace(/e\. V\./g, 'e.V.'),
+            host: getHostDetails(details.Verein),
             title: details.Event,
             begin:
                 details.Start.length > 0
