@@ -99,7 +99,15 @@ type Meal {
     """
     Unique identifier of the meal
     """
-    id: ID!
+    id: ID @deprecated(reason: "Use the instanceId field instead")
+    """
+    Unique identifier of the meal of the current day. This id changes every day and is unique every meal and day.
+    """
+    instanceId: ID!
+    """
+    Unique identifier of the meal. This id stays the same for the same meal on different days.
+    """
+    staticId: ID!
     """
     Category of the meal (main, soup or salad)
     """
@@ -157,7 +165,7 @@ type Variation {
     """
     Unique identifier of the variant
     """
-    id: ID!
+    id: ID! @deprecated(reason: "Meal variants no longer provide an ID")
     """
     List of allergens (e.g. gluten, lactose, etc.)
     """

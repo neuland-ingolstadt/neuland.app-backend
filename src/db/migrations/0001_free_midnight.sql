@@ -1,2 +1,0 @@
-ALTER TABLE "app_announcements" ADD COLUMN "created_at" timestamp with time zone NOT NULL;--> statement-breakpoint
-ALTER TABLE "app_announcements" ADD COLUMN "updated_at" timestamp with time zone NOT NULL;

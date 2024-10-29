@@ -1,13 +1,17 @@
 import staticMeals from '@/data/reimanns-meals.json'
+import { db } from '@/db'
+import { mealDays, meals } from '@/db/schema/mealRatings'
 import type {
     MealData,
     PreFoodData,
+    Prices,
     StaticMeal,
     TempMeal,
     TempMealData,
 } from '@/types/food'
 import * as cheerio from 'cheerio'
 
+// Ensure this import is correct
 import { addWeek, getDays, getWeek } from '../utils/date-utils'
 import { getMealHash, unifyFoodEntries } from '../utils/food-utils'
 import { translateMeals } from '../utils/translation-utils'
@@ -105,7 +109,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
         meals: days[day].map((meal) => ({
             name: meal,
             id: getMealHash(day, meal),
-            category: 'Essen',
+            category: 'MAIN',
             prices: {
                 student: 5.5,
                 employee: 6.5,
@@ -121,10 +125,10 @@ export async function getReimannsPlan(): Promise<MealData[]> {
     const scrapedMeals = await translateMeals(mealPlan as PreFoodData[])
 
     // add static meals (no need to translate)
-    const hashedStaticMeals = (day: TempMealData): StaticMeal[] => {
+    function processStaticMeals(day: TempMealData): StaticMeal[] {
         return staticMeals.map((meal) => ({
             ...meal,
-            restaurant: 'Reimanns',
+            restaurant: 'REIMANNS',
             id: getMealHash(day.timestamp, meal.name),
             variants: meal.variants?.map((variant) => ({
                 ...variant,
@@ -140,8 +144,69 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             return
         }
 
-        day.meals.push(...(hashedStaticMeals(day) as TempMeal[]))
+        day.meals.push(...(processStaticMeals(day) as TempMeal[]))
     })
+    const unifyedMeals = unifyFoodEntries(scrapedMeals)
 
-    return unifyFoodEntries(scrapedMeals)
+    for (const day of unifyedMeals) {
+        for (const meal of day.meals) {
+            const mealId = await upsertMeal(meal.name.de, 'MAIN', 'REIMANNS')
+            const mealDayId = await upsertMealDay(
+                mealId,
+                day.timestamp,
+                meal.prices
+            )
+            meal.staticId = mealId
+            meal.instanceId = mealDayId
+        }
+    }
+
+    return unifyedMeals
+}
+
+// Function to upsert the meal if it doesn’t exist
+export async function upsertMeal(
+    name: string,
+    category: 'MAIN' | 'SIDE' | 'SOUP' | 'SALAD' | 'DESSERT',
+    restaurant: 'INGOLSTADT_MENSA' | 'NEUBURG_MENSA' | 'REIMANNS' | 'CANISIUS'
+): Promise<number> {
+    return await db.transaction(async (trx) => {
+        const [newMeal] = await trx
+            .insert(meals)
+            .values({
+                name_de: name,
+                category: category,
+                restaurant: restaurant,
+            })
+            .onConflictDoUpdate({
+                target: [meals.name_de, meals.category, meals.restaurant],
+                set: { name_de: name },
+            })
+            .returning({ id: meals.id })
+
+        return newMeal.id
+    })
+}
+
+// Function to upsert the meal day if it doesn’t exist
+export async function upsertMealDay(
+    mealId: number,
+    date: string,
+    prices: Prices
+): Promise<number> {
+    return await db.transaction(async (trx) => {
+        const [newMealDay] = await trx
+            .insert(mealDays)
+            .values({
+                meal_id: mealId,
+                date: new Date(date),
+                price_guest: prices.guest?.toFixed(2),
+                price_student: prices.student?.toFixed(2),
+                price_employee: prices.employee?.toFixed(2),
+            })
+            .onConflictDoNothing()
+            .returning({ id: mealDays.id })
+
+        return newMealDay.id
+    })
 }

@@ -1,6 +1,6 @@
 [
     {
-        "category": "Essen",
+        "category": "MAIN",
         "static": true,
         "name": {
             "de": "Thai Curry",
@@ -28,7 +28,7 @@
         ]
     },
     {
-        "category": "Essen",
+        "category": "MAIN",
         "static": true,
         "name": {
             "de": "Beef Burger",
@@ -55,7 +55,7 @@
         ]
     },
     {
-        "category": "Essen",
+        "category": "MAIN",
         "static": true,
         "name": {
             "de": "Currywurst",
@@ -83,7 +83,7 @@
     },
     {
         "static": true,
-        "category": "Salat",
+        "category": "Salad",
         "name": {
             "de": "Großer gemischter Salat",
             "en": "Large mixed salad"

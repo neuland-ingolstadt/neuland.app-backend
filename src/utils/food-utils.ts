@@ -4,10 +4,11 @@ import type {
     ExtendedMeal,
     ExtendedMealData,
     Meal,
-    MealData,
     Name,
     TempMeal,
     TempMealData,
+    UnifiedMeal,
+    UnifiedMealData,
 } from '@/types/food'
 import hash from 'object-hash'
 
@@ -60,7 +61,7 @@ function capitalize(mealNames: Name): Name {
  * @param {MealData[]} entries Meal plan entries
  * @returns {object[]} Unified meal plan entries
  */
-export function unifyFoodEntries(entries: TempMealData[]): MealData[] {
+export function unifyFoodEntries(entries: TempMealData[]): UnifiedMealData[] {
     return entries.map((entry) => ({
         timestamp: entry.timestamp,
         meals: entry.meals.map((meal) => {
@@ -81,8 +82,11 @@ export function unifyFoodEntries(entries: TempMealData[]): MealData[] {
  * @param {parent} [parentMeal] Parent meal (if meal is a variant of another meal)
  * @returns {object} Unified meal
  */
-function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
-    const mealCategory = meal.category ?? parentMeal?.category ?? 'main'
+function unifyMeal(
+    meal: TempMeal,
+    parentMeal: Meal | null = null
+): UnifiedMeal {
+    const mealCategory = meal.category ?? parentMeal?.category ?? 'MAIN'
 
     return {
         name: capitalize(meal.name),
@@ -99,7 +103,6 @@ function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
         static: meal.static ?? false,
         restaurant: meal.restaurant ?? parentMeal?.restaurant ?? null,
         additional: meal.additional ?? false,
-
         id: parentMeal !== null ? `${parentMeal.id}/${meal.id}` : meal.id,
         parent: reduceParentMeal(parentMeal),
     }
@@ -236,21 +239,29 @@ function reduceParentMeal(parentMeal: Meal | null): {
  * @returns {string} Standardized category
  */
 function standardizeCategory(category: string): string {
-    const validCategories = ['main', 'soup', 'salad']
+    const validCategories = ['MAIN', 'SOUP', 'SALAD', 'DESSERT', 'SIDE']
 
     if (validCategories.includes(category)) {
         return category
     }
 
     if (category.includes('Suppe')) {
-        return 'soup'
+        return 'SOUP'
     }
 
     if (category.includes('Salat')) {
-        return 'salad'
+        return 'SALAD'
     }
 
-    return 'main'
+    if (category.includes('Dessert')) {
+        return 'DESSERT'
+    }
+
+    if (category.includes('Beilage')) {
+        return 'SIDE'
+    }
+
+    return 'MAIN'
 }
 
 /**

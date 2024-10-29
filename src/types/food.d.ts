@@ -21,7 +21,7 @@ export interface ExtendedMealData {
 
 export interface BaseMeal {
     id: string
-    prices: Prices | Record<string, number | null>
+    prices: Prices
     allergens: string[] | null
     flags: string[] | null
     nutrition: Nutrition | null
@@ -47,12 +47,36 @@ export interface Meal extends BaseMeal {
     originalLanguage: string
     category: string
     parent: any
+    staticId?: number
+    instanceId?: number
 }
 
 export interface TempMeal extends Meal {
     additional?: boolean
     variants?: Variant[]
     static: boolean
+}
+
+export interface UnifiedMeal {
+    name: Name
+    category: string
+    prices: Prices
+    allergens: string[] | null
+    flags: string[] | null
+    nutrition: Nutrition | null
+    originalLanguage: string
+    static: boolean
+    restaurant: string
+    additional: boolean
+    id: string
+    parent: any
+    staticId?: number
+    instanceId?: number
+}
+
+export interface UnifiedMealData {
+    timestamp: string
+    meals: UnifiedMeal[]
 }
 
 export interface TempMealData {
@@ -102,7 +126,6 @@ export interface StaticMeal {
 export interface Variant {
     name: Name
     prices: Prices
-    id: string
     additional?: boolean
 }
 
