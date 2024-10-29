@@ -15,6 +15,20 @@
             "when": 1730165423200,
             "tag": "0001_safe_cassandra_nova",
             "breakpoints": true
+        },
+        {
+            "idx": 5,
+            "version": "7",
+            "when": 1730114334704,
+            "tag": "0005_lowly_albert_cleary",
+            "breakpoints": true
+        },
+        {
+            "idx": 6,
+            "version": "7",
+            "when": 1730128211401,
+            "tag": "0006_boring_blackheart",
+            "breakpoints": true
         }
     ]
 }

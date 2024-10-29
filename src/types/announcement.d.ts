@@ -1,5 +1,20 @@
+enum AppPlatformEnum {
+    ANDROID = 'ANDROID',
+    IOS = 'IOS',
+    WEB = 'WEB',
+    WEB_DEV = 'WEB_DEV',
+}
+
+enum UserKindEnum {
+    STUDENT = 'STUDENT',
+    EMPLOYEE = 'EMPLOYEE',
+    GUEST = 'GUEST',
+}
+
 interface Announcement {
     id: number
+    platform: AppPlatformEnum[]
+    userKind: UserKindEnum[]
     title: {
         de: string
         en: string
@@ -17,6 +32,8 @@ interface Announcement {
 }
 
 interface AnnouncementInput {
+    platform: AppPlatformEnum[]
+    userKind: UserKindEnum[]
     title: {
         de: string
         en: string

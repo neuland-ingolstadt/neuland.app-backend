@@ -1,6 +1,6 @@
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
-import { sportRole } from '@/utils/auth-utils'
+import { checkAuthorization, sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
@@ -13,14 +13,7 @@ export async function deleteUniversitySport(
     },
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<boolean> {
-    if (!contextValue.jwtPayload) {
-        throw new GraphQLError('Not authorized: Missing JWT payload')
-    }
-
-    if (!contextValue.jwtPayload.groups.includes(sportRole)) {
-        throw new GraphQLError('Not authorized: Insufficient permissions')
-    }
-
+    checkAuthorization(contextValue, sportRole)
     try {
         const rowsDeleted = await db
             .delete(universitySports)

@@ -1,8 +1,7 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
-import { announcementRole } from '@/utils/auth-utils'
+import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
 
 export async function upsertAppAnnouncement(
     _: unknown,
@@ -17,16 +16,18 @@ export async function upsertAppAnnouncement(
 ): Promise<{
     id: number
 }> {
-    if (!contextValue.jwtPayload) {
-        throw new GraphQLError('Not authorized: Missing JWT payload')
-    }
+    checkAuthorization(contextValue, announcementRole)
 
-    if (!contextValue.jwtPayload.groups.includes(announcementRole)) {
-        throw new GraphQLError('Not authorized: Insufficient permissions')
-    }
-
-    const { title, description, startDateTime, endDateTime, priority, url } =
-        input
+    const {
+        platform,
+        userKind,
+        title,
+        description,
+        startDateTime,
+        endDateTime,
+        priority,
+        url,
+    } = input
 
     let announcement
 
@@ -35,6 +36,8 @@ export async function upsertAppAnnouncement(
         ;[announcement] = await db
             .update(appAnnouncements)
             .set({
+                platform,
+                user_kind: userKind,
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description.de,
@@ -55,6 +58,8 @@ export async function upsertAppAnnouncement(
         ;[announcement] = await db
             .insert(appAnnouncements)
             .values({
+                platform,
+                user_kind: userKind,
                 title_de: title.de,
                 title_en: title.en,
                 description_de: description.de,

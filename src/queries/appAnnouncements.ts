@@ -5,6 +5,8 @@ export async function appAnnouncementsQuery(): Promise<Announcement[]> {
     const data = await db.select().from(appAnnouncements)
 
     return data.map((announcement) => ({
+        platform: announcement.platform as AppPlatformEnum[],
+        userKind: announcement.user_kind as UserKindEnum[],
         id: announcement.id,
         title: {
             de: announcement.title_de,

@@ -1,9 +1,7 @@
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
-import { sportRole } from '@/utils/auth-utils'
+import { checkAuthorization, sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
-import type { JwtPayload } from 'jsonwebtoken'
 
 export async function upsertUniversitySport(
     _: unknown,
@@ -14,7 +12,7 @@ export async function upsertUniversitySport(
         id: number | undefined
         input: UniversitySportInput
     },
-    contextValue: { jwtPayload?: JwtPayload }
+    contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<{ id: number }> {
     const {
         title,
@@ -30,13 +28,7 @@ export async function upsertUniversitySport(
         sportsCategory,
     } = input
 
-    if (!contextValue.jwtPayload) {
-        throw new GraphQLError('Not authorized: Missing JWT payload')
-    }
-
-    if (!contextValue.jwtPayload.groups.includes(sportRole)) {
-        throw new GraphQLError('Not authorized: Insufficient permissions')
-    }
+    checkAuthorization(contextValue, sportRole)
 
     let event
 

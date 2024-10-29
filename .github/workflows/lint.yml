@@ -17,4 +17,4 @@ jobs:
             - name: Run ESLint
               run: bunx eslint .
             - name: Run Prettier
-              run: npx prettier --check .
+              run: bunx prettier --check .
