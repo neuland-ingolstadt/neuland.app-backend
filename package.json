@@ -14,11 +14,11 @@
         "typescript": "^5.0.0"
     },
     "dependencies": {
-        "@apollo/server": "^4.11.0",
+        "@apollo/server": "^4.11.2",
         "axios": "^1.7.7",
         "cheerio": "^1.0.0",
         "deepl": "^1.0.13",
-        "drizzle-orm": "^0.35.2",
+        "drizzle-orm": "^0.35.3",
         "fetch-cookie": "^3.0.1",
         "graphql": "^16.9.0",
         "graphql-scalars": "^1.23.0",
@@ -31,7 +31,7 @@
         "node-cache": "^5.1.2",
         "object-hash": "^3.0.0",
         "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
-        "postgres": "^3.4.4",
+        "postgres": "^3.4.5",
         "sanitize-html": "^2.13.1",
         "xml-js": "^1.6.11"
     },
@@ -39,16 +39,16 @@
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.13.0",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-        "@types/bun": "^1.1.11",
+        "@types/bun": "^1.1.12",
         "@types/cors": "^2.8.17",
         "@types/he": "^1.2.3",
         "@types/jsonwebtoken": "^9.0.7",
         "@types/jwk-to-pem": "^2.0.3",
-        "@types/node": "^22.7.6",
+        "@types/node": "^22.8.4",
         "@types/object-hash": "^3.0.6",
         "@types/pdf-parse": "^1.1.4",
         "@types/sanitize-html": "^2.13.0",
-        "@typescript-eslint/eslint-plugin": "^8.10.0",
+        "@typescript-eslint/eslint-plugin": "^8.12.2",
         "concurrently": "^9.0.1",
         "cross-env": "^7.0.3",
         "drizzle-kit": "^0.26.2",
@@ -59,7 +59,7 @@
         "lint-staged": "^15.2.10",
         "prettier": "^3.3.3",
         "typescript": "^5.6.3",
-        "typescript-eslint": "^8.10.0"
+        "typescript-eslint": "^8.12.2"
     },
     "lint-staged": {
         "**/*.{gql,graphql}": [
