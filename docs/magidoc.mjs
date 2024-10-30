@@ -76,13 +76,14 @@ export default {
 
                         ### Interactive Playground
 
-                        We cannot provide a public interactive playground, but you can run the backend server locally by following the instructions in the GitHub repository.
+                        We cannot provide a public interactive playground, but you can run the backend server locally by following the instructions in the GitHub repository.\\
                         Here you can test the API and explore its capabilities.
 
                         #### Legal Notice
 
-                        This API is provided by Neuland Ingolstadt e.V.\\
-
+                        This API is provided by Neuland Ingolstadt e.V.
+                        \\
+                        \\
                         Email: info@neuland-ingolstadt.de\\
                         Website: [https://neuland-ingolstadt.de](https://neuland-ingolstadt.de)\\
                         Imprint: [https://next.neuland.app/legal/imprint](https://next.neuland.app/legal/imprint)
