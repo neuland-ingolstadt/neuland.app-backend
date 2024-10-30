@@ -1,0 +1,5 @@
+"When adding a new field, make sure to update the magidocs config file with relevant examples otherwise the documentation generation will fail."
+scalar DateTime
+scalar LocalTime
+scalar EmailAddress
+scalar URL

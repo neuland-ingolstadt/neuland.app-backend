@@ -6,7 +6,7 @@
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
         "prepare": "husky",
-        "docs": "concurrently --kill-others --success first \"cross-env PORT=4321 npm run start\" \"npx spectaql ./documentation/config.yml\"",
+        "docs": "magidoc dev -f docs/magidoc.mjs",
         "drizzle-kit": "drizzle-kit generate --schema ./src/db/schema/ --dialect postgresql --out ./src/db/migrations",
         "migrate": "bun run ./src/db/migrate.ts"
     },
@@ -59,17 +59,14 @@
         "lint-staged": "^15.2.10",
         "prettier": "^3.3.3",
         "typescript": "^5.6.3",
-        "typescript-eslint": "^8.12.2"
+        "typescript-eslint": "^8.12.2",
+        "@magidoc/cli": "^6.1.0"
     },
     "lint-staged": {
-        "**/*.{gql,graphql}": [
-            "bun docs",
-            "git add documentation/generated"
-        ],
-        "**/*.{js,jsx,ts,tsx}": [
+        "**/*.{js,jsx,ts,tsx,mjs}": [
             "bunx eslint --fix"
         ],
-        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md}": [
+        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,mjs}": [
             "bunx prettier --write"
         ]
     }

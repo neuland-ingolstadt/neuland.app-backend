@@ -231,60 +231,6 @@ type Nutrition {
 }
 
 """
-Original language of the meal name
-"""
-enum OriginalLanguage {
-    """
-    German language code
-    """
-    de
-    """
-    English language code
-    """
-    en
-}
-
-"""
-UserKind enum to target announcements to specific user groups
-"""
-enum UserKind {
-    """
-    Student
-    """
-    STUDENT
-    """
-    Employee
-    """
-    EMPLOYEE
-    """
-    Guest
-    """
-    GUEST
-}
-
-"""
-Platform enum to target announcements to specific platforms
-"""
-enum Platform {
-    """
-    Android
-    """
-    ANDROID
-    """
-    iOS
-    """
-    IOS
-    """
-    Web
-    """
-    WEB
-    """
-    Web Development Version
-    """
-    WEB_DEV
-}
-
-"""
 Prices for different types of customers
 """
 type Prices {
@@ -360,7 +306,7 @@ type Parent {
 }
 
 """
-Campus Life Event
+Campus Life Event data type. Information about a specific event on campus.
 """
 type ClEvent {
     """
@@ -398,7 +344,7 @@ type ClEvent {
 }
 
 """
-Host of the event, usually a club or student group
+Host of the event, usually a club or student group.
 """
 type Host {
     """
@@ -416,7 +362,7 @@ type Host {
 }
 
 """
-Charging station data
+Charging station data type. This includes the current status of the charging station.
 """
 type Bus {
     """
@@ -434,7 +380,7 @@ type Bus {
 }
 
 """
-Train data
+Train data. This includes the current departures at a specific station.
 """
 type Train {
     """
@@ -532,113 +478,7 @@ type MultiLanguageString {
 }
 
 """
-Root query
-"""
-type Query {
-    """
-    Get the current parking data in Ingolstadt
-    """
-    parking: ParkingData!
-    """
-    Get the current electric vehicle charging stations in Ingolstadt
-    """
-    charging: [ChargingStation!]!
-    """
-    Get the meal plan for a specific restaurant
-    """
-    food(locations: [String!]): FoodResponse!
-    """
-    Get the campus life events
-    """
-    clEvents: [ClEvent!]!
-    """
-    Get the current bus departures at a specific station
-    """
-    bus(station: String!): [Bus!]!
-    """
-    Get the current train departures at a specific station
-    """
-    train(station: String!): [Train!]!
-    """
-    Get the current announcements
-    """
-    announcements: [Announcement!]!
-        @deprecated(reason: "Use appAnnouncements query instead")
-    """
-    Get the current in app announcements
-    """
-    appAnnouncements: [Announcement!]!
-    """
-    Get the university sports events
-    """
-    universitySports: [UniversitySports!] # This returns a list of all sports
-    """
-    Get the room reports. Protected by authentication.
-    """
-    roomReports: [RoomReport!]!
-}
-
-"""
-Enum representing the different locations of THI.
-"""
-enum CampusType {
-    Ingolstadt
-    Neuburg
-}
-
-"""
-Enum representing the different weekdays.
-"""
-enum WeekdayType {
-    Monday
-    Tuesday
-    Wednesday
-    Thursday
-    Friday
-    Saturday
-    Sunday
-}
-
-"""
-Enum representing the different sports categories.
-"""
-enum SportsCategoryType {
-    Basketball
-    Soccer
-    Calisthenics
-    Dancing
-    StrengthTraining
-    Running
-    Jogging
-    Handball
-    Frisbee
-    Volleyball
-    Spikeball
-    FullBodyWorkout
-    Defense
-    Yoga
-    Meditation
-    Tennis
-    Badminton
-    Swimming
-    Waterpolo
-    Cycling
-    Climbing
-    Boxing
-    Kickboxing
-    MartialArts
-    TableTennis
-    Rowing
-    Baseball
-    Skateboarding
-    Parkour
-    Hiking
-    Hockey
-    Other
-}
-
-"""
-University sports event data
+University sports event. Represents a sports event from the university sports program.
 """
 type UniversitySports {
     """
@@ -680,7 +520,7 @@ type UniversitySports {
     """
     Invitation link for the sports event, e.g. a WhatsApp group
     """
-    invitationLink: String
+    invitationLink: URL
     """
     E-Mail address for registration or contact
     """
@@ -699,101 +539,8 @@ type UniversitySports {
     updatedAt: DateTime!
 }
 
-input MultiLanguageStringInput {
-    en: String!
-    de: String!
-}
-
 """
-Input type for the university sports event
-"""
-input UniversitySportsInput {
-    """
-    Title of the sports event in different languages
-    """
-    title: MultiLanguageStringInput!
-    """
-    Description of the sports event in different languages
-    """
-    description: MultiLanguageStringInput
-    """
-    Campus where the sports event belongs to. This is not the location of the event itself.
-    """
-    campus: CampusType!
-    """
-    Location of the sports event
-    """
-    location: String!
-    """
-    Weekday of the sports event
-    """
-    weekday: WeekdayType!
-    """
-    Start time of the sports event as Unix timestamp
-    """
-    startTime: LocalTime!
-    """
-    End time of the sports event as Unix timestamp
-    """
-    endTime: LocalTime
-    """
-    True if the sports event requires registration
-    """
-    requiresRegistration: Boolean!
-    """
-    Invitation link for the sports event, e.g. a WhatsApp group
-    """
-    invitationLink: String
-    """
-    E-Mail address for registration or contact
-    """
-    eMail: EmailAddress
-    """
-    Category of the sports event (e.g. soccer, basketball, etc.)
-    """
-    sportsCategory: SportsCategoryType!
-}
-
-"""
-Input type for the announcement
-"""
-input AnnouncementInput {
-    """
-    Platform where the announcement is displayed
-    """
-    platform: [Platform!]!
-    """
-    UserKind to target the announcement to specific user groups
-    """
-    userKind: [UserKind!]!
-    """
-    Title of the announcement in different languages
-    """
-    title: MultiLanguageStringInput!
-    """
-    Description of the announcement in different languages
-    """
-    description: MultiLanguageStringInput!
-    """
-    Start date and time when the announcement is displayed
-    """
-    startDateTime: DateTime!
-    """
-    End date and time when the announcement is displayed
-    """
-    endDateTime: DateTime!
-    """
-    Priority of the announcement, higher are more important
-    """
-    priority: Int!
-    """
-    URL to the announcement
-    """
-    url: String
-}
-
-"""
-Room reports. Contains user reports of wrong room data.
+Get all room reports. Contains user reports of wrong room data.
 """
 type RoomReport {
     """
@@ -807,7 +554,7 @@ type RoomReport {
     """
     Reason for the report. This is a enum wiht report categories.
     """
-    reason: String!
+    reason: RoomReportCategory!
     """
     description of the report
     """
@@ -822,59 +569,6 @@ type RoomReport {
     resolvedAt: DateTime
 }
 
-"""
-Room report input type. Used to create a new report.
-"""
-input RoomReportInput {
-    """
-    Room name
-    """
-    room: String!
-    """
-    Reason for the report. This is a enum with report categories: 'WRONG_DESCRIPTION', 'WRONG_LOCATION', 'NOT_EXISTING', 'MISSING', 'OTHER'
-    """
-    reason: String!
-    """
-    description of the report
-    """
-    description: String
-}
-
-"""
-Mutation type to update data
-"""
-type Mutation {
-    """
-    Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created.
-    """
-    upsertUniversitySport(id: ID, input: UniversitySportsInput!): UpsertResponse
-    """
-    Delete a university sports event by ID
-    """
-    deleteUniversitySport(id: ID!): Boolean
-    """
-    Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created.
-    """
-    upsertAppAnnouncement(id: ID, input: AnnouncementInput!): UpsertResponse
-    """
-    Delete an announcement by ID
-    """
-    deleteAppAnnouncement(id: ID!): Boolean
-    """
-    Create a new room report
-    """
-    createRoomReport(input: RoomReportInput!): UpsertResponse
-    """
-    Resolve a room report by ID
-    """
-    resolveRoomReport(id: ID!): UpsertResponse
-}
-
 type UpsertResponse {
     id: ID
 }
-
-scalar DateTime
-scalar LocalTime
-scalar EmailAddress
-scalar URL
