@@ -1,6 +1,4 @@
-# use the official Bun image
-# see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1 AS base
+FROM imbios/bun-node AS base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -21,14 +19,18 @@ FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
+# build the docs using npx (magidoc does not support bunx yet)
+RUN npx @magidoc/cli@latest generate -f docs/magidoc.mjs
+
+
 # copy production dependencies and source code into final image
 FROM base AS release
 COPY --chown=bun:bun --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app/docs/out docs/out
 COPY --from=prerelease /usr/src/app/index.ts .
 COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/src src
-COPY --from=prerelease /usr/src/app/documentation/generated documentation/generated
 
 # run the app
 USER bun

@@ -52,7 +52,6 @@ export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TT
 
 await apolloServer.start()
 
-app.use('/', express.static(path.join(__dirname, 'documentation/generated')))
 app.use(
     '/graphql',
     cors(),
@@ -68,6 +67,13 @@ app.use(
                 return {}
             }
         },
+    })
+)
+
+app.use(
+    '/',
+    express.static(path.join(__dirname, 'docs', 'out'), {
+        extensions: ['html'],
     })
 )
 

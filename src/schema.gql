@@ -245,6 +245,48 @@ enum OriginalLanguage {
 }
 
 """
+Available bus stations: fruehlingstrasse, hauptbahnhof, heydeckstrasse, hochschule, rathausplatz, rechbergstrasse, stadttheater, zob, kreuztor
+"""
+enum BusStation {
+    """
+    Fruehlingstrasse
+    """
+    fruehlingstrasse
+    """
+    Hauptbahnhof
+    """
+    hauptbahnhof
+    """
+    Heydeckstrasse
+    """
+    heydeckstrasse
+    """
+    Hochschule
+    """
+    hochschule
+    """
+    Rathausplatz
+    """
+    rathausplatz
+    """
+    Rechbergstrasse
+    """
+    rechbergstrasse
+    """
+    Stadttheater
+    """
+    stadttheater
+    """
+    ZOB
+    """
+    zob
+    """
+    Kreuztor
+    """
+    kreuztor
+}
+
+"""
 UserKind enum to target announcements to specific user groups
 """
 enum UserKind {
@@ -554,7 +596,7 @@ type Query {
     """
     Get the current bus departures at a specific station
     """
-    bus(station: String!): [Bus!]!
+    bus(station: BusStation!): [Bus!]!
     """
     Get the current train departures at a specific station
     """
@@ -680,7 +722,7 @@ type UniversitySports {
     """
     Invitation link for the sports event, e.g. a WhatsApp group
     """
-    invitationLink: String
+    invitationLink: URL
     """
     E-Mail address for registration or contact
     """
@@ -874,6 +916,7 @@ type UpsertResponse {
     id: ID
 }
 
+"When adding a new field, make sure to update the magidocs config file with relevant examples otherwise the documentation generation will fail."
 scalar DateTime
 scalar LocalTime
 scalar EmailAddress
