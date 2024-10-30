@@ -14,8 +14,24 @@ import path from 'path'
 
 import { resolvers } from './src/resolvers'
 
-const schema = readFileSync('./src/schema.gql', { encoding: 'utf-8' })
-const typeDefs = schema
+const schemaFiles = [
+    'enums.gql',
+    'scalars.gql',
+    'types.gql',
+    'inputs.gql',
+    'schema.gql',
+]
+const schemaDir = path.join(__dirname, 'src', 'schema')
+
+const typeDefs = schemaFiles.map((file) => {
+    const filePath = path.join(schemaDir, file)
+    try {
+        return readFileSync(filePath, { encoding: 'utf-8' })
+    } catch (error) {
+        console.error(`Error reading file ${filePath}:`, error)
+        throw error
+    }
+})
 const port = process.env.PORT || 4000
 
 const app = express()

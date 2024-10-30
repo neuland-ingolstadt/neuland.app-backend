@@ -17,7 +17,7 @@ function markdown(string) {
 export default {
     introspection: {
         type: 'sdl',
-        paths: [path.join('src', 'schema.gql')],
+        paths: ['src/schema/*.gql'],
     },
     website: {
         template: 'carbon-multi-page',

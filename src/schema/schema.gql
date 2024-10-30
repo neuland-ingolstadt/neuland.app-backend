@@ -1,0 +1,76 @@
+"""
+Root query
+"""
+type Query {
+    """
+    Get the current parking data in Ingolstadt. This includes the main parking lots and garages near the university.
+    """
+    parking: ParkingData!
+    """
+    Get the current electric vehicle charging stations in Ingolstadt. This includes the main charging stations near the university.
+    """
+    charging: [ChargingStation!]!
+    """
+    Get the meal plan for a specific restaurant.
+    """
+    food(locations: [RestaurantLocation!]!): FoodResponse!
+    """
+    Get the campus life events
+    """
+    clEvents: [ClEvent!]!
+    """
+    Get the current bus departures at a specific station
+    """
+    bus(station: BusStation!): [Bus!]!
+    """
+    Get the current train departures at a specific station
+    """
+    train(station: String!): [Train!]!
+    """
+    Get the current announcements
+    """
+    announcements: [Announcement!]!
+        @deprecated(reason: "Use appAnnouncements query instead")
+    """
+    Get the current in app announcements.
+    """
+    appAnnouncements: [Announcement!]!
+    """
+    Get the university sports events. This includes all sports events from all campuses.
+    """
+    universitySports: [UniversitySports!] # This returns a list of all sports
+    """
+    Get the room reports. Note: This query is only available for authenticated users.
+    """
+    roomReports: [RoomReport!]!
+}
+
+"""
+Mutation type to update data.
+"""
+type Mutation {
+    """
+    Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created. Note: This mutation is only available for authenticated users.
+    """
+    upsertUniversitySport(id: ID, input: UniversitySportsInput!): UpsertResponse
+    """
+    Delete a university sports event by ID. Note: This mutation is only available for authenticated users.
+    """
+    deleteUniversitySport(id: ID!): Boolean
+    """
+    Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created. Note: This mutation is only available for authenticated users.
+    """
+    upsertAppAnnouncement(id: ID, input: AnnouncementInput!): UpsertResponse
+    """
+    Delete an announcement by ID. Note: This mutation is only available for authenticated users.
+    """
+    deleteAppAnnouncement(id: ID!): Boolean
+    """
+    Create a new room report.
+    """
+    createRoomReport(input: RoomReportInput!): UpsertResponse
+    """
+    Resolve a room report by ID. Note: This mutation is only available for authenticated users.
+    """
+    resolveRoomReport(id: ID!): UpsertResponse
+}
