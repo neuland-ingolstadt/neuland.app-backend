@@ -402,7 +402,7 @@ type Parent {
 }
 
 """
-Campus Life Event
+Campus Life Event data type. Information about a specific event on campus.
 """
 type ClEvent {
     """
@@ -440,7 +440,7 @@ type ClEvent {
 }
 
 """
-Host of the event, usually a club or student group
+Host of the event, usually a club or student group.
 """
 type Host {
     """
@@ -458,7 +458,7 @@ type Host {
 }
 
 """
-Charging station data
+Charging station data type. This includes the current status of the charging station.
 """
 type Bus {
     """
@@ -476,7 +476,7 @@ type Bus {
 }
 
 """
-Train data
+Train data. This includes the current departures at a specific station.
 """
 type Train {
     """
@@ -574,21 +574,43 @@ type MultiLanguageString {
 }
 
 """
+Enum representing the different restaurant locations. This is used as a parameter for the food query.
+"""
+enum RestaurantLocation {
+    """
+    Ingolstadt Mensa
+    """
+    IngolstadtMensa
+    """
+    Neuburg Mensa
+    """
+    NeuburgMensa
+    """
+    Reimanns
+    """
+    Reimanns
+    """
+    Canisius
+    """
+    Canisius
+}
+
+"""
 Root query
 """
 type Query {
     """
-    Get the current parking data in Ingolstadt
+    Get the current parking data in Ingolstadt. This includes the main parking lots and garages near the university.
     """
     parking: ParkingData!
     """
-    Get the current electric vehicle charging stations in Ingolstadt
+    Get the current electric vehicle charging stations in Ingolstadt. This includes the main charging stations near the university.
     """
     charging: [ChargingStation!]!
     """
-    Get the meal plan for a specific restaurant
+    Get the meal plan for a specific restaurant.
     """
-    food(locations: [String!]): FoodResponse!
+    food(locations: [RestaurantLocation!]!): FoodResponse!
     """
     Get the campus life events
     """
@@ -607,21 +629,21 @@ type Query {
     announcements: [Announcement!]!
         @deprecated(reason: "Use appAnnouncements query instead")
     """
-    Get the current in app announcements
+    Get the current in app announcements.
     """
     appAnnouncements: [Announcement!]!
     """
-    Get the university sports events
+    Get the university sports events. This includes all sports events from all campuses.
     """
     universitySports: [UniversitySports!] # This returns a list of all sports
     """
-    Get the room reports. Protected by authentication.
+    Get the room reports. Note: This query is only available for authenticated users.
     """
     roomReports: [RoomReport!]!
 }
 
 """
-Enum representing the different locations of THI.
+Enum representing the different locations of THI. This is used to categorize the sports events.
 """
 enum CampusType {
     Ingolstadt
@@ -629,7 +651,7 @@ enum CampusType {
 }
 
 """
-Enum representing the different weekdays.
+Enum representing the different weekdays. This is used to categorize the sports events.
 """
 enum WeekdayType {
     Monday
@@ -642,7 +664,7 @@ enum WeekdayType {
 }
 
 """
-Enum representing the different sports categories.
+Enum representing the different sports categories. This is used to categorize the sports events.
 """
 enum SportsCategoryType {
     Basketball
@@ -680,7 +702,18 @@ enum SportsCategoryType {
 }
 
 """
-University sports event data
+Enum representing the different room report categories. This is used to categorize the reason for the report.
+"""
+enum RoomReportCategory {
+    WRONG_DESCRIPTION
+    WRONG_LOCATION
+    NOT_EXISTING
+    MISSING
+    OTHER
+}
+
+"""
+University sports event. Represents a sports event from the university sports program.
 """
 type UniversitySports {
     """
@@ -741,6 +774,9 @@ type UniversitySports {
     updatedAt: DateTime!
 }
 
+"""
+Input type for the multi language string.
+"""
 input MultiLanguageStringInput {
     en: String!
     de: String!
@@ -835,7 +871,7 @@ input AnnouncementInput {
 }
 
 """
-Room reports. Contains user reports of wrong room data.
+Get all room reports. Contains user reports of wrong room data.
 """
 type RoomReport {
     """
@@ -849,7 +885,7 @@ type RoomReport {
     """
     Reason for the report. This is a enum wiht report categories.
     """
-    reason: String!
+    reason: RoomReportCategory!
     """
     description of the report
     """
@@ -865,7 +901,7 @@ type RoomReport {
 }
 
 """
-Room report input type. Used to create a new report.
+Room report input type. Used to create a new report about incorrect room data.
 """
 input RoomReportInput {
     """
@@ -873,9 +909,9 @@ input RoomReportInput {
     """
     room: String!
     """
-    Reason for the report. This is a enum with report categories: 'WRONG_DESCRIPTION', 'WRONG_LOCATION', 'NOT_EXISTING', 'MISSING', 'OTHER'
+    Reason for the report.
     """
-    reason: String!
+    reason: RoomReportCategory!
     """
     description of the report
     """
@@ -883,31 +919,31 @@ input RoomReportInput {
 }
 
 """
-Mutation type to update data
+Mutation type to update data.
 """
 type Mutation {
     """
-    Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created.
+    Create or update a university sports event. If an ID is provided, the event is updated, otherwise a new event is created. Note: This mutation is only available for authenticated users.
     """
     upsertUniversitySport(id: ID, input: UniversitySportsInput!): UpsertResponse
     """
-    Delete a university sports event by ID
+    Delete a university sports event by ID. Note: This mutation is only available for authenticated users.
     """
     deleteUniversitySport(id: ID!): Boolean
     """
-    Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created.
+    Create or update an announcement. If an ID is provided, the announcement is updated, otherwise a new announcement is created. Note: This mutation is only available for authenticated users.
     """
     upsertAppAnnouncement(id: ID, input: AnnouncementInput!): UpsertResponse
     """
-    Delete an announcement by ID
+    Delete an announcement by ID. Note: This mutation is only available for authenticated users.
     """
     deleteAppAnnouncement(id: ID!): Boolean
     """
-    Create a new room report
+    Create a new room report.
     """
     createRoomReport(input: RoomReportInput!): UpsertResponse
     """
-    Resolve a room report by ID
+    Resolve a room report by ID. Note: This mutation is only available for authenticated users.
     """
     resolveRoomReport(id: ID!): UpsertResponse
 }

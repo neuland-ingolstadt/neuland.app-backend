@@ -63,10 +63,10 @@
         "@magidoc/cli": "^6.1.0"
     },
     "lint-staged": {
-        "**/*.{js,jsx,ts,tsx}": [
+        "**/*.{js,jsx,ts,tsx,mjs}": [
             "bunx eslint --fix"
         ],
-        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md}": [
+        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,mjs}": [
             "bunx prettier --write"
         ]
     }

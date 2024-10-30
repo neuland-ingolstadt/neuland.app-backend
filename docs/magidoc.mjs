@@ -82,7 +82,7 @@ export default {
                         #### Legal Notice
 
                         This API is provided by Neuland Ingolstadt e.V.\\
-                        
+
                         Email: info@neuland-ingolstadt.de\\
                         Website: [https://neuland-ingolstadt.de](https://neuland-ingolstadt.de)\\
                         Imprint: [https://next.neuland.app/legal/imprint](https://next.neuland.app/legal/imprint)
