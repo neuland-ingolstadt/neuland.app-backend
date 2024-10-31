@@ -2,7 +2,7 @@
     import Prism from '@magidoc/plugin-svelte-prismjs'
     import 'prismjs/components/prism-graphql.js'
     import 'prismjs/components/prism-json.js'
-    import 'prism-themes/themes/prism-holi-theme.css'
+    import './prism-holi-theme.css'
 
     import { NullGenerationStrategy } from '@magidoc/plugin-query-generator'
     import { Button } from 'carbon-components-svelte'

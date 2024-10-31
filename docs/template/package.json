@@ -41,7 +41,6 @@
         "marked": "14.1.2",
         "marked-gfm-heading-id": "4.1.0",
         "prism-svelte": "0.5.0",
-        "prism-themes": "^1.9.0",
         "prismjs": "1.29.0",
         "svelte": "4.2.19",
         "svelte-check": "4.0.4",

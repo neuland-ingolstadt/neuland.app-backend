@@ -56,8 +56,13 @@ http://localhost:4000/
 
 We use husky to lint and test the code before it is committed, that's why we recommend using the ESLint and Prettier extensions in VSCode.
 
-When changing the schema file husky will automatically generate the html documentation. Therefore, you need to have the `spectaql` package installed globally.
+### Documentation
+
+The static documentation is generated using [Magicdoc](https://magidoc.js.org/introduction/welcome) at build time.
+So, you don't need to worry about it as long as you follow the conventions and update the `magicdoc.mjs` file when adding new custom scalars to the schema.
+
+To start the documentation server locally, run:
 
 ```bash
-npm install -g spectaql
+bun docs:dev
 ```
