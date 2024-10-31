@@ -1,8 +1,2 @@
+node_modules/
 .env.local
-.VSCodeCounter
-node_modules
-.DS_Store
-src/data/announcements.json
-src/data/cl-events.json
-database/
-docs/out/

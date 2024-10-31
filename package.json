@@ -1,76 +1,8 @@
 {
-    "name": "neuland.app-backend",
-    "module": "index.ts",
-    "type": "module",
-    "scripts": {
-        "start": "bun run index.ts",
-        "dev": "bun --hot run index.ts",
-        "prepare": "husky",
-        "docs:dev": "magidoc dev -f docs/magidoc.mjs -m bun",
-        "drizzle-kit": "drizzle-kit generate --schema ./src/db/schema/ --dialect postgresql --out ./src/db/migrations",
-        "migrate": "bun run ./src/db/migrate.ts"
-    },
-    "peerDependencies": {
-        "typescript": "^5.0.0"
-    },
-    "dependencies": {
-        "@apollo/server": "^4.11.2",
-        "axios": "^1.7.7",
-        "cheerio": "^1.0.0",
-        "deepl": "^1.0.13",
-        "drizzle-orm": "^0.35.3",
-        "fetch-cookie": "^3.0.1",
-        "graphql": "^16.9.0",
-        "graphql-scalars": "^1.23.0",
-        "graphql-tag": "^2.12.6",
-        "he": "^1.2.0",
-        "jsonwebtoken": "^9.0.2",
-        "jwk-to-pem": "^2.0.6",
-        "moment": "^2.30.1",
-        "moment-timezone": "^0.5.46",
-        "node-cache": "^5.1.2",
-        "object-hash": "^3.0.0",
-        "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
-        "postgres": "^3.4.5",
-        "sanitize-html": "^2.13.1",
-        "xml-js": "^1.6.11"
-    },
-    "devDependencies": {
-        "@eslint/eslintrc": "^3.1.0",
-        "@eslint/js": "^9.13.0",
-        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-        "@types/bun": "^1.1.12",
-        "@types/cors": "^2.8.17",
-        "@types/he": "^1.2.3",
-        "@types/jsonwebtoken": "^9.0.7",
-        "@types/jwk-to-pem": "^2.0.3",
-        "@types/node": "^22.8.4",
-        "@types/object-hash": "^3.0.6",
-        "@types/pdf-parse": "^1.1.4",
-        "@types/sanitize-html": "^2.13.0",
-        "@typescript-eslint/eslint-plugin": "^8.12.2",
-        "concurrently": "^9.0.1",
-        "cross-env": "^7.0.3",
-        "drizzle-kit": "^0.26.2",
-        "eslint": "^9.13.0",
-        "eslint-config-prettier": "^9.1.0",
-        "globals": "^15.11.0",
-        "husky": "^9.1.6",
-        "lint-staged": "^15.2.10",
-        "prettier": "^3.3.3",
-        "typescript": "^5.6.3",
-        "typescript-eslint": "^8.12.2",
-        "@magidoc/cli": "^6.1.0"
-    },
-    "lint-staged": {
-        "**/*.{js,jsx,ts,tsx,mjs}": [
-            "bunx eslint --fix"
-        ],
-        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,mjs}": [
-            "bunx prettier --write"
-        ]
-    },
-    "patchedDependencies": {
-        "@magidoc/cli@6.1.0": "patches/@magidoc%2Fcli@6.1.0.patch"
-    }
+  "name": "neuland.app-backend",
+  "private": true,
+  "workspaces": [
+    "graphql",
+    "scraping"
+  ]
 }

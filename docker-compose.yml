@@ -1,11 +1,12 @@
 services:
-    app:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        environment:
-            - NODE_ENV=production
-        ports:
-            - '4000:4000'
-        volumes:
-            - ./.env.local:/usr/src/app/.env.local
+  graphql:
+    build:
+      context: .
+      dockerfile: ./graphql/Dockerfile 
+    environment:
+      - NODE_ENV=production
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./.env.local:/usr/src/graphql/.env.local
+      - ./patches:/usr/src/graphql/patches
