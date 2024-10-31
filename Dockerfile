@@ -1,4 +1,4 @@
-FROM imbios/bun-node AS base
+FROM oven/bun:1 AS base
 WORKDIR /usr/src/app
 
 # install dependencies into temp directory
@@ -6,11 +6,13 @@ WORKDIR /usr/src/app
 FROM base AS install
 RUN mkdir -p /temp/dev
 COPY package.json bun.lockb /temp/dev/
+COPY patches /temp/dev/patches
 RUN cd /temp/dev && bun install --frozen-lockfile --ignore-scripts
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod
 COPY package.json bun.lockb /temp/prod/
+COPY patches /temp/prod/patches
 RUN cd /temp/prod && bun install --frozen-lockfile --production --ignore-scripts
 
 # copy node_modules from temp directory
@@ -19,9 +21,7 @@ FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
-# build the docs using npx (magidoc does not support bunx yet)
-RUN npx @magidoc/cli@latest generate -f docs/magidoc.mjs
-
+RUN bunx magidoc generate -f docs/magidoc.mjs 
 
 # copy production dependencies and source code into final image
 FROM base AS release

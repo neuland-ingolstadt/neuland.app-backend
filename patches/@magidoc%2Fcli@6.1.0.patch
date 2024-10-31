@@ -1,0 +1,70 @@
+diff --git a/build/index.js b/build/index.js
+old mode 100755
+new mode 100644
+diff --git a/build/node/packageManager.d.ts b/build/node/packageManager.d.ts
+index aa3f60fbc06c42981978fa1f1a5f3b846101a88c..5bcdb98a8739111bc532f5e872a84cfa9124b289 100644
+--- a/build/node/packageManager.d.ts
++++ b/build/node/packageManager.d.ts
+@@ -1,4 +1,4 @@
+-export declare const PACKAGE_MANAGER_TYPES: readonly ["pnpm", "yarn", "npm"];
++export declare const PACKAGE_MANAGER_TYPES: readonly ["pnpm", "bun", "yarn", "npm"];
+ export type PackageManagerType = (typeof PACKAGE_MANAGER_TYPES)[number];
+ export type CommandConfiguration = {
+     cwd: string;
+diff --git a/build/node/packageManager.js b/build/node/packageManager.js
+index 1dac55c141407f814ea350316a417ff0a2b2369f..915d70ea593bc198f00d08f88d608d97ebd1e9c7 100644
+--- a/build/node/packageManager.js
++++ b/build/node/packageManager.js
+@@ -2,11 +2,14 @@ import { exec, spawn } from 'child_process';
+ import { promisify } from 'util';
+ 
+ const execPromise = promisify(exec);
+-const PACKAGE_MANAGER_TYPES = ['pnpm', 'yarn', 'npm'];
++const PACKAGE_MANAGER_TYPES = ['pnpm', 'bun', 'yarn', 'npm'];
+ async function selectPackageManager() {
+     if (await isPackageManagerAvailable('pnpm')) {
+         return createPnpm();
+     }
++    if (await isPackageManagerAvailable('bun')) {
++        return createRunner({ type: 'bun' });
++    }
+     if (await isPackageManagerAvailable('npm')) {
+         return createNpm();
+     }
+@@ -18,6 +21,8 @@ async function selectPackageManager() {
+ function getPackageManager(type) {
+     if (type === 'pnpm')
+         return createPnpm();
++    if (type === 'bun')
++        return createBun();
+     if (type === 'yarn')
+         return createYarn();
+     if (type === 'npm')
+@@ -33,6 +38,9 @@ function createYarn() {
+ function createNpm() {
+     return createRunner({ type: 'npm', installArgs: ['--legacy-peer-deps'] });
+ }
++function createBun() {
++    return createRunner({ type: 'bun' });
++}
+ function createRunner({ type, installArgs, }) {
+     return {
+         type,
+diff --git a/build/node/packageManager.js.map b/build/node/packageManager.js.map
+index 8a8fb0265b45d1c65dc268963628a71f90a73a91..b0dca9c8166ee8de3164b74b63772b53d5de5b8e 100644
+--- a/build/node/packageManager.js.map
++++ b/build/node/packageManager.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"packageManager.js","sources":["../../../src/node/packageManager.ts"],"sourcesContent":[null],"names":[],"mappings":"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"}
+\ No newline at end of file
++{"version":3,"file":"packageManager.js","sources":["../../../src/node/packageManager.ts"],"sourcesContent":[null],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/build/tsconfig.build.tsbuildinfo b/build/tsconfig.build.tsbuildinfo
+index c82213a83e7ce27f17b05ed7cdadfb31d7f50e10..3c6a9865c496d903969abae6448b82cd55c2520d 100644
+--- a/build/tsconfig.build.tsbuildinfo
++++ b/build/tsconfig.build.tsbuildinfo
+@@ -1 +1 @@
+-{"root":["../src/index.ts","../src/version.ts","../src/commands/dev/command.ts","../src/commands/dev/index.ts","../src/commands/eject/command.ts","../src/commands/eject/index.ts","../src/commands/generate/command.ts","../src/commands/generate/index.ts","../src/commands/preview/command.ts","../src/commands/preview/index.ts","../src/commands/utils/commander.ts","../src/commands/utils/fileUtils.ts","../src/commands/utils/loadConfigFile.ts","../src/commands/utils/log.ts","../src/commands/utils/outputColors.ts","../src/commands/utils/port.ts","../src/commands/utils/watch.ts","../src/commands/utils/withStacktrace.ts","../src/config/parser.ts","../src/config/reader.ts","../src/config/types.ts","../src/config/zod.ts","../src/node/packageManager.ts","../src/tasks/runner.ts","../src/tasks/all/buildTemplate.ts","../src/tasks/all/clean.ts","../src/tasks/all/copyStaticAssets.ts","../src/tasks/all/determineTmpDir.ts","../src/tasks/all/fetchTemplate.ts","../src/tasks/all/installDependencies.ts","../src/tasks/all/loadGraphqlSchema.ts","../src/tasks/all/moveOutput.ts","../src/tasks/all/resolveTemplateConfig.ts","../src/tasks/all/selectPackageManager.ts","../src/tasks/all/unzipTemplate.ts","../src/tasks/all/verifyDestinationAvailable.ts","../src/tasks/all/warnVersion.ts","../src/tasks/all/writeEnvFile.ts","../src/template/assets.ts","../src/template/config.ts","../src/template/fetch.ts","../src/template/index.ts","../src/template/output.ts","../src/template/tmp.ts","../src/template/unzip.ts","../src/utils/pages.ts"],"version":"5.6.2"}
+\ No newline at end of file
++{"root":["../src/index.ts","../src/version.ts","../src/commands/dev/command.ts","../src/commands/dev/index.ts","../src/commands/eject/command.ts","../src/commands/eject/index.ts","../src/commands/generate/command.ts","../src/commands/generate/index.ts","../src/commands/preview/command.ts","../src/commands/preview/index.ts","../src/commands/utils/commander.ts","../src/commands/utils/fileutils.ts","../src/commands/utils/loadconfigfile.ts","../src/commands/utils/log.ts","../src/commands/utils/outputcolors.ts","../src/commands/utils/port.ts","../src/commands/utils/watch.ts","../src/commands/utils/withstacktrace.ts","../src/config/parser.ts","../src/config/reader.ts","../src/config/types.ts","../src/config/zod.ts","../src/node/packagemanager.ts","../src/tasks/runner.ts","../src/tasks/all/buildtemplate.ts","../src/tasks/all/clean.ts","../src/tasks/all/copystaticassets.ts","../src/tasks/all/determinetmpdir.ts","../src/tasks/all/fetchtemplate.ts","../src/tasks/all/installdependencies.ts","../src/tasks/all/loadgraphqlschema.ts","../src/tasks/all/moveoutput.ts","../src/tasks/all/resolvetemplateconfig.ts","../src/tasks/all/selectpackagemanager.ts","../src/tasks/all/unziptemplate.ts","../src/tasks/all/verifydestinationavailable.ts","../src/tasks/all/warnversion.ts","../src/tasks/all/writeenvfile.ts","../src/template/assets.ts","../src/template/config.ts","../src/template/fetch.ts","../src/template/index.ts","../src/template/output.ts","../src/template/tmp.ts","../src/template/unzip.ts","../src/utils/pages.ts"],"version":"5.6.2"}
+\ No newline at end of file

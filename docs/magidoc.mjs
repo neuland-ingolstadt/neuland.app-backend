@@ -20,7 +20,7 @@ export default {
         paths: ['src/schema/*.gql'],
     },
     website: {
-        template: 'carbon-multi-page',
+        template: './docs/template',
         staticAssets: relativePath('./assets'),
         output: relativePath('out'),
         options: {
@@ -81,6 +81,10 @@ export default {
 
                         #### Legal Notice
 
+                        Our API is free to use for non-commercial purposes, like research and personal projects. It is provided as-is and without any warranty.\\
+                        Also note that the API is subject to change without notice and we cannot guarantee availability.\\
+                        If you have any questions or need help, please contact us.\\
+                        \\
                         This API is provided by Neuland Ingolstadt e.V.
                         \\
                         \\

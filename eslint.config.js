@@ -3,7 +3,16 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default [
-    { ignores: ['**/node_modules', '**/documentation'] },
+    {
+        ignores: [
+            '**/node_modules',
+            '**/documentation',
+            '**/out',
+            '**/dist',
+            '**/build',
+            '**/.svelte-kit',
+        ],
+    },
     { files: ['**/*.{js,mjs,cjs,ts}'] },
     { languageOptions: { globals: globals.browser } },
     pluginJs.configs.recommended,

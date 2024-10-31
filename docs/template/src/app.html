@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Magidoc" />
+        <meta
+            name="generator-url"
+            content="https://github.com/magidoc-org/magidoc"
+        />
+
+        %sveltekit.head%
+        <script>
+            // Function to set the theme based on the user's preference
+            function setTheme() {
+                const prefersDarkScheme = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches
+                if (prefersDarkScheme) {
+                    document.documentElement.setAttribute('theme', 'g100')
+                } else {
+                    document.documentElement.setAttribute('theme', 'white')
+                }
+            }
+
+            // Set the theme on initial load
+            setTheme()
+
+            // Listen for changes in the user's preference
+            window
+                .matchMedia('(prefers-color-scheme: dark)')
+                .addEventListener('change', setTheme)
+        </script>
+    </head>
+    <body>
+        <div style="display: contents">%sveltekit.body%</div>
+    </body>
+</html>

@@ -6,7 +6,7 @@
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
         "prepare": "husky",
-        "docs": "magidoc dev -f docs/magidoc.mjs",
+        "docs:dev": "magidoc dev -f docs/magidoc.mjs -m bun",
         "drizzle-kit": "drizzle-kit generate --schema ./src/db/schema/ --dialect postgresql --out ./src/db/migrations",
         "migrate": "bun run ./src/db/migrate.ts"
     },
@@ -69,5 +69,8 @@
         "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,mjs}": [
             "bunx prettier --write"
         ]
+    },
+    "patchedDependencies": {
+        "@magidoc/cli@6.1.0": "patches/@magidoc%2Fcli@6.1.0.patch"
     }
 }
