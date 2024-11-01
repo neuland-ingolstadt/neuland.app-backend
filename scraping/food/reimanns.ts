@@ -9,7 +9,12 @@ import type {
     TempMealData,
 } from '../types/food'
 import { addWeek, getDays, getWeek } from '../utils/date-utils'
-import { getMealHash, unifyFoodEntries } from '../utils/food-utils'
+import {
+    FoodCategory,
+    Restaurant,
+    getMealHash,
+    unifyFoodEntries,
+} from '../utils/food-utils'
 import { translateMeals } from '../utils/translation-utils'
 
 function toNum2(text: number | string): string {
@@ -105,7 +110,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
         meals: days[day].map((meal) => ({
             name: meal,
             id: getMealHash(day, meal),
-            category: 'Essen',
+            category: FoodCategory.MAIN,
             prices: {
                 student: 5.5,
                 employee: 6.5,
@@ -114,7 +119,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             allergens: null,
             flags: null,
             nutrition: null,
-            restaurant: 'Reimanns',
+            restaurant: Restaurant.REIMANNS,
         })),
     }))
 
@@ -124,7 +129,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
     const hashedStaticMeals = (day: TempMealData): StaticMeal[] => {
         return staticMeals.map((meal) => ({
             ...meal,
-            restaurant: 'Reimanns',
+            restaurant: Restaurant.REIMANNS,
             id: getMealHash(day.timestamp, meal.name),
             variants: meal.variants?.map((variant) => ({
                 ...variant,

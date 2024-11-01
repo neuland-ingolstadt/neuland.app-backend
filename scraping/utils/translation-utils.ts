@@ -8,6 +8,7 @@ import type {
     PreFoodData,
     TempMealData,
 } from '../types/food'
+import { FoodLanguage } from './food-utils'
 
 const deeplEndpoint = 'https://api-free.deepl.com/v2/translate'
 const deeplApiKey = Bun.env.DEEPL_API_KEY || ''
@@ -49,7 +50,7 @@ async function translateText(text: string, target: string): Promise<string> {
             free_api: true,
             target_lang: target as DeeplLanguages,
             auth_key: deeplApiKey,
-            source_lang: 'DE',
+            source_lang: FoodLanguage.DE,
         })
         return data.data.translations[0].text
     } catch (err) {
@@ -75,7 +76,7 @@ function translateFallback(meals: PreFoodData[]): MealData[] {
                             ? `FALLBACK: ${meal.name}`
                             : meal.name,
                 },
-                originalLanguage: 'DE',
+                originalLanguage: FoodLanguage.DE,
                 variants: meal.variants?.map((variant: any) => {
                     return {
                         ...variant,
@@ -151,7 +152,7 @@ export async function translateMeals(
                                       )
                                   )
                                 : [],
-                        originalLanguage: 'DE',
+                        originalLanguage: FoodLanguage.DE,
                     }
                 })
             )

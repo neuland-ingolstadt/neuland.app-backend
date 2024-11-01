@@ -3,6 +3,8 @@ import pdf from 'pdf-parse'
 
 import type { CanisiusBlock, MealData } from '../types/food'
 import {
+    FoodCategory,
+    Restaurant,
     getMealHash,
     isEmpty,
     mergeMealVariants,
@@ -135,24 +137,24 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
             const dayDishes = day.map((dish) => ({
                 name: dish.name,
                 id: getMealHash(dates[index], dish.name),
-                category: 'Essen',
+                category: FoodCategory.MAIN,
                 prices: dish.prices,
                 allergens: null,
                 flags: null,
                 nutrition: null,
-                restaurant: 'Canisius',
+                restaurant: Restaurant.CANISIUS,
             }))
 
             const daySalads = salads.map((salad) => ({
                 name: salad.name,
                 id: getMealHash(dates[index], salad.name),
                 originalLanguage: 'DE',
-                category: 'Salat',
+                category: FoodCategory.SALAD,
                 prices: salad.prices,
                 allergens: null,
                 flags: null,
                 nutrition: null,
-                restaurant: 'Canisius',
+                restaurant: Restaurant.CANISIUS,
             }))
 
             return {

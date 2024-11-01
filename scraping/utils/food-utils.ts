@@ -96,7 +96,7 @@ function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
         allergens: meal.allergens ?? null,
         flags: cleanMealFlags(meal.flags),
         nutrition: meal.nutrition ?? null,
-        originalLanguage: meal.originalLanguage ?? 'DE',
+        originalLanguage: meal.originalLanguage ?? FoodLanguage.DE,
         static: meal.static ?? false,
         restaurant: meal.restaurant ?? parentMeal?.restaurant ?? null,
         additional: meal.additional ?? false,
@@ -296,4 +296,24 @@ export function isEmpty(value: unknown): boolean {
         value == null ||
         (typeof value === 'string' && value.trim().length === 0)
     )
+}
+
+export enum FoodLanguage {
+    DE = 'DE',
+    EN = 'EN',
+}
+
+export enum Restaurant {
+    INGOLSTADT_MENSA = 'INGOLSTADT_MENSA',
+    NEUBURG_MENSA = 'NEUBURG_MENSA',
+    REIMANNS = 'REIMANNS',
+    CANISIUS = 'CANISIUS',
+}
+
+export enum FoodCategory {
+    MAIN = 'MAIN',
+    SIDE = 'SIDE',
+    SOUP = 'SOUP',
+    SALAD = 'SALAD',
+    DESSERT = 'DESSERT',
 }

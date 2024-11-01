@@ -1,12 +1,12 @@
 [
     {
-        "category": "Essen",
+        "category": "MAIN",
         "static": true,
         "name": {
             "de": "Thai Curry",
             "en": "Thai Curry"
         },
-        "originalLanguage": "de",
+        "originalLanguage": "DE",
         "prices": {
             "employee": 5.5,
             "student": 5.5,
@@ -28,13 +28,13 @@
         ]
     },
     {
-        "category": "Essen",
+        "category": "MAIN",
         "static": true,
         "name": {
             "de": "Beef Burger",
             "en": "Beef Burger"
         },
-        "originalLanguage": "de",
+        "originalLanguage": "DE",
         "prices": {
             "employee": 5.8,
             "student": 5.8,
@@ -55,13 +55,13 @@
         ]
     },
     {
-        "category": "Essen",
+        "category": "MAIN",
         "static": true,
         "name": {
             "de": "Currywurst",
             "en": "Currywurst"
         },
-        "originalLanguage": "de",
+        "originalLanguage": "DE",
         "prices": {
             "employee": 3.8,
             "student": 3.8,
@@ -83,12 +83,12 @@
     },
     {
         "static": true,
-        "category": "Salat",
+        "category": "SALAD",
         "name": {
             "de": "Großer gemischter Salat",
             "en": "Large mixed salad"
         },
-        "originalLanguage": "de",
+        "originalLanguage": "DE",
         "prices": {
             "employee": 5.8,
             "student": 5.8,
