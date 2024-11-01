@@ -1,5 +1,6 @@
 import {
     boolean,
+    date,
     decimal,
     integer,
     pgEnum,
@@ -106,7 +107,7 @@ export const mealDays = pgTable(
     {
         id: serial('id').primaryKey(),
         mealId: integer('meal_id').references(() => meals.id),
-        date: timestamp('date'),
+        date: date('date'),
         priceGuest: decimal('price_guest', { precision: 10, scale: 2 }),
         priceStudent: decimal('price_student', { precision: 10, scale: 2 }),
         priceEmployee: decimal('price_employee', { precision: 10, scale: 2 }),
