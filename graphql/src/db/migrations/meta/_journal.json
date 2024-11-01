@@ -1,55 +1,13 @@
 {
-    "version": "7",
-    "dialect": "postgresql",
-    "entries": [
-        {
-            "idx": 0,
-            "version": "7",
-            "when": 1727197753290,
-            "tag": "0000_round_scream",
-            "breakpoints": true
-        },
-        {
-            "idx": 1,
-            "version": "7",
-            "when": 1727650069941,
-            "tag": "0001_free_midnight",
-            "breakpoints": true
-        },
-        {
-            "idx": 2,
-            "version": "7",
-            "when": 1728922353122,
-            "tag": "0002_slippery_ezekiel",
-            "breakpoints": true
-        },
-        {
-            "idx": 3,
-            "version": "7",
-            "when": 1728925804726,
-            "tag": "0003_youthful_umar",
-            "breakpoints": true
-        },
-        {
-            "idx": 4,
-            "version": "7",
-            "when": 1728979979516,
-            "tag": "0004_wet_lady_deathstrike",
-            "breakpoints": true
-        },
-        {
-            "idx": 5,
-            "version": "7",
-            "when": 1730114334704,
-            "tag": "0005_lowly_albert_cleary",
-            "breakpoints": true
-        },
-        {
-            "idx": 6,
-            "version": "7",
-            "when": 1730128211401,
-            "tag": "0006_boring_blackheart",
-            "breakpoints": true
-        }
-    ]
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1730419874404,
+      "tag": "0000_famous_rawhide_kid",
+      "breakpoints": true
+    }
+  ]
 }
