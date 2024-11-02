@@ -25,7 +25,7 @@ type Query {
     """
     Get the current train departures at a specific station
     """
-    train(station: String!): [Train!]!
+    train(station: TrainStation!): [Train!]!
     """
     Get the current announcements
     """

@@ -8,6 +8,9 @@ const stations: Record<string, string> = {
     nord: 'Ingolstadt Nord#008003076',
     hbf: 'Ingolstadt Hbf',
     audi: 'Ingolstadt Audi#008003074',
+    INGOLSTADT_NORD: 'Ingolstadt Nord#008003076',
+    INGOLSTADT_HBF: 'Ingolstadt Hbf',
+    INGOLSTADT_AUDI: 'Ingolstadt Audi#008003074',
 }
 
 function dateFromTimestring(str: string): Date | null {

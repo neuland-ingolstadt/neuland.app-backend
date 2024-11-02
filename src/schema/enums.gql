@@ -55,6 +55,36 @@ enum BusStation {
 }
 
 """
+Enum representing the different types of train stations.
+"""
+enum TrainStation {
+    """
+    Ingolstadt Nord
+    """
+    INGOLSTADT_NORD
+    """
+    Ingolstadt Hbf
+    """
+    INGOLSTADT_HBF
+    """
+    Ingolstadt Audi
+    """
+    INGOLSTADT_AUDI
+    """
+    Ingolstadt Nord
+    """
+    nord @deprecated(reason: "Use INGOLSTADT_NORD instead")
+    """
+    Ingolstadt Hbf
+    """
+    hbf @deprecated(reason: "Use INGOLSTADT_HBF instead")
+    """
+    Ingolstadt Audi
+    """
+    audi @deprecated(reason: "Use INGOLSTADT_AUDI instead")
+}
+
+"""
 Enum representing the kind of user. This is used to target announcements to specific user groups.
 """
 enum UserKind {
