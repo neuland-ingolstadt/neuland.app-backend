@@ -1,1 +1,0 @@
-ALTER TABLE "meal_days" ALTER COLUMN "date" SET DATA TYPE date;

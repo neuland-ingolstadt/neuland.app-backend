@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS "food_users" (
 CREATE TABLE IF NOT EXISTS "meal_days" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"meal_id" integer,
-	"date" timestamp,
+	"date" date,
 	"price_guest" numeric(10, 2),
 	"price_student" numeric(10, 2),
 	"price_employee" numeric(10, 2)

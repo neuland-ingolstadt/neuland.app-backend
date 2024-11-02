@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1730419874404,
-      "tag": "0000_famous_rawhide_kid",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1730423826953,
-      "tag": "0001_little_romulus",
+      "when": 1730567605468,
+      "tag": "0000_soft_imperial_guard",
       "breakpoints": true
     }
   ]
