@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm'
 import {
     boolean,
     date,
@@ -5,6 +6,7 @@ import {
     integer,
     pgEnum,
     pgTable,
+    pgView,
     serial,
     text,
     timestamp,
@@ -141,3 +143,76 @@ export const foodUsers = pgTable('food_users', {
     id: serial('id').primaryKey(),
     createdAt: timestamp('created_at'),
 })
+
+// Define a Drizzle ORM view for future meals
+export const futureMealsView = pgView('future_meals', {
+    mealId: integer('meal_id'),
+    nameDe: text('name_de'),
+    nameEn: text('name_en'),
+    category: mealCategoryEnum('category'),
+    restaurant: restaurantEnum('restaurant'),
+    allergens: text('allergens'),
+    flags: text('flags'),
+    originalLanguage: languageCodeEnum('original_language'),
+    static: boolean('static'),
+    updatedAt: timestamp('updated_at'),
+    mealDate: date('meal_date'),
+    nutritionKj: integer('nutrition_kj'),
+    nutritionKcal: integer('nutrition_kcal'),
+    nutritionFat: decimal('nutrition_fat', { precision: 5, scale: 2 }),
+    nutritionFatSaturated: decimal('nutrition_fat_saturated', {
+        precision: 5,
+        scale: 2,
+    }),
+    nutritionCarbs: decimal('nutrition_carbs', { precision: 5, scale: 2 }),
+    nutritionSugar: decimal('nutrition_sugar', { precision: 5, scale: 2 }),
+    nutritionFiber: decimal('nutrition_fiber', { precision: 5, scale: 2 }),
+    nutritionProtein: decimal('nutrition_protein', { precision: 5, scale: 2 }),
+    nutritionSalt: decimal('nutrition_salt', { precision: 5, scale: 2 }),
+    variants: text('variants').array(),
+}).as(
+    sql`
+    SELECT m.id AS meal_id,
+           m.name_de,
+           m.name_en,
+           m.category,
+           m.restaurant,
+           m.allergens,
+           m.flags,
+           m.original_language,
+           m.static,
+           m.updated_at,
+           d.date AS meal_date,
+           n.nutrition_kj,
+           n.nutrition_kcal,
+           n.nutrition_fat,
+           n.nutrition_fat_saturated,
+           n.nutrition_carbs,
+           n.nutrition_sugar,
+           n.nutrition_fiber,
+           n.nutrition_protein,
+           n.nutrition_salt,
+           json_agg(json_build_object(
+                'variant_id', v.id,
+                'variant_name_de', v.name_de,
+                'variant_name_en', v.name_en,
+                'variant_allergens', v.allergens,
+                'variant_flags', v.flags,
+                'variant_original_language', v.original_language,
+                'variant_additional', v.additional,
+                'variant_price_guest', v.price_guest,
+                'variant_price_student', v.price_student,
+                'variant_price_employee', v.price_employee
+            )) AS variants,
+            COALESCE(avg(r.rating), 0::numeric) AS averageRating
+    FROM meals m
+             LEFT JOIN meal_nutrition n ON m.id = n.meal_id
+             LEFT JOIN meal_variants v ON m.id = v.base_meal_id
+             LEFT JOIN meal_reviews r ON m.id = r.meal_id
+             JOIN meal_days d ON m.id = d.meal_id
+    WHERE d.date >= CURRENT_DATE
+    GROUP BY m.id, m.name_de, m.name_en, m.category, m.restaurant, m.allergens, m.flags, m.original_language, m.static,
+             m.updated_at, d.date, n.nutrition_kj, n.nutrition_kcal, n.nutrition_fat, n.nutrition_fat_saturated,
+             n.nutrition_carbs, n.nutrition_sugar, n.nutrition_fiber, n.nutrition_protein, n.nutrition_salt
+  `
+)

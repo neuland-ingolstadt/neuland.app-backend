@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { db } from '@/db'
+import { futureMealsView } from '@/db/schema/food'
 import { cache } from '@/index'
 import { GraphQLError } from 'graphql'
 
@@ -69,6 +71,11 @@ export async function food(
         }
     }
 
+    db.select()
+        .from(futureMealsView)
+        .then((rows) => {
+            console.log(rows)
+        })
     return {
         foodData: Array.from(data, ([timestamp, meals]) => ({
             timestamp,

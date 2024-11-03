@@ -1,0 +1,1163 @@
+{
+  "id": "148099a9-4315-4e91-8043-a55d240cf7e5",
+  "prevId": "6df4f975-4bd8-4a65-a868-ba3268c9477b",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.app_announcements": {
+      "name": "app_announcements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "platform": {
+          "name": "platform",
+          "type": "app_platform[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_kind": {
+          "name": "user_kind",
+          "type": "user_kind[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title_de": {
+          "name": "title_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title_en": {
+          "name": "title_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description_de": {
+          "name": "description_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description_en": {
+          "name": "description_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_date_time": {
+          "name": "start_date_time",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_date_time": {
+          "name": "end_date_time",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "priority": {
+          "name": "priority",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.food_users": {
+      "name": "food_users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.meal_days": {
+      "name": "meal_days",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meal_id": {
+          "name": "meal_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "date": {
+          "name": "date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price_guest": {
+          "name": "price_guest",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price_student": {
+          "name": "price_student",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price_employee": {
+          "name": "price_employee",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_meal_date": {
+          "name": "unique_meal_date",
+          "columns": [
+            {
+              "expression": "meal_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "meal_days_meal_id_meals_id_fk": {
+          "name": "meal_days_meal_id_meals_id_fk",
+          "tableFrom": "meal_days",
+          "tableTo": "meals",
+          "columnsFrom": [
+            "meal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.meal_nutrition": {
+      "name": "meal_nutrition",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meal_id": {
+          "name": "meal_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_kj": {
+          "name": "nutrition_kj",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_kcal": {
+          "name": "nutrition_kcal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_fat": {
+          "name": "nutrition_fat",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_fat_saturated": {
+          "name": "nutrition_fat_saturated",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_carbs": {
+          "name": "nutrition_carbs",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_sugar": {
+          "name": "nutrition_sugar",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_fiber": {
+          "name": "nutrition_fiber",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_protein": {
+          "name": "nutrition_protein",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_salt": {
+          "name": "nutrition_salt",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meal_nutrition_meal_id_meals_id_fk": {
+          "name": "meal_nutrition_meal_id_meals_id_fk",
+          "tableFrom": "meal_nutrition",
+          "tableTo": "meals",
+          "columnsFrom": [
+            "meal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "meal_nutrition_meal_id_unique": {
+          "name": "meal_nutrition_meal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "meal_id"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "public.meal_problem_reports": {
+      "name": "meal_problem_reports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meal_day_id": {
+          "name": "meal_day_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reason": {
+          "name": "reason",
+          "type": "meal_report_reason",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meal_problem_reports_meal_day_id_meal_days_id_fk": {
+          "name": "meal_problem_reports_meal_day_id_meal_days_id_fk",
+          "tableFrom": "meal_problem_reports",
+          "tableTo": "meal_days",
+          "columnsFrom": [
+            "meal_day_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "meal_problem_reports_user_id_food_users_id_fk": {
+          "name": "meal_problem_reports_user_id_food_users_id_fk",
+          "tableFrom": "meal_problem_reports",
+          "tableTo": "food_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.meal_reviews": {
+      "name": "meal_reviews",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "meal_id": {
+          "name": "meal_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rating": {
+          "name": "rating",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "meal_reviews_meal_id_meals_id_fk": {
+          "name": "meal_reviews_meal_id_meals_id_fk",
+          "tableFrom": "meal_reviews",
+          "tableTo": "meals",
+          "columnsFrom": [
+            "meal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "meal_reviews_user_id_food_users_id_fk": {
+          "name": "meal_reviews_user_id_food_users_id_fk",
+          "tableFrom": "meal_reviews",
+          "tableTo": "food_users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.meal_variants": {
+      "name": "meal_variants",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "base_meal_id": {
+          "name": "base_meal_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_de": {
+          "name": "name_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_en": {
+          "name": "name_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "allergens": {
+          "name": "allergens",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flags": {
+          "name": "flags",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "original_language": {
+          "name": "original_language",
+          "type": "language_code",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "additional": {
+          "name": "additional",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "static": {
+          "name": "static",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price_guest": {
+          "name": "price_guest",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price_student": {
+          "name": "price_student",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price_employee": {
+          "name": "price_employee",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_base_meal_name_de": {
+          "name": "unique_base_meal_name_de",
+          "columns": [
+            {
+              "expression": "base_meal_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "name_de",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "meal_variants_base_meal_id_meals_id_fk": {
+          "name": "meal_variants_base_meal_id_meals_id_fk",
+          "tableFrom": "meal_variants",
+          "tableTo": "meals",
+          "columnsFrom": [
+            "base_meal_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.meals": {
+      "name": "meals",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name_de": {
+          "name": "name_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name_en": {
+          "name": "name_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "meal_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "restaurant": {
+          "name": "restaurant",
+          "type": "restaurant",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "allergens": {
+          "name": "allergens",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flags": {
+          "name": "flags",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "original_language": {
+          "name": "original_language",
+          "type": "language_code",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "static": {
+          "name": "static",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "unique_name_category_restaurant": {
+          "name": "unique_name_category_restaurant",
+          "columns": [
+            {
+              "expression": "name_de",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "category",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "restaurant",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.room_reports": {
+      "name": "room_reports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "room": {
+          "name": "room",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "room_report_reason",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "resolved_at": {
+          "name": "resolved_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.university_sports": {
+      "name": "university_sports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title_de": {
+          "name": "title_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description_de": {
+          "name": "description_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title_en": {
+          "name": "title_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description_en": {
+          "name": "description_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "campus": {
+          "name": "campus",
+          "type": "campus",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weekday": {
+          "name": "weekday",
+          "type": "weekday",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_time": {
+          "name": "start_time",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_time": {
+          "name": "end_time",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "requires_registration": {
+          "name": "requires_registration",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "invitation_link": {
+          "name": "invitation_link",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "e_mail": {
+          "name": "e_mail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sports_category": {
+          "name": "sports_category",
+          "type": "sports_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "enums": {
+    "public.app_platform": {
+      "name": "app_platform",
+      "schema": "public",
+      "values": [
+        "ANDROID",
+        "IOS",
+        "WEB",
+        "WEB_DEV"
+      ]
+    },
+    "public.user_kind": {
+      "name": "user_kind",
+      "schema": "public",
+      "values": [
+        "STUDENT",
+        "EMPLOYEE",
+        "GUEST"
+      ]
+    },
+    "public.language_code": {
+      "name": "language_code",
+      "schema": "public",
+      "values": [
+        "DE",
+        "EN"
+      ]
+    },
+    "public.meal_category": {
+      "name": "meal_category",
+      "schema": "public",
+      "values": [
+        "MAIN",
+        "SIDE",
+        "SOUP",
+        "SALAD",
+        "DESSERT"
+      ]
+    },
+    "public.meal_report_reason": {
+      "name": "meal_report_reason",
+      "schema": "public",
+      "values": [
+        "WRONG_PRICE",
+        "WRONG_INGREDIENTS",
+        "NOT_AVAILABLE",
+        "OTHER"
+      ]
+    },
+    "public.restaurant": {
+      "name": "restaurant",
+      "schema": "public",
+      "values": [
+        "INGOLSTADT_MENSA",
+        "NEUBURG_MENSA",
+        "REIMANNS",
+        "CANISIUS"
+      ]
+    },
+    "public.room_report_reason": {
+      "name": "room_report_reason",
+      "schema": "public",
+      "values": [
+        "WRONG_DESCRIPTION",
+        "WRONG_LOCATION",
+        "NOT_EXISTING",
+        "MISSING",
+        "OTHER"
+      ]
+    },
+    "public.campus": {
+      "name": "campus",
+      "schema": "public",
+      "values": [
+        "Ingolstadt",
+        "Neuburg"
+      ]
+    },
+    "public.sports_category": {
+      "name": "sports_category",
+      "schema": "public",
+      "values": [
+        "Basketball",
+        "Soccer",
+        "Calisthenics",
+        "Dancing",
+        "StrengthTraining",
+        "Running",
+        "Jogging",
+        "Handball",
+        "Frisbee",
+        "Volleyball",
+        "Spikeball",
+        "FullBodyWorkout",
+        "Defense",
+        "Yoga",
+        "Meditation",
+        "Tennis",
+        "Badminton",
+        "Swimming",
+        "Waterpolo",
+        "Cycling",
+        "Climbing",
+        "Boxing",
+        "Kickboxing",
+        "MartialArts",
+        "TableTennis",
+        "Rowing",
+        "Baseball",
+        "Skateboarding",
+        "Parkour",
+        "Hockey",
+        "Hiking",
+        "Other"
+      ]
+    },
+    "public.weekday": {
+      "name": "weekday",
+      "schema": "public",
+      "values": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "views": {
+    "public.future_meals": {
+      "columns": {
+        "meal_id": {
+          "name": "meal_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name_de": {
+          "name": "name_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name_en": {
+          "name": "name_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category": {
+          "name": "category",
+          "type": "meal_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "restaurant": {
+          "name": "restaurant",
+          "type": "restaurant",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "allergens": {
+          "name": "allergens",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flags": {
+          "name": "flags",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "original_language": {
+          "name": "original_language",
+          "type": "language_code",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "static": {
+          "name": "static",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "meal_date": {
+          "name": "meal_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_kj": {
+          "name": "nutrition_kj",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_kcal": {
+          "name": "nutrition_kcal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_fat": {
+          "name": "nutrition_fat",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_fat_saturated": {
+          "name": "nutrition_fat_saturated",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_carbs": {
+          "name": "nutrition_carbs",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_sugar": {
+          "name": "nutrition_sugar",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_fiber": {
+          "name": "nutrition_fiber",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_protein": {
+          "name": "nutrition_protein",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nutrition_salt": {
+          "name": "nutrition_salt",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_id": {
+          "name": "variant_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_name_de": {
+          "name": "variant_name_de",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_name_en": {
+          "name": "variant_name_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_allergens": {
+          "name": "variant_allergens",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_flags": {
+          "name": "variant_flags",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_original_language": {
+          "name": "variant_original_language",
+          "type": "language_code",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_additional": {
+          "name": "variant_additional",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_price_guest": {
+          "name": "variant_price_guest",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_price_student": {
+          "name": "variant_price_student",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "variant_price_employee": {
+          "name": "variant_price_employee",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "average_rating": {
+          "name": "average_rating",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "definition": "\n    SELECT m.id AS meal_id,\n           m.name_de,\n           m.name_en,\n           m.category,\n           m.restaurant,\n           m.allergens,\n           m.flags,\n           m.original_language,\n           m.static,\n           m.updated_at,\n           d.date AS meal_date,\n           n.nutrition_kj,\n           n.nutrition_kcal,\n           n.nutrition_fat,\n           n.nutrition_fat_saturated,\n           n.nutrition_carbs,\n           n.nutrition_sugar,\n           n.nutrition_fiber,\n           n.nutrition_protein,\n           n.nutrition_salt,\n           v.id                                AS variant_id,\n           v.name_de                           AS variant_name_de,\n           v.name_en                           AS variant_name_en,\n           v.allergens                         AS variant_allergens,\n           v.flags                             AS variant_flags,\n           v.original_language                 AS variant_original_language,\n           v.additional                        AS variant_additional,\n           v.price_guest                       AS variant_price_guest,\n           v.price_student                     AS variant_price_student,\n           v.price_employee                    AS variant_price_employee,\n           COALESCE(avg(r.rating), 0::numeric) AS average_rating\n    FROM meals m\n             LEFT JOIN meal_nutrition n ON m.id = n.meal_id\n             LEFT JOIN meal_variants v ON m.id = v.base_meal_id\n             LEFT JOIN meal_reviews r ON m.id = r.meal_id\n             JOIN meal_days d ON m.id = d.meal_id\n    WHERE d.date >= CURRENT_DATE\n    GROUP BY m.id, m.name_de, m.name_en, m.category, m.restaurant, m.allergens, m.flags, m.original_language, m.static,\n             m.updated_at, d.date, n.nutrition_kj, n.nutrition_kcal, n.nutrition_fat, n.nutrition_fat_saturated,\n             n.nutrition_carbs, n.nutrition_sugar, n.nutrition_fiber, n.nutrition_protein, n.nutrition_salt, v.id,\n             v.name_de, v.name_en, v.allergens, v.flags, v.original_language, v.additional, v.price_guest, v.price_student,\n             v.price_employee\n  ",
+      "name": "future_meals",
+      "schema": "public",
+      "isExisting": false,
+      "materialized": false
+    }
+  },
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

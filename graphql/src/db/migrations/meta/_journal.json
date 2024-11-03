@@ -8,6 +8,20 @@
       "when": 1730567605468,
       "tag": "0000_soft_imperial_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1730649661851,
+      "tag": "0001_woozy_bloodaxe",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1730650555206,
+      "tag": "0002_quick_reavers",
+      "breakpoints": true
     }
   ]
 }
