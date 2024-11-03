@@ -1,20 +1,20 @@
 name: CI
 on:
-    push:
-        branches: [develop, main]
-    pull_request:
-        branches: [develop, main]
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
 jobs:
-    lint:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: oven-sh/setup-bun@v2
-              with:
-                  bun-version: latest
-            - uses: actions/checkout@v4
-            - name: Install modules
-              run: bun install
-            - name: Run ESLint
-              run: bunx eslint .
-            - name: Run Prettier
-              run: bunx prettier --check .
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/checkout@v4
+      - name: Install modules
+        run: bun install
+      - name: Check GraphQL directory
+        run: cd graphql && bunx eslint . && bunx prettier --check .
+      - name: Check Scraping directory
+        run: cd scraping && bunx eslint . && bunx prettier --check .
