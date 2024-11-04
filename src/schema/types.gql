@@ -520,7 +520,7 @@ type UniversitySports {
     """
     Invitation link for the sports event, e.g. a WhatsApp group
     """
-    invitationLink: URL
+    invitationLink: String
     """
     E-Mail address for registration or contact
     """
