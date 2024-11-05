@@ -1,6 +1,6 @@
 {
-  "id": "0a697782-c4c6-4dd1-b089-42fbaa3235ec",
-  "prevId": "148099a9-4315-4e91-8043-a55d240cf7e5",
+  "id": "a099da41-0156-4433-9b39-679e142dad0e",
+  "prevId": "9f5c866d-719f-4abd-ae05-5723202b4916",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -957,20 +957,20 @@
   "views": {
     "public.future_meals": {
       "columns": {
-        "meal_id": {
-          "name": "meal_id",
+        "mealId": {
+          "name": "mealId",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "name_de": {
-          "name": "name_de",
-          "type": "text",
+        "id": {
+          "name": "id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "name_en": {
-          "name": "name_en",
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -1001,8 +1001,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "original_language": {
-          "name": "original_language",
+        "originalLanguage": {
+          "name": "originalLanguage",
           "type": "language_code",
           "typeSchema": "public",
           "primaryKey": false,
@@ -1014,141 +1014,38 @@
           "primaryKey": false,
           "notNull": false
         },
-        "updated_at": {
-          "name": "updated_at",
+        "updatedAt": {
+          "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
-        "meal_date": {
-          "name": "meal_date",
+        "mealDate": {
+          "name": "mealDate",
           "type": "date",
           "primaryKey": false,
           "notNull": false
         },
-        "nutrition_kj": {
-          "name": "nutrition_kj",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_kcal": {
-          "name": "nutrition_kcal",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_fat": {
-          "name": "nutrition_fat",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_fat_saturated": {
-          "name": "nutrition_fat_saturated",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_carbs": {
-          "name": "nutrition_carbs",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_sugar": {
-          "name": "nutrition_sugar",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_fiber": {
-          "name": "nutrition_fiber",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_protein": {
-          "name": "nutrition_protein",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "nutrition_salt": {
-          "name": "nutrition_salt",
-          "type": "numeric(5, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_id": {
-          "name": "variant_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_name_de": {
-          "name": "variant_name_de",
+        "prices": {
+          "name": "prices",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "variant_name_en": {
-          "name": "variant_name_en",
+        "nutrition": {
+          "name": "nutrition",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "variant_allergens": {
-          "name": "variant_allergens",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_flags": {
-          "name": "variant_flags",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_original_language": {
-          "name": "variant_original_language",
-          "type": "language_code",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_additional": {
-          "name": "variant_additional",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_price_guest": {
-          "name": "variant_price_guest",
-          "type": "numeric(10, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_price_student": {
-          "name": "variant_price_student",
-          "type": "numeric(10, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "variant_price_employee": {
-          "name": "variant_price_employee",
-          "type": "numeric(10, 2)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "average_rating": {
-          "name": "average_rating",
-          "type": "numeric(5, 2)",
+        "variants": {
+          "name": "variants",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": false
         }
       },
-      "definition": "\n    SELECT m.id AS meal_id,\n           m.name_de,\n           m.name_en,\n           m.category,\n           m.restaurant,\n           m.allergens,\n           m.flags,\n           m.original_language,\n           m.static,\n           m.updated_at,\n           d.date AS meal_date,\n           n.nutrition_kj,\n           n.nutrition_kcal,\n           n.nutrition_fat,\n           n.nutrition_fat_saturated,\n           n.nutrition_carbs,\n           n.nutrition_sugar,\n           n.nutrition_fiber,\n           n.nutrition_protein,\n           n.nutrition_salt,\n           json_agg(json_build_object(\n                'variant_id', v.id,\n                'variant_name_de', v.name_de,\n                'variant_name_en', v.name_en,\n                'variant_allergens', v.allergens,\n                'variant_flags', v.flags,\n                'variant_original_language', v.original_language,\n                'variant_additional', v.additional,\n                'variant_price_guest', v.price_guest,\n                'variant_price_student', v.price_student,\n                'variant_price_employee', v.price_employee\n            )) AS variants,\n            COALESCE(avg(r.rating), 0::numeric) AS averageRating\n    FROM meals m\n             LEFT JOIN meal_nutrition n ON m.id = n.meal_id\n             LEFT JOIN meal_variants v ON m.id = v.base_meal_id\n             LEFT JOIN meal_reviews r ON m.id = r.meal_id\n             JOIN meal_days d ON m.id = d.meal_id\n    WHERE d.date >= CURRENT_DATE\n    GROUP BY m.id, m.name_de, m.name_en, m.category, m.restaurant, m.allergens, m.flags, m.original_language, m.static,\n             m.updated_at, d.date, n.nutrition_kj, n.nutrition_kcal, n.nutrition_fat, n.nutrition_fat_saturated,\n             n.nutrition_carbs, n.nutrition_sugar, n.nutrition_fiber, n.nutrition_protein, n.nutrition_salt\n  ",
+      "definition": "\n   SELECT m.id                                                                                                AS \"mealId\",\n       d.id                                                                                                AS \"id\",\n       json_build_object('de', m.name_de, 'en', m.name_en)                                                 AS name,\n       m.category,\n       m.restaurant,\n       m.allergens,\n       m.flags,\n       m.original_language                                                                                 AS \"originalLanguage\",\n       m.static,\n       m.updated_at                                                                                        AS \"updatedAt\",\n       d.date                                                                                              AS \"mealDate\",\n       json_build_object('guest', d.price_guest, 'student', d.price_student, 'employee', d.price_employee) AS prices,\n       CASE\n           WHEN n.nutrition_kj IS NOT NULL OR n.nutrition_kcal IS NOT NULL OR n.nutrition_fat IS NOT NULL\n               OR n.nutrition_fat_saturated IS NOT NULL OR n.nutrition_carbs IS NOT NULL OR n.nutrition_sugar IS NOT NULL\n               OR n.nutrition_fiber IS NOT NULL OR n.nutrition_protein IS NOT NULL OR n.nutrition_salt IS NOT NULL\n           THEN json_build_object('kj', n.nutrition_kj, 'kcal', n.nutrition_kcal, 'fat', n.nutrition_fat, 'fatSaturated',\n                                  n.nutrition_fat_saturated, 'carbs', n.nutrition_carbs, 'sugar', n.nutrition_sugar,\n                                  'fiber', n.nutrition_fiber, 'protein', n.nutrition_protein, 'salt', n.nutrition_salt)\n           ELSE NULL\n       END                                                                                                AS nutrition,\n       CASE\n           WHEN COUNT(v.id) > 0\n           THEN json_agg(json_build_object('id', v.id, json_build_object('de', v.name_de, 'en', v.name_en),\n                                           'allergens', v.allergens, 'flags', v.flags,\n                                           'originalLanguage', v.original_language, 'additional', v.additional,\n                                           'prices', json_build_object('guest', v.price_guest, 'student', v.price_student,\n                                                                       'employee', v.price_employee)))\n           ELSE NULL\n       END                                                                                                AS variants,\n       COALESCE(avg(r.rating), 0::numeric)                                                                 AS \"averageRating\",\n       count(r.rating)                                                                                     AS \"ratingCount\"\nFROM meals m\n         LEFT JOIN meal_nutrition n ON m.id = n.meal_id\n         LEFT JOIN meal_variants v ON m.id = v.base_meal_id\n         LEFT JOIN meal_reviews r ON m.id = r.meal_id\n         JOIN meal_days d ON m.id = d.meal_id\nWHERE d.date >= CURRENT_DATE\nGROUP BY m.id, d.id, m.category, m.restaurant, m.allergens, m.flags, m.original_language, m.static, m.updated_at,\n         d.date, d.price_guest, d.price_student, d.price_employee, n.nutrition_kj, n.nutrition_kcal, n.nutrition_fat,\n         n.nutrition_fat_saturated, n.nutrition_carbs, n.nutrition_sugar, n.nutrition_fiber, n.nutrition_protein,\n         n.nutrition_salt\nHAVING (n.nutrition_kj IS NOT NULL OR n.nutrition_kcal IS NOT NULL OR n.nutrition_fat IS NOT NULL\n        OR n.nutrition_fat_saturated IS NOT NULL OR n.nutrition_carbs IS NOT NULL OR n.nutrition_sugar IS NOT NULL\n        OR n.nutrition_fiber IS NOT NULL OR n.nutrition_protein IS NOT NULL OR n.nutrition_salt IS NOT NULL)\n   OR COUNT(v.id) > 0\n\n  ",
       "name": "future_meals",
       "schema": "public",
       "isExisting": false,

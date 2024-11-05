@@ -5,11 +5,11 @@ enum OriginalLanguage {
     """
     German language code
     """
-    de
+    DE
     """
     English language code
     """
-    en
+    EN
 }
 
 """
@@ -171,17 +171,41 @@ enum RestaurantLocation {
     """
     Ingolstadt Mensa
     """
-    IngolstadtMensa
+    IngolstadtMensa @deprecated(reason: "Use INGOLSTADT_MENSA instead")
     """
     Neuburg Mensa
     """
-    NeuburgMensa
+    NeuburgMensa @deprecated(reason: "Use NEUBURG_MENSA instead")
     """
     Reimanns
     """
+    Reimanns @deprecated(reason: "Use REIMANNS instead")
+    """
+    Canisius
+    """
+    Canisius @deprecated(reason: "Use CANISIUS instead")
+    """
+    Ingolstadt Mensa
+    """
+    INGOLSTADT_MENSA
+    """
+    Neuburg Mensa
+    """
+    NEUBURG_MENSA
+    """
     Reimanns
     """
-    Canisius
+    REIMANNS
     """
     Canisius
+    """
+    CANISIUS
+}
+
+"""
+Enum representing the different cache control scopes. This is used to define the scope of the cache control directive.
+"""
+enum CacheControlScope {
+    PUBLIC
+    PRIVATE
 }

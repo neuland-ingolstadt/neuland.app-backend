@@ -363,9 +363,9 @@ export async function upsertMealWithNutrition3(
         )
         const mealId = mealIdResult.rows[0].id
 
-        // MERGE for nutrition data
-        await client.query(
-            `
+        if (meal.nutrition) {
+            await client.query(
+                `
             MERGE INTO meal_nutrition AS target
             USING (VALUES ($1::integer, $2::integer, $3::integer, $4::numeric(5,2), $5::numeric(5,2), $6::numeric(5,2), $7::numeric(5,2), $8::numeric(5,2), $9::numeric(5,2), $10::numeric(5,2)))
             AS source (meal_id, nutrition_kj, nutrition_kcal, nutrition_fat, nutrition_fat_saturated,
@@ -388,19 +388,20 @@ export async function upsertMealWithNutrition3(
                         source.nutrition_fat_saturated, source.nutrition_carbs, source.nutrition_sugar,
                         source.nutrition_fiber, source.nutrition_protein, source.nutrition_salt);
             `,
-            [
-                mealId,
-                meal.nutrition?.kj,
-                meal.nutrition?.kcal,
-                meal.nutrition?.fat,
-                meal.nutrition?.fatSaturated,
-                meal.nutrition?.carbs,
-                meal.nutrition?.sugar,
-                meal.nutrition?.fiber,
-                meal.nutrition?.protein,
-                meal.nutrition?.salt,
-            ]
-        )
+                [
+                    mealId,
+                    meal.nutrition?.kj,
+                    meal.nutrition?.kcal,
+                    meal.nutrition?.fat,
+                    meal.nutrition?.fatSaturated,
+                    meal.nutrition?.carbs,
+                    meal.nutrition?.sugar,
+                    meal.nutrition?.fiber,
+                    meal.nutrition?.protein,
+                    meal.nutrition?.salt,
+                ]
+            )
+        }
 
         // MERGE for meal variants
         if (meal.variants) {

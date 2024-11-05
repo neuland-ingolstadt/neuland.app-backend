@@ -5,8 +5,10 @@ import xmljs from 'xml-js'
 const URL = 'https://www.ingolstadt-ifg.de/typo3temp/parkinfo.xml'
 
 const getParking = async (): Promise<ParkingData> => {
+    console.debug('Fetching parking data...')
     try {
         const resp = await fetch(URL)
+        console.debug('Received parking data...')
         const body = await resp.text()
         if (resp.status !== 200) {
             throw new Error('Parking data not available')

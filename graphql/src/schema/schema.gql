@@ -74,3 +74,12 @@ type Mutation {
     """
     resolveRoomReport(id: ID!): UpsertResponse
 }
+
+"""
+Directive to control the cache behavior of a field or object.
+"""
+directive @cacheControl(
+    maxAge: Int
+    scope: CacheControlScope
+    inheritMaxAge: Boolean
+) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION

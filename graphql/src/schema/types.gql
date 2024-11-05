@@ -47,7 +47,7 @@ type ChargingStation {
 """
 Parking data
 """
-type ParkingData {
+type ParkingData @cacheControl(maxAge: 600) {
     """
     Timestamp of the last update from the source
     """
@@ -93,21 +93,26 @@ Meal data
 """
 type Meal {
     """
+    Meal ID of the meal. This is a unique identifier for the specific meal. This ID repeats for the same meal on different days.
+    """
+    mealId: ID!
+    """
+    Instance ID of the meal. This is a unique identifier for the specific meal instance on a specific day.
+    """
+    id: ID!
+    """
     Name of the meal in different languages
     """
     name: MultiLanguageString!
-    """
-    Unique identifier of the meal
-    """
-    id: ID!
     """
     Category of the meal (main, soup or salad)
     """
     category: String!
     """
-    Prices for different types of customers (student, employee, guest)
+    Restaurant where the meal is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
     """
-    prices: Prices!
+    restaurant: String!
+
     """
     List of allergens (e.g. gluten, lactose, etc.)
     """
@@ -121,10 +126,6 @@ type Meal {
     """
     nutrition: Nutrition
     """
-    Variants or toppings of the meal, like bread, sauce, etc.
-    """
-    variants: [Variation!]
-    """
     Original language of the meal name
     """
     originalLanguage: OriginalLanguage!
@@ -133,9 +134,13 @@ type Meal {
     """
     static: Boolean!
     """
-    Restaurant where the meal is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
+    Prices for different types of customers (student, employee, guest)
     """
-    restaurant: String!
+    prices: Prices!
+    """
+    Variants or toppings of the meal, like bread, sauce, etc.
+    """
+    variants: [Variation!]
 }
 
 """
@@ -195,11 +200,11 @@ type Nutrition {
     """
     Energy in kilojoules
     """
-    kj: Float!
+    kj: Int!
     """
     Energy in kilocalories
     """
-    kcal: Float!
+    kcal: Int!
     """
     Fat in grams
     """
@@ -211,7 +216,7 @@ type Nutrition {
     """
     Carbohydrates in grams
     """
-    carbs: Float!
+    carbs: Float
     """
     Sugar in grams
     """
@@ -276,7 +281,7 @@ type FoodError {
     message: String!
 }
 
-type FoodResponse {
+type FoodResponse @cacheControl(maxAge: 600) {
     """
     List of meal days
     """
