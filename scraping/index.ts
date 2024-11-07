@@ -30,13 +30,17 @@ cron.schedule('*/30 * * * *', async () => {
     console.time('Total Time with merge conflict resolution')
     for (const day of meals) {
         for (const meal of day.meals) {
-            await upsertMealWithNutrition3(meal, day.timestamp)
+            await upsertMealWithNutrition3(meal, new Date(day.timestamp))
         }
     }
     console.timeEnd('Total Time with merge conflict resolution')
 })
 
-cron.schedule('15,45 * * * *', async () => {
-    await pool.query('REFRESH MATERIALIZED VIEW meel_seven_days')
-    console.log('Refreshed materialized view')
-})
+const meals = await fetchMeals()
+console.time('Total Time with merge conflict resolution')
+for (const day of meals) {
+    for (const meal of day.meals) {
+        await upsertMealWithNutrition3(meal, new Date(day.timestamp))
+    }
+}
+console.timeEnd('Total Time with merge conflict resolution')
