@@ -107,9 +107,9 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             id: getMealHash(day, meal),
             category: 'Essen',
             prices: {
-                student: 5.5,
-                employee: 6.5,
-                guest: 7.5,
+                student: 6.5,
+                employee: 7.9,
+                guest: 8.9,
             },
             allergens: null,
             flags: null,
