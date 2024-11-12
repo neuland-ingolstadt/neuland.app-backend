@@ -8,9 +8,9 @@
         },
         "originalLanguage": "de",
         "prices": {
-            "employee": 6.5,
-            "student": 6.5,
-            "guest": 6.5
+            "employee": 6.3,
+            "student": 6.3,
+            "guest": 6.3
         },
         "variants": [
             {
@@ -36,9 +36,9 @@
         },
         "originalLanguage": "de",
         "prices": {
-            "employee": 6.8,
-            "student": 6.8,
-            "guest": 6.8
+            "employee": 6.9,
+            "student": 6.9,
+            "guest": 6.9
         },
         "variants": [
             {
@@ -63,9 +63,9 @@
         },
         "originalLanguage": "de",
         "prices": {
-            "employee": 4.8,
-            "student": 4.8,
-            "guest": 4.8
+            "employee": 4.5,
+            "student": 4.5,
+            "guest": 4.5
         },
         "variants": [
             {
@@ -74,9 +74,9 @@
                     "en": "Menu with fries and drink"
                 },
                 "prices": {
-                    "employee": 7.8,
-                    "student": 7.8,
-                    "guest": 7.8
+                    "employee": 7.9,
+                    "student": 7.9,
+                    "guest": 7.9
                 }
             }
         ]
@@ -90,9 +90,9 @@
         },
         "originalLanguage": "de",
         "prices": {
-            "employee": 6.8,
-            "student": 6.8,
-            "guest": 6.8
+            "employee": 6.0,
+            "student": 6.0,
+            "guest": 6.0
         },
         "variants": [
             {
