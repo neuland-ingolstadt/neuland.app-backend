@@ -269,7 +269,7 @@ export async function getAllEventDetails(
     const remoteEvents: ClEvent[] = []
     for (const url of await getEventList(fetch)) {
         const details = await getEventDetails(fetch, url)
-        const publicKey = 'Veröffentlichung des Ortes & Bescheibung in Apps'
+        const publicKey = 'Veröffentlichung des Ortes & Bescheibung in Apps' // sic (see Moodle)
         const publicEvent = details[publicKey] === 'Ja'
 
         remoteEvents.push({
