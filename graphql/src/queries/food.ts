@@ -4,8 +4,8 @@ import { futureMealsView } from '@/db/schema/food'
 import { cache } from '@/index'
 import { inArray } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
-import type { MealData, ReturnData } from '../types/food'
 
+import type { MealData, ReturnData } from '../types/food'
 
 export async function food(
     _: unknown,
@@ -37,7 +37,6 @@ export async function food(
         const existingMeals = data.get(meal.mealDate) ?? ([] as any[])
         data.set(meal.mealDate, existingMeals.concat(meal))
     })
-
 
     return {
         foodData: Array.from(data, ([timestamp, meals]) => ({

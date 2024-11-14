@@ -6,6 +6,7 @@ import { getCanisiusPlan } from './food/canisius'
 import { getMensaPlan } from './food/mensa'
 import { getReimannsPlan } from './food/reimanns'
 import { upsertMealWithNutrition3 } from './utils/db-utils'
+import { Restaurant } from './utils/food-utils'
 
 export const pool = new Pool({
     host: Bun.env.DB_HOST,
@@ -18,8 +19,8 @@ export const pool = new Pool({
 export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
 
 const fetchMeals = async () => {
-    const mensa = await getMensaPlan('INGOLSTADT_MENSA')
-    const neuburg = await getMensaPlan('NEUBURG_MENSA')
+    const mensa = await getMensaPlan(Restaurant.INGOLSTADT_MENSA)
+    const neuburg = await getMensaPlan(Restaurant.NEUBURG_MENSA)
     const canisius = await getCanisiusPlan()
     const reimanns = await getReimannsPlan()
     return [...mensa, ...neuburg, ...canisius, ...reimanns]

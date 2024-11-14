@@ -8,10 +8,11 @@
         },
         "originalLanguage": "DE",
         "prices": {
-            "employee": 5.5,
-            "student": 5.5,
-            "guest": 5.5
+            "employee": 6.3,
+            "student": 6.3,
+            "guest": 6.3
         },
+        "restaurant": "REIMANNS",
         "variants": [
             {
                 "name": {
@@ -36,10 +37,11 @@
         },
         "originalLanguage": "DE",
         "prices": {
-            "employee": 5.8,
-            "student": 5.8,
-            "guest": 5.8
+            "employee": 6.9,
+            "student": 6.9,
+            "guest": 6.9
         },
+        "restaurant": "REIMANNS",
         "variants": [
             {
                 "name": {
@@ -47,9 +49,9 @@
                     "en": "Menu with fries and drink"
                 },
                 "prices": {
-                    "employee": 8.9,
-                    "student": 8.9,
-                    "guest": 8.9
+                    "employee": 9.9,
+                    "student": 9.9,
+                    "guest": 9.9
                 }
             }
         ]
@@ -63,10 +65,11 @@
         },
         "originalLanguage": "DE",
         "prices": {
-            "employee": 3.8,
-            "student": 3.8,
-            "guest": 3.8
+            "employee": 4.5,
+            "student": 4.5,
+            "guest": 4.5
         },
+        "restaurant": "REIMANNS",
         "variants": [
             {
                 "name": {
@@ -74,9 +77,9 @@
                     "en": "Menu with fries and drink"
                 },
                 "prices": {
-                    "employee": 6.8,
-                    "student": 6.8,
-                    "guest": 6.8
+                    "employee": 7.9,
+                    "student": 7.9,
+                    "guest": 7.9
                 }
             }
         ]
@@ -90,10 +93,11 @@
         },
         "originalLanguage": "DE",
         "prices": {
-            "employee": 5.8,
-            "student": 5.8,
-            "guest": 5.8
+            "employee": 6.0,
+            "student": 6.0,
+            "guest": 6.0
         },
+        "restaurant": "REIMANNS",
         "variants": [
             {
                 "name": {

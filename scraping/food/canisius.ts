@@ -136,7 +136,6 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
         return dishes.map((day, index) => {
             const dayDishes = day.map((dish) => ({
                 name: dish.name,
-                id: getMealHash(dates[index], dish.name),
                 category: FoodCategory.MAIN,
                 prices: dish.prices,
                 allergens: null,
@@ -147,7 +146,6 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
 
             const daySalads = salads.map((salad) => ({
                 name: salad.name,
-                id: getMealHash(dates[index], salad.name),
                 originalLanguage: 'DE',
                 category: FoodCategory.SALAD,
                 prices: salad.prices,

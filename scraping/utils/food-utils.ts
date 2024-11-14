@@ -100,8 +100,6 @@ function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
         static: meal.static ?? false,
         restaurant: meal.restaurant ?? parentMeal?.restaurant ?? null,
         additional: meal.additional ?? false,
-
-        id: parentMeal !== null ? `${parentMeal.id}/${meal.id}` : meal.id,
         parent: reduceParentMeal(parentMeal),
     }
 }
@@ -220,14 +218,12 @@ export function getMealHash(day: string, mealName: string | object): string {
 function reduceParentMeal(parentMeal: Meal | null): {
     name: object
     category: string
-    id: string
 } | null {
     if (parentMeal == null) return null
 
     return {
         name: parentMeal.name,
         category: parentMeal.category ?? 'main',
-        id: parentMeal.id,
     }
 }
 

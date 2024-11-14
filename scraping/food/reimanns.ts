@@ -1,20 +1,9 @@
 import staticMeals from '@/data/reimanns-meals.json'
 import * as cheerio from 'cheerio'
 
-import type {
-    MealData,
-    PreFoodData,
-    StaticMeal,
-    TempMeal,
-    TempMealData,
-} from '../types/food'
+import type { Meal, MealData, PreFoodData } from '../types/food'
 import { addWeek, getDays, getWeek } from '../utils/date-utils'
-import {
-    FoodCategory,
-    Restaurant,
-    getMealHash,
-    unifyFoodEntries,
-} from '../utils/food-utils'
+import { FoodCategory, Restaurant, unifyFoodEntries } from '../utils/food-utils'
 import { translateMeals } from '../utils/translation-utils'
 
 function toNum2(text: number | string): string {
@@ -104,17 +93,15 @@ export async function getReimannsPlan(): Promise<MealData[]> {
         }
     })
 
-    // convert format to the same as /api/mensa
     const mealPlan = Object.keys(days).map((day) => ({
         timestamp: day,
         meals: days[day].map((meal) => ({
             name: meal,
-            id: getMealHash(day, meal),
             category: FoodCategory.MAIN,
             prices: {
-                student: 5.5,
-                employee: 6.5,
-                guest: 7.5,
+                student: 6.5,
+                employee: 7.9,
+                guest: 8.9,
             },
             allergens: null,
             flags: null,
@@ -125,19 +112,6 @@ export async function getReimannsPlan(): Promise<MealData[]> {
 
     const scrapedMeals = await translateMeals(mealPlan as PreFoodData[])
 
-    // add static meals (no need to translate)
-    const hashedStaticMeals = (day: TempMealData): StaticMeal[] => {
-        return staticMeals.map((meal) => ({
-            ...meal,
-            restaurant: Restaurant.REIMANNS,
-            id: getMealHash(day.timestamp, meal.name),
-            variants: meal.variants?.map((variant) => ({
-                ...variant,
-                id: getMealHash(day.timestamp, variant.name),
-            })),
-        }))
-    }
-
     // TODO: add allergens, flags, nutrition (ask Reimanns for data)
     scrapedMeals.forEach((day) => {
         // skip days without meals (restaurant probably closed)
@@ -145,7 +119,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             return
         }
 
-        day.meals.push(...(hashedStaticMeals(day) as TempMeal[]))
+        day.meals.push(...(staticMeals as Meal[]))
     })
 
     const unifyedMeals = unifyFoodEntries(scrapedMeals)
