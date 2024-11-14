@@ -5,7 +5,6 @@ import type { CanisiusBlock, MealData } from '../types/food'
 import {
     FoodCategory,
     Restaurant,
-    getMealHash,
     isEmpty,
     mergeMealVariants,
     unifyFoodEntries,

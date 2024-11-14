@@ -5,7 +5,7 @@ import { cache } from '@/index'
 import { inArray } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
-import type { MealData, ReturnData } from '../types/food'
+import type { Meal, MealData, ReturnData } from '../types/food'
 
 export async function food(
     _: unknown,
@@ -21,7 +21,17 @@ export async function food(
             return await db
                 .select()
                 .from(futureMealsView)
-                .where(inArray(futureMealsView.restaurant, locations))
+                .where(
+                    inArray(
+                        futureMealsView.restaurant,
+                        locations as (
+                            | 'INGOLSTADT_MENSA'
+                            | 'NEUBURG_MENSA'
+                            | 'REIMANNS'
+                            | 'CANISIUS'
+                        )[]
+                    )
+                )
         } catch (error) {
             console.error('Error fetching future meals:', error)
             throw new GraphQLError('Error fetching future meals')
@@ -29,7 +39,9 @@ export async function food(
     }
 
     const cachedFutureMeals = cache.get('futureMeals' + locations.join(','))
-    const futureMeals = cachedFutureMeals || await getFutureMealsByLocations(locations)
+    const futureMeals =
+        (cachedFutureMeals as Meal[]) ||
+        (await getFutureMealsByLocations(locations))
 
     if (!cachedFutureMeals) {
         cache.set('futureMeals' + locations.join(','), futureMeals)
