@@ -12,27 +12,29 @@ export async function food(
     args: { locations: string[] }
 ): Promise<ReturnData> {
     const locations = args?.locations ?? []
-
     const data = new Map<string, MealData[]>()
     const errors: Array<{ location: string; message: string }> = []
 
     async function getFutureMealsByLocations(locations: string[]) {
         console.log('fetching future meals for locations:', locations)
         try {
-            const rows = await db
+            return await db
                 .select()
                 .from(futureMealsView)
                 .where(inArray(futureMealsView.restaurant, locations))
-
-            return rows
         } catch (error) {
             console.error('Error fetching future meals:', error)
             throw new GraphQLError('Error fetching future meals')
         }
     }
 
-    const futureMeals = await getFutureMealsByLocations(locations)
-    // group meals by mealDate
+    const cachedFutureMeals = cache.get('futureMeals' + locations.join(','))
+    const futureMeals = cachedFutureMeals || await getFutureMealsByLocations(locations)
+
+    if (!cachedFutureMeals) {
+        cache.set('futureMeals' + locations.join(','), futureMeals)
+    }
+
     futureMeals.forEach((meal) => {
         const existingMeals = data.get(meal.mealDate) ?? ([] as any[])
         data.set(meal.mealDate, existingMeals.concat(meal))
