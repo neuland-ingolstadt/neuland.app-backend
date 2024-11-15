@@ -13,7 +13,7 @@ type Query {
     """
     Get the meal plan for a specific restaurant.
     """
-    food(locations: [RestaurantLocation!]!): FoodResponse!
+    food(locations: [LocationInput!]!): FoodResponse!
     """
     Get the campus life events
     """

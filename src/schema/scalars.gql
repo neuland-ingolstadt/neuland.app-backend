@@ -3,3 +3,4 @@ scalar DateTime
 scalar LocalTime
 scalar EmailAddress
 scalar URL
+scalar LocationInput

@@ -110,6 +110,7 @@ export default {
                 LocalTime: '<23:30:50>',
                 EmailAddress: '<test@example.com>',
                 URL: '<https://example.com>',
+                LocationInput: '["IngolstadtMensa", "Reimanns"]',
             },
         },
     },

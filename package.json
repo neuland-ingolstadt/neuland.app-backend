@@ -60,7 +60,7 @@
         "prettier": "^3.3.3",
         "typescript": "^5.6.3",
         "typescript-eslint": "^8.12.2",
-        "@magidoc/cli": "^6.1.0"
+        "@magidoc/cli": "^6.2.0"
     },
     "lint-staged": {
         "**/*.{js,jsx,ts,tsx,mjs}": [
@@ -69,8 +69,5 @@
         "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,mjs}": [
             "bunx prettier --write"
         ]
-    },
-    "patchedDependencies": {
-        "@magidoc/cli@6.1.0": "patches/@magidoc%2Fcli@6.1.0.patch"
     }
 }
