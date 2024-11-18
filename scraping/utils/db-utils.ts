@@ -174,13 +174,27 @@ export async function removeOldMeals(currentMeals: Meal[], date: Date): Promise<
             [date]
         );
         const currentMealIds = result.rows.map((row) => row.meal_id);
-        console.log('currentMealIds:', currentMealIds);
+        console.log('currentMealIds:', currentMeals);
         // Get the meal IDs from the currentMeals array
-        const newMealIds = currentMeals.map((meal) => meal.id);
+        const newMealIds = await Promise.all(
+            currentMeals.map(async (meal) => {
+                const result = await client.query(
+                    `
+                    SELECT id
+                    FROM meals
+                    WHERE name_de = $1 AND category = $2 AND restaurant = $3;
+                    `,
+                    [meal.name.de, meal.category, meal.restaurant]
+                );
+                return result.rows[0]?.id;
+            })
+        );
+
+        console.log('newMealIds:', newMealIds);
 
         // Find the meal IDs that need to be removed
         const mealIdsToRemove = currentMealIds.filter((id) => !newMealIds.includes(id));
-
+        console.log('mealIdsToRemove:', mealIdsToRemove);
         // Remove the old meals from the meal_days table
         if (mealIdsToRemove.length > 0) {
             await client.query(
