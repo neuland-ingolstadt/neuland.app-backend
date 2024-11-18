@@ -8,7 +8,6 @@ import { getReimannsPlan } from './food/reimanns'
 import { removeOldMeals, upsertMealWithNutrition3 } from './utils/db-utils'
 import { Restaurant } from './utils/food-utils'
 
-console.log('Starting scraping service', Bun.env.POSTGRES_PASSWORD)
 export const pool = new Pool({
     host: Bun.env.DB_HOST,
     port: Number(Bun.env.DB_PORT),
