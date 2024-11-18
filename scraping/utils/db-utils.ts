@@ -158,3 +158,45 @@ export async function upsertMealWithNutrition3(
         client.release()
     }
 }
+
+export async function removeOldMeals(currentMeals: Meal[], date: Date): Promise<void> {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        // Fetch current meal IDs from the database for the given date
+        const result = await client.query(
+            `
+            SELECT meal_id
+            FROM meal_days
+            WHERE date = $1;
+            `,
+            [date]
+        );
+        const currentMealIds = result.rows.map((row) => row.meal_id);
+        console.log('currentMealIds:', currentMealIds);
+        // Get the meal IDs from the currentMeals array
+        const newMealIds = currentMeals.map((meal) => meal.id);
+
+        // Find the meal IDs that need to be removed
+        const mealIdsToRemove = currentMealIds.filter((id) => !newMealIds.includes(id));
+
+        // Remove the old meals from the meal_days table
+        if (mealIdsToRemove.length > 0) {
+            await client.query(
+                `
+                DELETE FROM meal_days
+                WHERE meal_id = ANY($1::integer[]);
+                `,
+                [mealIdsToRemove]
+            );
+        }
+
+        await client.query('COMMIT');
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error('Error removing old meals:', err);
+    } finally {
+        client.release();
+    }
+}

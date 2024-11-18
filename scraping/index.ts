@@ -5,9 +5,10 @@ import { Pool } from 'pg'
 import { getCanisiusPlan } from './food/canisius'
 import { getMensaPlan } from './food/mensa'
 import { getReimannsPlan } from './food/reimanns'
-import { upsertMealWithNutrition3 } from './utils/db-utils'
+import { removeOldMeals, upsertMealWithNutrition3 } from './utils/db-utils'
 import { Restaurant } from './utils/food-utils'
 
+console.log('Starting scraping service', Bun.env.POSTGRES_PASSWORD)
 export const pool = new Pool({
     host: Bun.env.DB_HOST,
     port: Number(Bun.env.DB_PORT),
@@ -45,3 +46,9 @@ for (const day of meals) {
     }
 }
 console.timeEnd('Total Time with merge conflict resolution')
+
+// delete old meals
+removeOldMeals(
+    meals.flatMap((day) => day.meals),
+    new Date(meals[0].timestamp)
+)
