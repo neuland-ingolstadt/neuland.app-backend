@@ -6,10 +6,12 @@ type Query {
     Get the current parking data in Ingolstadt. This includes the main parking lots and garages near the university.
     """
     parking: ParkingData!
+        @deprecated(reason: "Mobility dat is no longer available")
     """
     Get the current electric vehicle charging stations in Ingolstadt. This includes the main charging stations near the university.
     """
     charging: [ChargingStation!]!
+        @deprecated(reason: "Mobility data is no longer available")
     """
     Get the meal plan for a specific restaurant.
     """
@@ -22,10 +24,12 @@ type Query {
     Get the current bus departures at a specific station
     """
     bus(station: BusStation!): [Bus!]!
+        @deprecated(reason: "Mobility data is no longer available")
     """
     Get the current train departures at a specific station
     """
     train(station: TrainStation!): [Train!]!
+        @deprecated(reason: "Mobility data is no longer available")
     """
     Get the current announcements
     """
