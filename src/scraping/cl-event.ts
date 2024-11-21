@@ -55,17 +55,9 @@ function parseLocalDateTime(str: string): Date {
         | 'Dezember'
 
     const match = str.match(/, (\d+). (\p{Letter}+) (\d+), (\d+):(\d+)$/u)
-    const [, day, month, year, hour, minute] = match ?? []
+    if (!match) throw new Error('Invalid date string')
+    const [, day, month, year, hour, minute] = match
     const typedMonth = month as Month
-    if (
-        day.length === 0 ||
-        month.length === 0 ||
-        year.length === 0 ||
-        hour.length === 0 ||
-        minute.length === 0
-    ) {
-        throw new Error('Invalid date string')
-    }
 
     // Create a date string and parse it in the Europe/Berlin time zone
     const dateString = `${day}-${MONTHS[typedMonth]}-${year} ${hour}:${minute}`
@@ -144,28 +136,35 @@ async function getEvents(
         nodeFetch.RequestInit,
         nodeFetch.Response
     >
-): Promise<Promise<ClEvent | null>[]> {
+): Promise<ClEvent[]> {
     let pageNr = 0
-    const data = []
+    const data: ClEvent[] = []
+    const now = new Date()
+
     while (true) {
-        const now = new Date()
         const pageUrl = `${EVENT_LIST_2_URL}&page=${pageNr}`
         const event = await getEventDetails(fetch, pageUrl)
-        if (event == null) {
-            break
-        }
-        if (
-            (event.begin != null && new Date(event.begin) > now) ||
-            (event.end != null && new Date(event.end) > now)
-        ) {
-            data.push(event)
-        } else {
+
+        if (!event) {
             break
         }
 
-        console.log(event)
+        const beginDate = event.begin ? new Date(event.begin) : null
+        const endDate = event.end ? new Date(event.end) : null
+
+        if (beginDate && beginDate < now && endDate && endDate < now) {
+            console.debug('No more future events found')
+            break
+        }
+
+        if ((beginDate && beginDate > now) || (endDate && endDate > now)) {
+            data.push(event)
+        } else {
+            console.debug('Event does not have valid dates:', event)
+        }
         pageNr++
     }
+
     return data
 }
 
@@ -181,7 +180,7 @@ async function getEventDetails(
         nodeFetch.Response
     >,
     url: string
-): Promise<Record<string, string> | null> {
+): Promise<ClEvent | null> {
     if (!url.startsWith(EVENT_DETAILS_PREFIX)) {
         throw new Error('Invalid URL')
     }
@@ -223,9 +222,8 @@ async function getEventDetails(
             .replace(/e\. V\./g, 'e.V.'),
         host: getHostDetails(details.Verein),
         title: details.Event,
-        begin:
-            details.Start.length > 0 ? parseLocalDateTime(details.Start) : null,
-        end: details.Ende.length > 0 ? parseLocalDateTime(details.Ende) : null,
+        begin: details.Start ? parseLocalDateTime(details.Start) : null,
+        end: details.Ende ? parseLocalDateTime(details.Ende) : null,
         location: publicEvent ? details.Ort : null,
         description: publicEvent ? details.Beschreibung : null,
     }
@@ -238,7 +236,7 @@ function getHostDetails(host: string): ClHost {
         .replace(/( \.)$/g, '')
         .replace(/e\. V\./g, 'e.V.')
     const club = clubsData.find((club) => club.club === trimmed)
-    if (club == null) {
+    if (!club) {
         return {
             name: trimmed,
             website: null,
@@ -267,7 +265,7 @@ export async function getAllEventDetails(
 
     await login(fetch, username, password)
 
-    const events = getEvents(fetch)
+    const events = await getEvents(fetch)
 
     return events
 }
@@ -277,7 +275,7 @@ export default async function getClEvents(): Promise<ClEvent[]> {
         const username = Bun.env.MOODLE_USERNAME
         const password = Bun.env.MOODLE_PASSWORD
 
-        if (username != null && password != null) {
+        if (username && password) {
             const events = await getAllEventDetails(username, password)
             console.log('Fetched events:', events)
             return events
