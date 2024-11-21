@@ -9,7 +9,7 @@ import type {
 import * as cheerio from 'cheerio'
 
 import { addWeek, getDays, getWeek } from '../utils/date-utils'
-import { getMealHash, unifyFoodEntries } from '../utils/food-utils'
+import { getMealDayHash, unifyFoodEntries } from '../utils/food-utils'
 import { translateMeals } from '../utils/translation-utils'
 
 function toNum2(text: number | string): string {
@@ -104,7 +104,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
         timestamp: day,
         meals: days[day].map((meal) => ({
             name: meal,
-            id: getMealHash(day, meal),
+            id: getMealDayHash(day, meal),
             category: 'Essen',
             prices: {
                 student: 6.5,
@@ -125,10 +125,10 @@ export async function getReimannsPlan(): Promise<MealData[]> {
         return staticMeals.map((meal) => ({
             ...meal,
             restaurant: 'Reimanns',
-            id: getMealHash(day.timestamp, meal.name),
+            id: getMealDayHash(day.timestamp, meal.name),
             variants: meal.variants?.map((variant) => ({
                 ...variant,
-                id: getMealHash(day.timestamp, variant.name),
+                id: getMealDayHash(day.timestamp, variant.name),
             })),
         }))
     }

@@ -1,6 +1,6 @@
 import type { CanisiusBlock, MealData } from '@/types/food'
 import {
-    getMealHash,
+    getMealDayHash,
     isEmpty,
     mergeMealVariants,
     unifyFoodEntries,
@@ -133,7 +133,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
         return dishes.map((day, index) => {
             const dayDishes = day.map((dish) => ({
                 name: dish.name,
-                id: getMealHash(dates[index], dish.name),
+                id: getMealDayHash(dates[index], dish.name),
                 category: 'Essen',
                 prices: dish.prices,
                 allergens: null,
@@ -144,7 +144,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
 
             const daySalads = salads.map((salad) => ({
                 name: salad.name,
-                id: getMealHash(dates[index], salad.name),
+                id: getMealDayHash(dates[index], salad.name),
                 originalLanguage: 'de',
                 category: 'Salat',
                 prices: salad.prices,

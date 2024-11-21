@@ -9,7 +9,7 @@ import type {
     TempMeal,
     TempMealData,
 } from '@/types/food'
-import hash from 'object-hash'
+import { xxh3, xxh32 } from '@node-rs/xxhash'
 
 /**
  * Cleans the meal flags to remove wrong flags (e.g. "veg" (vegan) and "R" (Beef) at the same time => remove "veg")
@@ -99,7 +99,7 @@ function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
         static: meal.static ?? false,
         restaurant: meal.restaurant ?? parentMeal?.restaurant ?? null,
         additional: meal.additional ?? false,
-
+        mealId: getMealHash(meal.name.de, mealCategory, meal.restaurant ?? ''),
         id: parentMeal !== null ? `${parentMeal.id}/${meal.id}` : meal.id,
         parent: reduceParentMeal(parentMeal),
     }
@@ -206,9 +206,27 @@ function cleanMealName(name: string): string {
  * @param {*} mealName Meal name
  * @returns {string} Meal hash (starts with a short version of the day and ends with a short hash of the meal name)
  */
-export function getMealHash(day: string, mealName: string | object): string {
+export function getMealDayHash(day: string, mealName: string | object): string {
     const dayHash = day.replace(/-/g, '').slice(-2)
-    return `${dayHash}${hash(mealName).substring(0, 6)}`
+    const mealNameStr =
+        typeof mealName === 'string' ? mealName : JSON.stringify(mealName)
+    return `${dayHash}${xxh32(mealNameStr).toString(36).slice(0, 6)}`
+}
+
+/**
+ * Converts the given meal to a unique hash (original language name, category and restaurant)
+ * @param {string} mealName Meal name in the original language
+ * @param {string} category Meal category
+ * @param {string} restaurant Restaurant name
+ * @returns {string} Meal hash as a hexadecimal string
+ */
+export function getMealHash(
+    mealName: string,
+    category: string,
+    restaurant: string
+): string {
+    const input = `${mealName}-${category}-${restaurant}`
+    return xxh3.xxh128(input).toString(36)
 }
 
 /**

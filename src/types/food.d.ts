@@ -53,6 +53,7 @@ export interface TempMeal extends Meal {
     additional?: boolean
     variants?: Variant[]
     static: boolean
+    mealId: string
 }
 
 export interface TempMealData {

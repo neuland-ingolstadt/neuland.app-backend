@@ -7,9 +7,13 @@ type Meal {
     """
     name: MultiLanguageString!
     """
-    Unique identifier of the meal
+    Unique identifier of the meal on the specific day
     """
     id: ID!
+    """
+    Unique identifier of the meal, independent of the day
+    """
+    mealId: ID!
     """
     Category of the meal (main, soup or salad)
     """
@@ -68,6 +72,10 @@ type Variation {
     Unique identifier of the variant
     """
     id: ID!
+    """
+    Unique identifier of the meal, independent of the day
+    """
+    mealId: ID!
     """
     List of allergens (e.g. gluten, lactose, etc.)
     """
