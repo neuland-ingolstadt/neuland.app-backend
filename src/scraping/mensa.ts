@@ -8,7 +8,7 @@ import xmljs from 'xml-js'
 
 import { formatISODate } from '../utils/date-utils'
 import {
-    getMealHash,
+    getMealDayHash,
     mergeMealVariants,
     parseGermanFloat,
     parseXmlFloat,
@@ -91,7 +91,7 @@ function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
 
                 return {
                     name: text.trim(),
-                    id: getMealHash(formatISODate(date), text.trim()),
+                    id: getMealDayHash(formatISODate(date), text.trim()),
                     category,
                     prices: {
                         student: parseGermanFloat(item.preis1._text),
