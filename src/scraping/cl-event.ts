@@ -29,7 +29,10 @@ const MONTHS = {
 }
 
 const LOGIN_URL = 'https://moodle.thi.de/login/index.php'
-const EVENT_LIST_URL = 'https://moodle.thi.de/mod/dataform/view.php?id=162869'
+const PUBLIC_EVENT_KEY = 'Veröffentlichung des Ortes & Bescheibung in Apps' // sic (see Moodle)
+
+const EVENT_LIST_2_URL =
+    'https://moodle.thi.de/mod/dataform/view.php?d=19&view=18&filter=9'
 const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
 const EVENT_STORE = `${Bun.env.STORE}/cl-events.json`
 const isDev = Bun.env.NODE_ENV !== 'production'
@@ -163,22 +166,35 @@ async function login(
  * @param {object} fetch Cookie-aware implementation of `fetch`
  * @returns {string[]}
  */
-async function getEventList(
+async function getEvents(
     fetch: FetchCookieImpl<
         nodeFetch.RequestInfo,
         nodeFetch.RequestInit,
         nodeFetch.Response
     >
-): Promise<string[]> {
-    const resp: nodeFetch.Response = await fetch(EVENT_LIST_URL)
-    const $ = cheerio.load(await resp.text())
+): Promise<Promise<ClEvent | null>[]> {
+    let pageNr = 0
+    const data = []
+    while (true) {
+        const now = new Date()
+        const pageUrl = `${EVENT_LIST_2_URL}&page=${pageNr}`
+        const event = await getEventDetails(fetch, pageUrl)
+        if (event == null) {
+            break
+        }
+        if (
+            (event.begin != null && new Date(event.begin) > now) ||
+            (event.end != null && new Date(event.end) > now)
+        ) {
+            data.push(event)
+        } else {
+            break
+        }
 
-    // get links from content table
-    const links = $('.entriesview a.menu-action').get()
-    // extract href attributes
-    return links
-        .map((elem) => $(elem).attr('href'))
-        .filter((href): href is string => !(href == null))
+        console.log(event)
+        pageNr++
+    }
+    return data
 }
 
 /**
@@ -193,7 +209,7 @@ async function getEventDetails(
         nodeFetch.Response
     >,
     url: string
-): Promise<Record<string, string>> {
+): Promise<Record<string, string> | null> {
     if (!url.startsWith(EVENT_DETAILS_PREFIX)) {
         throw new Error('Invalid URL')
     }
@@ -202,7 +218,7 @@ async function getEventDetails(
     const $ = cheerio.load(await resp.text())
     const rows = $('.entry tr:not(.lastrow)').get()
 
-    return Object.fromEntries(
+    const details = Object.fromEntries(
         rows.map((elem) => {
             const htmlContent = $(elem).find('.c1').html()
 
@@ -226,6 +242,22 @@ async function getEventDetails(
             ]
         })
     )
+
+    const publicEvent = details[PUBLIC_EVENT_KEY] === 'Ja'
+    const formatedDetails = {
+        id: crypto.createHash('sha256').update(url).digest('hex'),
+        organizer: details.Verein.trim()
+            .replace(/( \.)$/g, '')
+            .replace(/e\. V\./g, 'e.V.'),
+        host: getHostDetails(details.Verein),
+        title: details.Event,
+        begin:
+            details.Start.length > 0 ? parseLocalDateTime(details.Start) : null,
+        end: details.Ende.length > 0 ? parseLocalDateTime(details.Ende) : null,
+        location: publicEvent ? details.Ort : null,
+        description: publicEvent ? details.Beschreibung : null,
+    }
+    return formatedDetails
 }
 
 function getHostDetails(host: string): ClHost {
@@ -258,61 +290,15 @@ export async function getAllEventDetails(
     username: string,
     password: string
 ): Promise<ClEvent[]> {
-    const now = new Date()
-    let events = !isDev ? await loadEvents() : []
+    const events = !isDev ? await loadEvents() : []
 
     // create a fetch method that keeps cookies
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
 
-    const remoteEvents: ClEvent[] = []
-    for (const url of await getEventList(fetch)) {
-        const details = await getEventDetails(fetch, url)
-        const publicKey = 'Veröffentlichung des Ortes & Bescheibung in Apps' // sic (see Moodle)
-        const publicEvent = details[publicKey] === 'Ja'
+    getEvents(fetch)
 
-        remoteEvents.push({
-            id: crypto.createHash('sha256').update(url).digest('hex'),
-            organizer: details.Verein.trim()
-                .replace(/( \.)$/g, '')
-                .replace(/e\. V\./g, 'e.V.'),
-            host: getHostDetails(details.Verein),
-            title: details.Event,
-            begin:
-                details.Start.length > 0
-                    ? parseLocalDateTime(details.Start)
-                    : null,
-            end:
-                details.Ende.length > 0
-                    ? parseLocalDateTime(details.Ende)
-                    : null,
-            location: publicEvent ? details.Ort : null,
-            description: publicEvent ? details.Beschreibung : null,
-        })
-    }
-
-    if (remoteEvents.length > 0) {
-        // remove all events which disappeared from the server
-        // this will not work if the first event gets removed
-        const remoteStart = remoteEvents
-            .map((event) => event.begin)
-            .reduce((a, b) => ((a ?? 0) < (b ?? 0) ? a : b))
-        events = events
-            .filter((a) => (a.begin ?? 0) < (remoteStart ?? 0))
-            .concat(remoteEvents)
-    }
-
-    events = events.filter(
-        (event) =>
-            (event.begin != null && new Date(event.begin) > now) ||
-            (event.end != null && new Date(event.end) > now)
-    )
-    events = events
-        .sort((a, b) => (a.end?.getTime() ?? 0) - (b.end?.getTime() ?? 0))
-        .sort((a, b) => (a.begin?.getTime() ?? 0) - (b.begin?.getTime() ?? 0))
-    // we need to persist the events because they disappear on monday
-    // even if the event has not passed yet
     if (!isDev) {
         await saveEvents(events)
     }
