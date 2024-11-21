@@ -287,7 +287,6 @@ export default async function getClEvents(): Promise<ClEvent[]> {
 
         if (username && password) {
             const events = await getAllEventDetails(username, password)
-            console.log('Fetched events:', events)
             return events
         } else {
             throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
