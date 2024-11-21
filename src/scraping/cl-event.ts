@@ -55,7 +55,7 @@ function parseLocalDateTime(str: string): Date {
         | 'Dezember'
 
     const match = str.match(/, (\d+). (\p{Letter}+) (\d+), (\d+):(\d+)$/u)
-    if (!match) throw new Error('Invalid date string')
+    if (!match) throw new Error(`Invalid date string: ${str}`)
     const [, day, month, year, hour, minute] = match
     const typedMonth = month as Month
 
