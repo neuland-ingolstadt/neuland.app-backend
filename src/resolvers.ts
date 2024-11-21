@@ -67,7 +67,6 @@ export const resolvers = {
         createRoomReport,
         resolveRoomReport,
     },
-
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
     EmailAddress: EmailAddressResolver,

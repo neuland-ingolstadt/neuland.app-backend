@@ -6,7 +6,6 @@ import type { ClEvent, ClHost } from '@/types/clEvents'
 import * as cheerio from 'cheerio'
 import crypto from 'crypto'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
-import fs from 'fs/promises'
 import { GraphQLError } from 'graphql'
 import he from 'he'
 import moment from 'moment-timezone'
@@ -29,10 +28,11 @@ const MONTHS = {
 }
 
 const LOGIN_URL = 'https://moodle.thi.de/login/index.php'
-const EVENT_LIST_URL = 'https://moodle.thi.de/mod/dataform/view.php?id=162869'
+const PUBLIC_EVENT_KEY = 'Veröffentlichung des Ortes & Bescheibung in Apps' // sic (see Moodle)
+
+const EVENT_LIST_2_URL =
+    'https://moodle.thi.de/mod/dataform/view.php?d=19&view=18&filter=9'
 const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
-const EVENT_STORE = `${Bun.env.STORE}/cl-events.json`
-const isDev = Bun.env.NODE_ENV !== 'production'
 
 /**
  * Parses a date like "Donnerstag, 15. Juni 2023, 10:00".
@@ -55,17 +55,9 @@ function parseLocalDateTime(str: string): Date {
         | 'Dezember'
 
     const match = str.match(/, (\d+). (\p{Letter}+) (\d+), (\d+):(\d+)$/u)
-    const [, day, month, year, hour, minute] = match ?? []
+    if (!match) throw new Error(`Invalid date string: ${str}`)
+    const [, day, month, year, hour, minute] = match
     const typedMonth = month as Month
-    if (
-        day.length === 0 ||
-        month.length === 0 ||
-        year.length === 0 ||
-        hour.length === 0 ||
-        minute.length === 0
-    ) {
-        throw new Error('Invalid date string')
-    }
 
     // Create a date string and parse it in the Europe/Berlin time zone
     const dateString = `${day}-${MONTHS[typedMonth]}-${year} ${hour}:${minute}`
@@ -73,31 +65,6 @@ function parseLocalDateTime(str: string): Date {
 
     // Convert to UTC and return a JavaScript Date
     return date.utc().toDate()
-}
-/**
- * Load persisted events from disk.
- */
-async function loadEvents(): Promise<ClEvent[]> {
-    const fileHandle = await fs.open(EVENT_STORE, 'a+')
-    const data = await fileHandle.readFile()
-    const fileContent = data.toString()
-    await fileHandle.close()
-    if (fileContent.length === 0) {
-        return []
-    }
-    return JSON.parse(data.toString()).map((event: ClEvent) => ({
-        ...event,
-        begin: event.begin == null ? null : new Date(event.begin),
-        end: event.end == null ? null : new Date(event.end),
-    }))
-}
-
-/**
- * Persist events to disk.
- * @param {object[]} events
- */
-async function saveEvents(events: ClEvent[]): Promise<void> {
-    await fs.writeFile(EVENT_STORE, JSON.stringify(events))
 }
 
 /**
@@ -163,22 +130,53 @@ async function login(
  * @param {object} fetch Cookie-aware implementation of `fetch`
  * @returns {string[]}
  */
-async function getEventList(
+async function getEvents(
     fetch: FetchCookieImpl<
         nodeFetch.RequestInfo,
         nodeFetch.RequestInit,
         nodeFetch.Response
     >
-): Promise<string[]> {
-    const resp: nodeFetch.Response = await fetch(EVENT_LIST_URL)
-    const $ = cheerio.load(await resp.text())
+): Promise<ClEvent[]> {
+    let pageNr = 0
+    const data: ClEvent[] = []
+    const now = new Date()
 
-    // get links from content table
-    const links = $('.entriesview a.menu-action').get()
-    // extract href attributes
-    return links
-        .map((elem) => $(elem).attr('href'))
-        .filter((href): href is string => !(href == null))
+    while (true) {
+        const pageUrl = `${EVENT_LIST_2_URL}&page=${pageNr}`
+        const event = await getEventDetails(fetch, pageUrl)
+
+        if (!event) {
+            break
+        }
+
+        const beginDate = event.begin ? new Date(event.begin) : null
+        const endDate = event.end ? new Date(event.end) : null
+
+        if (
+            // No end date and begin date is in the past
+            (beginDate && beginDate < now && !endDate) ||
+            // No begin date and end date is in the past
+            (endDate && endDate < now && !beginDate) ||
+            // Both dates are in the past
+            (beginDate && beginDate < now && endDate && endDate < now)
+        ) {
+            console.debug(
+                'No more future events found. Number of events:',
+                data.length
+            )
+            break
+        }
+
+        if ((beginDate && beginDate > now) || (endDate && endDate > now)) {
+            data.push(event)
+        } else {
+            console.debug('Event does not have valid dates:', event)
+        }
+        pageNr++
+    }
+
+    // The events are fetched from future to past, so we reverse the array
+    return data.reverse()
 }
 
 /**
@@ -193,7 +191,7 @@ async function getEventDetails(
         nodeFetch.Response
     >,
     url: string
-): Promise<Record<string, string>> {
+): Promise<ClEvent | null> {
     if (!url.startsWith(EVENT_DETAILS_PREFIX)) {
         throw new Error('Invalid URL')
     }
@@ -202,7 +200,7 @@ async function getEventDetails(
     const $ = cheerio.load(await resp.text())
     const rows = $('.entry tr:not(.lastrow)').get()
 
-    return Object.fromEntries(
+    const details = Object.fromEntries(
         rows.map((elem) => {
             const htmlContent = $(elem).find('.c1').html()
 
@@ -226,6 +224,20 @@ async function getEventDetails(
             ]
         })
     )
+
+    const publicEvent = details[PUBLIC_EVENT_KEY] === 'Ja'
+    return {
+        id: crypto.createHash('sha256').update(url).digest('hex'),
+        organizer: details.Verein.trim()
+            .replace(/( \.)$/g, '')
+            .replace(/e\. V\./g, 'e.V.'),
+        host: getHostDetails(details.Verein),
+        title: details.Event,
+        begin: details.Start ? parseLocalDateTime(details.Start) : null,
+        end: details.Ende ? parseLocalDateTime(details.Ende) : null,
+        location: publicEvent ? details.Ort : null,
+        description: publicEvent ? details.Beschreibung : null,
+    }
 }
 
 function getHostDetails(host: string): ClHost {
@@ -234,7 +246,7 @@ function getHostDetails(host: string): ClHost {
         .replace(/( \.)$/g, '')
         .replace(/e\. V\./g, 'e.V.')
     const club = clubsData.find((club) => club.club === trimmed)
-    if (club == null) {
+    if (!club) {
         return {
             name: trimmed,
             website: null,
@@ -258,64 +270,12 @@ export async function getAllEventDetails(
     username: string,
     password: string
 ): Promise<ClEvent[]> {
-    const now = new Date()
-    let events = !isDev ? await loadEvents() : []
-
     // create a fetch method that keeps cookies
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
 
-    const remoteEvents: ClEvent[] = []
-    for (const url of await getEventList(fetch)) {
-        const details = await getEventDetails(fetch, url)
-        const publicKey = 'Veröffentlichung des Ortes & Bescheibung in Apps' // sic (see Moodle)
-        const publicEvent = details[publicKey] === 'Ja'
-
-        remoteEvents.push({
-            id: crypto.createHash('sha256').update(url).digest('hex'),
-            organizer: details.Verein.trim()
-                .replace(/( \.)$/g, '')
-                .replace(/e\. V\./g, 'e.V.'),
-            host: getHostDetails(details.Verein),
-            title: details.Event,
-            begin:
-                details.Start.length > 0
-                    ? parseLocalDateTime(details.Start)
-                    : null,
-            end:
-                details.Ende.length > 0
-                    ? parseLocalDateTime(details.Ende)
-                    : null,
-            location: publicEvent ? details.Ort : null,
-            description: publicEvent ? details.Beschreibung : null,
-        })
-    }
-
-    if (remoteEvents.length > 0) {
-        // remove all events which disappeared from the server
-        // this will not work if the first event gets removed
-        const remoteStart = remoteEvents
-            .map((event) => event.begin)
-            .reduce((a, b) => ((a ?? 0) < (b ?? 0) ? a : b))
-        events = events
-            .filter((a) => (a.begin ?? 0) < (remoteStart ?? 0))
-            .concat(remoteEvents)
-    }
-
-    events = events.filter(
-        (event) =>
-            (event.begin != null && new Date(event.begin) > now) ||
-            (event.end != null && new Date(event.end) > now)
-    )
-    events = events
-        .sort((a, b) => (a.end?.getTime() ?? 0) - (b.end?.getTime() ?? 0))
-        .sort((a, b) => (a.begin?.getTime() ?? 0) - (b.begin?.getTime() ?? 0))
-    // we need to persist the events because they disappear on monday
-    // even if the event has not passed yet
-    if (!isDev) {
-        await saveEvents(events)
-    }
+    const events = await getEvents(fetch)
 
     return events
 }
@@ -325,7 +285,7 @@ export default async function getClEvents(): Promise<ClEvent[]> {
         const username = Bun.env.MOODLE_USERNAME
         const password = Bun.env.MOODLE_PASSWORD
 
-        if (username != null && password != null) {
+        if (username && password) {
             const events = await getAllEventDetails(username, password)
             return events
         } else {
