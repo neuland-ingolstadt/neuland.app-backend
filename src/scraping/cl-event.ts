@@ -6,7 +6,6 @@ import type { ClEvent, ClHost } from '@/types/clEvents'
 import * as cheerio from 'cheerio'
 import crypto from 'crypto'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
-import fs from 'fs/promises'
 import { GraphQLError } from 'graphql'
 import he from 'he'
 import moment from 'moment-timezone'
@@ -34,8 +33,6 @@ const PUBLIC_EVENT_KEY = 'Veröffentlichung des Ortes & Bescheibung in Apps' // 
 const EVENT_LIST_2_URL =
     'https://moodle.thi.de/mod/dataform/view.php?d=19&view=18&filter=9'
 const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
-const EVENT_STORE = `${Bun.env.STORE}/cl-events.json`
-const isDev = Bun.env.NODE_ENV !== 'production'
 
 /**
  * Parses a date like "Donnerstag, 15. Juni 2023, 10:00".
@@ -76,31 +73,6 @@ function parseLocalDateTime(str: string): Date {
 
     // Convert to UTC and return a JavaScript Date
     return date.utc().toDate()
-}
-/**
- * Load persisted events from disk.
- */
-async function loadEvents(): Promise<ClEvent[]> {
-    const fileHandle = await fs.open(EVENT_STORE, 'a+')
-    const data = await fileHandle.readFile()
-    const fileContent = data.toString()
-    await fileHandle.close()
-    if (fileContent.length === 0) {
-        return []
-    }
-    return JSON.parse(data.toString()).map((event: ClEvent) => ({
-        ...event,
-        begin: event.begin == null ? null : new Date(event.begin),
-        end: event.end == null ? null : new Date(event.end),
-    }))
-}
-
-/**
- * Persist events to disk.
- * @param {object[]} events
- */
-async function saveEvents(events: ClEvent[]): Promise<void> {
-    await fs.writeFile(EVENT_STORE, JSON.stringify(events))
 }
 
 /**
@@ -290,18 +262,12 @@ export async function getAllEventDetails(
     username: string,
     password: string
 ): Promise<ClEvent[]> {
-    const events = !isDev ? await loadEvents() : []
-
     // create a fetch method that keeps cookies
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
 
-    getEvents(fetch)
-
-    if (!isDev) {
-        await saveEvents(events)
-    }
+    const events = getEvents(fetch)
 
     return events
 }
@@ -313,6 +279,7 @@ export default async function getClEvents(): Promise<ClEvent[]> {
 
         if (username != null && password != null) {
             const events = await getAllEventDetails(username, password)
+            console.log('Fetched events:', events)
             return events
         } else {
             throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
