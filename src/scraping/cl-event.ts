@@ -152,8 +152,18 @@ async function getEvents(
         const beginDate = event.begin ? new Date(event.begin) : null
         const endDate = event.end ? new Date(event.end) : null
 
-        if (beginDate && beginDate < now && endDate && endDate < now) {
-            console.debug('No more future events found')
+        if (
+            // No end date and begin date is in the past
+            (beginDate && beginDate < now && !endDate) ||
+            // No begin date and end date is in the past
+            (endDate && endDate < now && !beginDate) ||
+            // Both dates are in the past
+            (beginDate && beginDate < now && endDate && endDate < now)
+        ) {
+            console.debug(
+                'No more future events found. Number of events:',
+                data.length
+            )
             break
         }
 
@@ -165,7 +175,8 @@ async function getEvents(
         pageNr++
     }
 
-    return data
+    // The events are fetched from future to past, so we reverse the array
+    return data.reverse()
 }
 
 /**
@@ -215,7 +226,7 @@ async function getEventDetails(
     )
 
     const publicEvent = details[PUBLIC_EVENT_KEY] === 'Ja'
-    const formatedDetails = {
+    return {
         id: crypto.createHash('sha256').update(url).digest('hex'),
         organizer: details.Verein.trim()
             .replace(/( \.)$/g, '')
@@ -227,7 +238,6 @@ async function getEventDetails(
         location: publicEvent ? details.Ort : null,
         description: publicEvent ? details.Beschreibung : null,
     }
-    return formatedDetails
 }
 
 function getHostDetails(host: string): ClHost {
