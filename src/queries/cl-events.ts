@@ -4,22 +4,30 @@ import { cache } from '@/index'
 import getClEvents from '@/scraping/cl-event'
 import { gte } from 'drizzle-orm'
 
-const CACHE_TTL = 60 * 60 * 24 // 24 hours
+const CACHE_TTL_MOODLE = 60 * 60 * 24 // 24 hours
+const CACHE_TTL_TOTAL = 60 * 60 * 3 // 3 hours
 
 export async function clEvents(): Promise<ClEvent[]> {
-    let clEvents: ClEvent[] | undefined = await cache.get('clEvents')
+    let combinedClEvents: ClEvent[] | undefined =
+        await cache.get('combinedClEvents')
+
+    if (combinedClEvents !== undefined && combinedClEvents !== null) {
+        return combinedClEvents
+    }
+
+    let clEvents: ClEvent[] | undefined = await cache.get('clEventsMoodle')
 
     if (clEvents === undefined || clEvents === null) {
         clEvents = await getClEvents()
-        cache.set(`clEvents`, clEvents, CACHE_TTL)
+        cache.set('clEventsMoodle', clEvents, CACHE_TTL_MOODLE)
     }
 
-    const addionalClEvents = await db
+    const additionalClEvents = await db
         .select()
         .from(manualClEvents)
         .where(gte(manualClEvents.start_date_time, new Date()))
 
-    const dbClEvents = addionalClEvents.map((event) => {
+    const dbClEvents = additionalClEvents.map((event) => {
         return {
             id: event.id.toString(),
             organizer: event.organizer,
@@ -37,17 +45,18 @@ export async function clEvents(): Promise<ClEvent[]> {
                     ? { de: event.description_de, en: event.description_en }
                     : null,
             begin: event.start_date_time,
-
             end: event.end_date_time,
             location: null,
-
             eventWebsite: event.event_url,
             isMoodleEvent: false,
         } satisfies ClEvent
     })
-    clEvents = clEvents.concat(dbClEvents).sort((a, b) => {
+
+    combinedClEvents = clEvents.concat(dbClEvents).sort((a, b) => {
         return a.begin.getTime() - b.begin.getTime()
     })
 
-    return clEvents
+    cache.set('combinedClEvents', combinedClEvents, CACHE_TTL_TOTAL)
+
+    return combinedClEvents
 }
