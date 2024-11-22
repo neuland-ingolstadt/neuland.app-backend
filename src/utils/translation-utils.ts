@@ -1,11 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cache } from '@/index'
-import type {
-    ExtendedMealData,
-    MealData,
-    PreFoodData,
-    TempMealData,
-} from '@/types/food'
+import type { ExtendedMealData, PreFoodData, TempMealData } from '@/types/food'
 import translate, { type DeeplLanguages } from 'deepl'
 
 const deeplEndpoint = 'https://api-free.deepl.com/v2/translate'
@@ -62,7 +57,7 @@ async function translateText(text: string, target: string): Promise<string> {
  * @param {Object} meals The meal plan
  * @returns {Object} The translated meal plan
  **/
-function translateFallback(meals: PreFoodData[]): MealData[] {
+function translateFallback(meals: PreFoodData[]): TempMealData[] {
     return meals.map((day: any) => {
         const meals = day.meals.map((meal: any) => {
             return {
