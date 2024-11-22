@@ -2,9 +2,8 @@
  * @file Scrapes events from the `Campus Life` Moodle course and serves them at `/api/events`.
  */
 import clubsData from '@/data/clubs.json'
-import type { ClEvent, ClHost } from '@/types/clEvents'
+import { xxh64 } from '@node-rs/xxhash'
 import * as cheerio from 'cheerio'
-import crypto from 'crypto'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import { GraphQLError } from 'graphql'
 import he from 'he'
@@ -168,7 +167,15 @@ async function getEvents(
         }
 
         if ((beginDate && beginDate > now) || (endDate && endDate > now)) {
-            data.push(event)
+            if (!beginDate && endDate) {
+                console.debug(
+                    'Event has only end date defined, discarding:',
+                    event
+                )
+                pageNr++
+                continue
+            }
+            data.push(event as ClEvent)
         } else {
             console.debug('Event does not have valid dates:', event)
         }
@@ -191,7 +198,7 @@ async function getEventDetails(
         nodeFetch.Response
     >,
     url: string
-): Promise<ClEvent | null> {
+): Promise<ScrapedClEvent | null> {
     if (!url.startsWith(EVENT_DETAILS_PREFIX)) {
         throw new Error('Invalid URL')
     }
@@ -226,29 +233,39 @@ async function getEventDetails(
     )
 
     const publicEvent = details[PUBLIC_EVENT_KEY] === 'Ja'
+    const trimmedOrganizer = details.Verein.trim()
+        .replace(/( \.)$/g, '')
+        .replace(/e\. V\./g, 'e.V.')
+    const trimmedEvent = details.Event.trim()
+
     return {
-        id: crypto.createHash('sha256').update(url).digest('hex'),
-        organizer: details.Verein.trim()
-            .replace(/( \.)$/g, '')
-            .replace(/e\. V\./g, 'e.V.'),
-        host: getHostDetails(details.Verein),
-        title: details.Event,
+        id: xxh64(`${trimmedOrganizer}-${trimmedEvent}`, 123n).toString(16),
+        organizer: trimmedOrganizer, // deprecated in favor of host
+        host: getHostDetails(trimmedOrganizer),
+        title: {
+            de: trimmedEvent,
+            en: trimmedEvent,
+        },
         begin: details.Start ? parseLocalDateTime(details.Start) : null,
         end: details.Ende ? parseLocalDateTime(details.Ende) : null,
         location: publicEvent ? details.Ort : null,
-        description: publicEvent ? details.Beschreibung : null,
+        description:
+            publicEvent && details.Beschreibung != null
+                ? {
+                      de: details.Beschreibung,
+                      en: details.Beschreibung,
+                  }
+                : null,
+        eventWebsite: null, // not available in Moodle
+        isMoodleEvent: true,
     }
 }
 
 function getHostDetails(host: string): ClHost {
-    const trimmed = host
-        .trim()
-        .replace(/( \.)$/g, '')
-        .replace(/e\. V\./g, 'e.V.')
-    const club = clubsData.find((club) => club.club === trimmed)
+    const club = clubsData.find((club) => club.club === host)
     if (!club) {
         return {
-            name: trimmed,
+            name: host,
             website: null,
             instagram: null,
         }

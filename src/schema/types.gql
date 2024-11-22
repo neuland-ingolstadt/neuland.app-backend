@@ -242,7 +242,7 @@ type ClEvent {
     """
     Title of the event in German
     """
-    title: String!
+    title: MultiLanguageString!
     """
     Begin of the event
     """
@@ -258,7 +258,15 @@ type ClEvent {
     """
     Description of the event (only available if it's eligible for external sharing)
     """
-    description: String
+    description: MultiLanguageString
+    """
+    URL to the event website
+    """
+    eventUrl: URL
+    """
+    Boolean if the event is scraped from the moodle calendar or not.
+    """
+    isMoodleEvent: Boolean
 }
 
 """

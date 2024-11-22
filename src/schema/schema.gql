@@ -57,4 +57,15 @@ type Mutation {
     Resolve a room report by ID. Note: This mutation is only available for authenticated users.
     """
     resolveRoomReport(id: ID!): UpsertResponse
+    """
+    Create or update a manual campus life event. Note: This mutation is only available for authenticated users.
+    """
+    upsertManualClEvent(
+        id: ID
+        input: ManualCampusLifeEventInput!
+    ): UpsertResponse
+    """
+    Delete a manual campus life event by ID. Note: This mutation is only available for authenticated users.
+    """
+    deleteManualClEvent(id: ID!): Boolean
 }
