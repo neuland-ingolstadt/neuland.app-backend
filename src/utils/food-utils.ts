@@ -17,7 +17,7 @@ import { xxh3, xxh32 } from '@node-rs/xxhash'
  * @returns {string[]} Cleaned meal flags
  **/
 
-function cleanMealFlags(flags: string[] | null): string[] | null {
+export function cleanMealFlags(flags: string[] | null): string[] | null {
     if (flags == null) return null
 
     // find contradictions
@@ -40,7 +40,7 @@ function cleanMealFlags(flags: string[] | null): string[] | null {
  * @returns {object} Capitalized meal names
  * @example { de: 'veganer burger', en: 'vegan burger' } => { de: 'Veganer burger', en: 'Vegan burger' }
  */
-function capitalize(mealNames: Name): Name {
+export function capitalize(mealNames: Name): Name {
     const capitalizedEntries = Object.entries(mealNames).map(([key, value]) => [
         key,
         value.charAt(0).toUpperCase() + value.slice(1),
@@ -81,7 +81,10 @@ export function unifyFoodEntries(entries: TempMealData[]): MealData[] {
  * @param {parent} [parentMeal] Parent meal (if meal is a variant of another meal)
  * @returns {object} Unified meal
  */
-function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
+export function unifyMeal(
+    meal: TempMeal,
+    parentMeal: Meal | null = null
+): TempMeal {
     const mealCategory = meal.category ?? parentMeal?.category ?? 'main'
 
     return {
@@ -193,7 +196,7 @@ function mergeDayEntries(dayEntries: ExtendedMeal[]): ExtendedMeal[] {
  * @param {*} name
  * @returns {string} Cleaned name
  */
-function cleanMealName(name: string): string {
+export function cleanMealName(name: string): string {
     return name
         .split(' ')
         .filter((x) => !stopWords.de.includes(x))

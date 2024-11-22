@@ -9,13 +9,13 @@ import type {
 import translate, { type DeeplLanguages } from 'deepl'
 
 const deeplEndpoint = 'https://api-free.deepl.com/v2/translate'
-const deeplApiKey = Bun.env.DEEPL_API_KEY || ''
+const deeplApiKey = process.env.DEEPL_API_KEY || ''
 const enableDevTranslations =
-    Bun.env.ENABLE_DEV_TRANSLATIONS === 'true' || false
+    process.env.ENABLE_DEV_TRANSLATIONS === 'true' || false
 const disableFallbackWarning =
-    Bun.env.DISABLE_FALLBACK_WARNING === 'true' || false
+    process.env.DISABLE_FALLBACK_WARNING === 'true' || false
 const translationsCacheTTL = 60 * 60 * 24 * 14 // 14 days
-const isDev = Bun.env.NODE_ENV !== 'production'
+const isDev = process.env.NODE_ENV !== 'production'
 
 /**
  * Gets a translation from the cache or translates it using DeepL.
