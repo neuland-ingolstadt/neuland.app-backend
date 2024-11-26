@@ -35,7 +35,7 @@ export function checkAuthorization(
 ): void {
     if (
         process.env.NODE_ENV !== 'production' &&
-        Bun.env.BYPASS_AUTH_IN_DEV === 'true'
+        process.env.BYPASS_AUTH_IN_DEV === 'true'
     ) {
         console.warn('Authorization check skipped in development environment')
         return

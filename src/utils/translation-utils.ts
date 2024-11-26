@@ -1,21 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cache } from '@/index'
-import type {
-    ExtendedMealData,
-    MealData,
-    PreFoodData,
-    TempMealData,
-} from '@/types/food'
+import type { ExtendedMealData, PreFoodData, TempMealData } from '@/types/food'
 import translate, { type DeeplLanguages } from 'deepl'
 
 const deeplEndpoint = 'https://api-free.deepl.com/v2/translate'
-const deeplApiKey = Bun.env.DEEPL_API_KEY || ''
+const deeplApiKey = process.env.DEEPL_API_KEY || ''
 const enableDevTranslations =
-    Bun.env.ENABLE_DEV_TRANSLATIONS === 'true' || false
+    process.env.ENABLE_DEV_TRANSLATIONS === 'true' || false
 const disableFallbackWarning =
-    Bun.env.DISABLE_FALLBACK_WARNING === 'true' || false
+    process.env.DISABLE_FALLBACK_WARNING === 'true' || false
 const translationsCacheTTL = 60 * 60 * 24 * 14 // 14 days
-const isDev = Bun.env.NODE_ENV !== 'production'
+const isDev = process.env.NODE_ENV !== 'production'
 
 /**
  * Gets a translation from the cache or translates it using DeepL.
@@ -62,7 +57,7 @@ async function translateText(text: string, target: string): Promise<string> {
  * @param {Object} meals The meal plan
  * @returns {Object} The translated meal plan
  **/
-function translateFallback(meals: PreFoodData[]): MealData[] {
+function translateFallback(meals: PreFoodData[]): TempMealData[] {
     return meals.map((day: any) => {
         const meals = day.meals.map((meal: any) => {
             return {

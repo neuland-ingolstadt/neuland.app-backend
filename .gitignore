@@ -6,3 +6,4 @@ src/data/announcements.json
 src/data/cl-events.json
 database/
 docs/out/
+coverage/

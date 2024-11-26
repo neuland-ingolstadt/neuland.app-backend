@@ -51,13 +51,13 @@ const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
     plugins: [
-        Bun.env.NODE_ENV === 'production'
+        process.env.NODE_ENV === 'production'
             ? ApolloServerPluginLandingPageProductionDefault({
                   footer: false,
               })
             : ApolloServerPluginLandingPageLocalDefault(),
     ],
-    introspection: Bun.env.NODE_ENV !== 'production',
+    introspection: process.env.NODE_ENV !== 'production',
     formatError(formattedError, error) {
         console.error(error)
         return formattedError

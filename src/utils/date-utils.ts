@@ -35,7 +35,6 @@ export function formatISODate(date: Date | undefined): string {
 export function getMonday(date: Date): Date {
     date = new Date(date)
     const day = date.getDay()
-    date.setHours(0, 0, 0, 0)
     date.setDate(date.getDate() - day + (day === 0 ? -6 : 1))
     return date
 }
