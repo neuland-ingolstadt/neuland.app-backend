@@ -18,6 +18,7 @@ export async function deleteUniversitySport(
         const rowsDeleted = await db
             .delete(universitySports)
             .where(eq(universitySports.id, id))
+            .returning()
         return rowsDeleted.length > 0
     } catch (error) {
         throw new GraphQLError(

@@ -13,6 +13,8 @@ import {
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
+import { deleteManualClEvent } from './mutations/manual-cl-events/delete'
+import { upsertManualClEvent } from './mutations/manual-cl-events/upsert'
 import { createRoomReport } from './mutations/room-reports/create'
 import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
@@ -66,6 +68,8 @@ export const resolvers = {
         upsertAppAnnouncement,
         createRoomReport,
         resolveRoomReport,
+        upsertManualClEvent,
+        deleteManualClEvent,
     },
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,

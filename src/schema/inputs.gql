@@ -111,3 +111,55 @@ input AnnouncementInput {
     """
     url: String
 }
+
+"""
+Input type for the manual campus life event. These events are created by the administrators and are not fetched from an external source.
+"""
+input ManualCampusLifeEventInput {
+    """
+    Host / organizer of the event
+    """
+    host: HostInput!
+    """
+    Title of the event in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the event in different languages
+    """
+    description: MultiLanguageStringInput
+    """
+    Begin date and time of the event
+    """
+    begin: DateTime!
+    """
+    End date and time of the event
+    """
+    end: DateTime
+    """
+    Location of the event
+    """
+    location: String
+    """
+    Website of the event
+    """
+    website: URL
+}
+
+"""
+Input type for the host of an event.
+"""
+input HostInput {
+    """
+    Name of the event host
+    """
+    name: String!
+    """
+    URL to the event host website
+    """
+    website: URL
+    """
+    Instagram URL of the event host
+    """
+    instagram: URL
+}

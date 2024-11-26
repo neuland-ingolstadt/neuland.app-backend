@@ -1,10 +1,10 @@
 import { db } from '@/db'
-import { appAnnouncements } from '@/db/schema/appAnnouncements'
-import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
+import { manualClEvents } from '@/db/schema/manualClEvents'
+import { adminRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
 
-export async function deleteAppAnnouncement(
+export async function deleteManualClEvent(
     _: unknown,
     {
         id,
@@ -13,16 +13,16 @@ export async function deleteAppAnnouncement(
     },
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<boolean> {
-    checkAuthorization(contextValue, announcementRole)
+    checkAuthorization(contextValue, adminRole)
     try {
         const rowsDeleted = await db
-            .delete(appAnnouncements)
-            .where(eq(appAnnouncements.id, id))
+            .delete(manualClEvents)
+            .where(eq(manualClEvents.id, id))
             .returning()
         return rowsDeleted.length > 0
     } catch (error) {
         throw new GraphQLError(
-            `Failed to delete the app announcement with id ${id}: ${error}`
+            `Failed to delete the manual campus life event with id ${id}: ${error}`
         )
     }
 }

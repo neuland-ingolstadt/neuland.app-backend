@@ -31,7 +31,6 @@ export async function resolveRoomReport(
             id: report.id,
         }
     } catch (error) {
-        console.error(error)
         if (error instanceof TypeError) {
             throw new GraphQLError(
                 `Failed to update room report: Report with id ${id} not found`
