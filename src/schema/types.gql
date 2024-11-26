@@ -242,7 +242,14 @@ type ClEvent {
     """
     Title of the event in German
     """
-    title: MultiLanguageString!
+    title: String!
+        @deprecated(
+            reason: "Use titles field instead. This field will be removed in the future."
+        )
+    """
+    Title of the event in different languages
+    """
+    titles: MultiLanguageString!
     """
     Begin of the event
     """
@@ -258,7 +265,14 @@ type ClEvent {
     """
     Description of the event (only available if it's eligible for external sharing)
     """
-    description: MultiLanguageString
+    description: String
+        @deprecated(
+            reason: "Use descriptions field instead. This field will be removed in the future."
+        )
+    """
+    Description of the event in different languages (only available if it's eligible for external sharing)
+    """
+    descriptions: MultiLanguageString
     """
     URL to the event website
     """

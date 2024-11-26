@@ -36,11 +36,16 @@ export async function clEvents(): Promise<ClEvent[]> {
                 website: event.host_url,
                 instagram: event.host_instagram,
             },
-            title: {
+            title: event.title_de,
+            titles: {
                 de: event.title_de,
                 en: event.title_en,
             },
             description:
+                event.description_de != null && event.description_en != null
+                    ? event.description_de
+                    : null,
+            descriptions:
                 event.description_de != null && event.description_en != null
                     ? { de: event.description_de, en: event.description_en }
                     : null,

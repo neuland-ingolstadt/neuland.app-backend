@@ -242,7 +242,8 @@ async function getEventDetails(
         id: xxh64(`${trimmedOrganizer}-${trimmedEvent}`, 123n).toString(16),
         organizer: trimmedOrganizer, // deprecated in favor of host
         host: getHostDetails(trimmedOrganizer),
-        title: {
+        title: trimmedEvent,
+        titles: {
             de: trimmedEvent,
             en: trimmedEvent,
         },
@@ -250,6 +251,10 @@ async function getEventDetails(
         end: details.Ende ? parseLocalDateTime(details.Ende) : null,
         location: publicEvent ? details.Ort : null,
         description:
+            publicEvent && details.Beschreibung != null
+                ? details.Beschreibung
+                : null,
+        descriptions:
             publicEvent && details.Beschreibung != null
                 ? {
                       de: details.Beschreibung,

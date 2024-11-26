@@ -2,8 +2,10 @@ interface ClEvent {
     id: string
     organizer: string
     host: ClHost
-    title: ClText
-    description: ClText | null
+    title: string
+    titles: ClText
+    description: string | null
+    descriptions: ClText | null
     begin: Date
     end: Date | null
     location: string | null
@@ -15,8 +17,10 @@ interface ScrapedClEvent {
     id: string
     organizer: string
     host: ClHost
-    title: ClText
-    description: ClText | null
+    title: string
+    titles: ClText
+    description: string | null
+    descriptions: ClText | null
     begin: Date | null
     end: Date | null
     location: string | null
