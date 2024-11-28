@@ -57,7 +57,7 @@ const apolloServer = new ApolloServer({
               })
             : ApolloServerPluginLandingPageLocalDefault(),
     ],
-    introspection: Bun.env.NODE_ENV !== 'production',
+    introspection: true,
     formatError(formattedError, error) {
         console.error(error)
         return formattedError
