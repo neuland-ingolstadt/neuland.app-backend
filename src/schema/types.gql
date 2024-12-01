@@ -254,10 +254,19 @@ type ClEvent {
     Begin of the event
     """
     begin: String
+        @deprecated(reason: "Use start field instead with DateTime type")
+    """
+    Start of the event
+    """
+    startDateTime: DateTime
     """
     End of the event
     """
-    end: String
+    end: String @deprecated(reason: "Use end field instead with DateTime type")
+    """
+    End of the event
+    """
+    endDateTime: DateTime
     """
     Location of the event (only available if it's eligible for external sharing)
     """

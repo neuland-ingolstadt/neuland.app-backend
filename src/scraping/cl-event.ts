@@ -248,7 +248,9 @@ async function getEventDetails(
             en: trimmedEvent,
         },
         begin: details.Start ? parseLocalDateTime(details.Start) : null,
+        startDateTime: details.Start ? parseLocalDateTime(details.Start) : null,
         end: details.Ende ? parseLocalDateTime(details.Ende) : null,
+        endDateTime: details.Ende ? parseLocalDateTime(details.Ende) : null,
         location: publicEvent ? details.Ort : null,
         description:
             publicEvent && details.Beschreibung != null

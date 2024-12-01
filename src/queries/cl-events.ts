@@ -51,6 +51,8 @@ export async function clEvents(): Promise<ClEvent[]> {
                     : null,
             begin: event.start_date_time,
             end: event.end_date_time,
+            startDateTime: event.start_date_time,
+            endDateTime: event.end_date_time,
             location: null,
             eventWebsite: event.event_url,
             isMoodleEvent: false,

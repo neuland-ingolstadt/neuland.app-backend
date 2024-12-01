@@ -8,6 +8,8 @@ interface ClEvent {
     descriptions: ClText | null
     begin: Date
     end: Date | null
+    startDateTime: Date
+    endDateTime: Date | null
     location: string | null
     eventWebsite: string | null
     isMoodleEvent: boolean
@@ -23,6 +25,8 @@ interface ScrapedClEvent {
     descriptions: ClText | null
     begin: Date | null
     end: Date | null
+    startDateTime: Date | null
+    endDateTime: Date | null
     location: string | null
     eventWebsite: string | null
     isMoodleEvent: boolean
