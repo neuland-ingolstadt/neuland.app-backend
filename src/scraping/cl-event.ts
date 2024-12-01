@@ -237,6 +237,12 @@ async function getEventDetails(
         .replace(/( \.)$/g, '')
         .replace(/e\. V\./g, 'e.V.')
     const trimmedEvent = details.Event.trim()
+    const trimmedDescription =
+        publicEvent &&
+        details.Beschreibung != null &&
+        details.Beschreibung !== ''
+            ? details.Beschreibung.trim()
+            : null
 
     return {
         id: xxh64(`${trimmedOrganizer}-${trimmedEvent}`, 123n).toString(16),
@@ -252,15 +258,12 @@ async function getEventDetails(
         end: details.Ende ? parseLocalDateTime(details.Ende) : null,
         endDateTime: details.Ende ? parseLocalDateTime(details.Ende) : null,
         location: publicEvent ? details.Ort : null,
-        description:
-            publicEvent && details.Beschreibung != null
-                ? details.Beschreibung
-                : null,
+        description: trimmedDescription,
         descriptions:
-            publicEvent && details.Beschreibung != null
+            trimmedDescription != null
                 ? {
-                      de: details.Beschreibung,
-                      en: details.Beschreibung,
+                      de: trimmedDescription,
+                      en: trimmedDescription,
                   }
                 : null,
         eventWebsite: null, // not available in Moodle
