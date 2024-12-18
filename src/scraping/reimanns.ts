@@ -2,7 +2,7 @@ import { graphql } from '@/__generated__'
 import { type Day, type Meal } from '@/__generated__/graphql'
 import staticMeals from '@/data/reimanns-meals.json'
 import type { MealData, StaticMeal, TempMealData } from '@/types/food'
-import { execute } from '@/utils/api-utils'
+import { executeGql } from '@/utils/api-utils'
 
 import { getMealDayHash, unifyFoodEntries } from '../utils/food-utils'
 
@@ -27,7 +27,7 @@ const REIMANNS_QUERY = graphql(/* GraphQL */ `
  * @returns {Promise<MealData[]>} The meal plan
  */
 export async function getReimannsPlan(): Promise<MealData[]> {
-    const result = (await execute(REIMANNS_ENDPOINT, REIMANNS_QUERY)).data
+    const result = (await executeGql(REIMANNS_ENDPOINT, REIMANNS_QUERY)).data
 
     const days = result.menu?.days
     if (!days) {

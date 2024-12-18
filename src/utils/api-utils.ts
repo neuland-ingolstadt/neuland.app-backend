@@ -1,6 +1,13 @@
 import type { TypedDocumentString } from '@/__generated__/graphql'
 
-export async function execute<TResult, TVariables>(
+/**
+ * Executes a GraphQL query against an endpoint
+ * @param endpoint  The GraphQL endpoint
+ * @param query     The query to execute
+ * @param param2  The variables for the query
+ * @returns       The query result
+ */
+export async function executeGql<TResult, TVariables>(
     endpoint: string,
     query: TypedDocumentString<TResult, TVariables>,
     ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
