@@ -1,0 +1,61 @@
+schema {
+    query: Query
+}
+
+"""
+Indicates a Bean Validation constraint
+"""
+directive @constraint(
+    format: String
+    max: BigInteger
+    maxFloat: BigDecimal
+    maxLength: Int
+    min: BigInteger
+    minFloat: BigDecimal
+    minLength: Int
+    pattern: String
+) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+"""
+Used to specify the role required to execute a given field or operation.
+"""
+directive @rolesAllowed(value: String) on FIELD_DEFINITION
+
+"""
+Scalar for BigDecimal
+"""
+scalar BigDecimal
+
+"""
+Scalar for BigInteger
+"""
+scalar BigInteger
+
+"""
+Scalar for Date
+"""
+scalar Date
+
+type Day {
+    """
+    ISO-8601
+    """
+    date: Date
+    meals: [Meal]
+}
+
+type Meal {
+    name_de: String
+    name_en: String
+}
+
+type Menu {
+    days: [Day]
+}
+
+"""
+Query root
+"""
+type Query {
+    menu: Menu
+}

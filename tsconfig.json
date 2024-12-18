@@ -20,6 +20,12 @@
         "paths": {
             "@/*": ["./src/*"],
             "@/index": ["./index.ts"]
-        }
+        },
+        "plugins": [
+            {
+                "name": "@0no-co/graphqlsp",
+                "schema": "src/__generated__/schema.graphql"
+            }
+        ]
     }
 }

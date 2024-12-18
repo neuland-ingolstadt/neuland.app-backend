@@ -43,14 +43,14 @@ http://localhost:4000/
 
 #### Project Structure
 
--   `index.ts` - The entry point for the API.
--   `src/` - Contains the source code for the GraphQL API.
--   `src/schema.gql` - Contains the GraphQL schema.
--   `src/data/` - Contains the static data.
--   `src/resolvers/` - Contains the resolvers.
--   `src/types/` - Contains the types for TypeScript.
--   `src/scrapers/` - Contains the scrapers for the data used by the resolvers.
--   `src/utils/` - Contains utility functions.
+- `index.ts` - The entry point for the API.
+- `src/` - Contains the source code for the GraphQL API.
+- `src/schema.gql` - Contains the GraphQL schema.
+- `src/data/` - Contains the static data.
+- `src/resolvers/` - Contains the resolvers.
+- `src/types/` - Contains the types for TypeScript.
+- `src/scrapers/` - Contains the scrapers for the data used by the resolvers.
+- `src/utils/` - Contains utility functions.
 
 #### Commiting Changes
 

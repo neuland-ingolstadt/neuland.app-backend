@@ -11,6 +11,7 @@ export default [
             '**/dist',
             '**/build',
             '**/.svelte-kit',
+            '**/generated',
         ],
     },
     { files: ['**/*.{js,mjs,cjs,ts}'] },
