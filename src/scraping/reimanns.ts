@@ -30,7 +30,6 @@ export async function getReimannsPlan(): Promise<MealData[]> {
     const result = (await execute(REIMANNS_ENDPOINT, REIMANNS_QUERY)).data
 
     const days = result.menu?.days
-    console.log('Reimanns response:', days)
     if (!days) {
         throw new Error('No data received from Reimanns')
     }
