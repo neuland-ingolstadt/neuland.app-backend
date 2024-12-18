@@ -89,12 +89,17 @@ export interface Prices {
     guest: number | null
 }
 
+export interface StaticPrices {
+    student: number
+    employee: number
+    guest: number
+}
 export interface StaticMeal {
     category: string
     static: boolean
     name: Name
     originalLanguage: string
-    prices: Prices
+    prices: StaticPrices
     variants: Variant[]
     restaurant: string
     id: string

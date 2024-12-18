@@ -51,15 +51,15 @@ export default {
                         :::tabs
                         ---Production
 
-                        -   **Docs**: [https://api.neuland.app/](https://api.neuland.app/)
-                        -   **Endpoint**: [https://api.neuland.app/graphql](https://api.neuland.app/graphql)
-                        -   **GitHub**: [Main Branch](https://github.com/neuland-ingolstadt/neuland.app-backend/tree/main)
+                        - **Docs**: [https://api.neuland.app/](https://api.neuland.app/)
+                        - **Endpoint**: [https://api.neuland.app/graphql](https://api.neuland.app/graphql)
+                        - **GitHub**: [Main Branch](https://github.com/neuland-ingolstadt/neuland.app-backend/tree/main)
 
                         ---Development
 
-                        -   **Docs**: [https://api.dev.neuland.app/](https://api.dev.neuland.app/)
-                        -   **Endpoint**: [https://api.dev.neuland.app/graphql](https://api.dev.neuland.app/graphql)
-                        -   **GitHub**: [Dev Branch](https://github.com/neuland-ingolstadt/neuland.app-backend/tree/develop)
+                        - **Docs**: [https://api.dev.neuland.app/](https://api.dev.neuland.app/)
+                        - **Endpoint**: [https://api.dev.neuland.app/graphql](https://api.dev.neuland.app/graphql)
+                        - **GitHub**: [Dev Branch](https://github.com/neuland-ingolstadt/neuland.app-backend/tree/develop)
 
                         :::
 
