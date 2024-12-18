@@ -18,7 +18,9 @@ export async function execute<TResult, TVariables>(
     })
 
     if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`
+        )
     }
 
     return response.json()
