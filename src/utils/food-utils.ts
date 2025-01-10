@@ -70,7 +70,7 @@ export function unifyFoodEntries(entries: TempMealData[]): MealData[] {
                     ? meal.variants.map((variant) =>
                           unifyMeal(variant as TempMeal, meal)
                       )
-                    : null,
+                    : [],
             }
         }),
     }))
