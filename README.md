@@ -35,11 +35,11 @@ docker compose up postgres -d
 
 This will start a PostgreSQL container with the following configuration:
 
--   **Host**: `localhost` (use `host.docker.internal` when connecting from inside Docker)
--   **Port**: `5432`
--   **Database**: `app`
--   **Username**: `postgres`
--   **Password**: `postgres`
+- **Host**: `localhost` (use `host.docker.internal` when connecting from inside Docker)
+- **Port**: `5432`
+- **Database**: `app`
+- **Username**: `postgres`
+- **Password**: `postgres`
 
 #### Running Database Migrations
 
@@ -57,8 +57,8 @@ bun db:generate
 
 #### Database Connection Issues
 
--   **When running the app locally**: In your `.env.local`, set `DB_HOST=localhost`
--   **When running in Docker**: Set `DB_HOST=postgres` (service name) or `DB_HOST=host.docker.internal` (to access a database on your host machine)
+- **When running the app locally**: In your `.env.local`, set `DB_HOST=localhost`
+- **When running in Docker**: Set `DB_HOST=postgres` (service name) or `DB_HOST=host.docker.internal` (to access a database on your host machine)
 
 #### Running the Full Stack
 
@@ -87,14 +87,14 @@ http://localhost:4000/
 
 #### Project Structure
 
--   `index.ts` - The entry point for the API.
--   `src/` - Contains the source code for the GraphQL API.
--   `src/schema.gql` - Contains the GraphQL schema.
--   `src/data/` - Contains the static data.
--   `src/resolvers/` - Contains the resolvers.
--   `src/types/` - Contains the types for TypeScript.
--   `src/scrapers/` - Contains the scrapers for the data used by the resolvers.
--   `src/utils/` - Contains utility functions.
+- `index.ts` - The entry point for the API.
+- `src/` - Contains the source code for the GraphQL API.
+- `src/schema.gql` - Contains the GraphQL schema.
+- `src/data/` - Contains the static data.
+- `src/resolvers/` - Contains the resolvers.
+- `src/types/` - Contains the types for TypeScript.
+- `src/scrapers/` - Contains the scrapers for the data used by the resolvers.
+- `src/utils/` - Contains utility functions.
 
 #### Commiting Changes
 
