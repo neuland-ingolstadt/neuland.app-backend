@@ -57,6 +57,13 @@
             "when": 1732273687609,
             "tag": "0007_jazzy_brood",
             "breakpoints": true
+        },
+        {
+            "idx": 8,
+            "version": "7",
+            "when": 1742816941144,
+            "tag": "0008_naive_silver_sable",
+            "breakpoints": true
         }
     ]
 }

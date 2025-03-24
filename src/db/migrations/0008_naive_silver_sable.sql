@@ -1,0 +1,1 @@
+ALTER TABLE "manual_cl_events" ADD COLUMN "location" text;
