@@ -11,7 +11,7 @@ The API documentation is available [here](https://api.neuland.app/).
 
 ### Endpoint
 
-https://api.neuland.app/graphql
+<https://api.neuland.app/graphql>
 
 ## Development
 
@@ -23,6 +23,50 @@ bun i
 
 Set the necessary environment variables in a `.env.local` file.
 You can use the `.env.local.example` file as a template.
+
+### Database Setup
+
+For local development, you can quickly spin up a PostgreSQL database using Docker:
+
+```bash
+# Start the database only
+docker compose up postgres -d
+```
+
+This will start a PostgreSQL container with the following configuration:
+
+- **Host**: `localhost` (use `host.docker.internal` when connecting from inside Docker)
+- **Port**: `5432`
+- **Database**: `app`
+- **Username**: `postgres`
+- **Password**: `postgres`
+
+#### Running Database Migrations
+
+After starting the PostgreSQL container, you can run migrations to set up your database schema:
+
+```bash
+bun migrate
+```
+
+If you're making schema changes, you can generate new migrations:
+
+```bash
+bun db:generate
+```
+
+#### Database Connection Issues
+
+- **When running the app locally**: In your `.env.local`, set `DB_HOST=localhost`
+- **When running in Docker**: Set `DB_HOST=postgres` (service name) or `DB_HOST=host.docker.internal` (to access a database on your host machine)
+
+#### Running the Full Stack
+
+To start both the PostgreSQL database and the backend app:
+
+```bash
+docker compose up -d
+```
 
 ### Start the Development Server
 
