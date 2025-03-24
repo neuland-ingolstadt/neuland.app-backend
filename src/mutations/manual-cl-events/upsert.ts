@@ -14,7 +14,8 @@ export async function upsertManualClEvent(
     },
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<{ id: number }> {
-    const { host, title, description, begin, end, eventWebsite } = input
+    const { host, title, description, begin, end, location, eventWebsite } =
+        input
     console.log('upsertManualClEvent', id, input, contextValue)
     checkAuthorization(contextValue, adminRole)
 
@@ -31,6 +32,7 @@ export async function upsertManualClEvent(
                 start_date_time: begin,
                 end_date_time: end ?? null,
                 organizer: host.name,
+                location: location ?? null,
                 host_url: host.website ?? null,
                 host_instagram: host.instagram ?? null,
                 event_url: eventWebsite ?? null,
@@ -51,6 +53,7 @@ export async function upsertManualClEvent(
                 start_date_time: begin,
                 end_date_time: end ?? null,
                 organizer: host.name,
+                location: location ?? null,
                 host_url: host.website ?? null,
                 host_instagram: host.instagram ?? null,
                 event_url: eventWebsite ?? null,
