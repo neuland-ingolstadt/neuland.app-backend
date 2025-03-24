@@ -53,10 +53,10 @@ export async function clEvents(): Promise<ClEvent[]> {
             end: event.end_date_time,
             startDateTime: event.start_date_time,
             endDateTime: event.end_date_time,
-            location: null,
+            location: event.location,
             eventWebsite: event.event_url,
             isMoodleEvent: false,
-        } satisfies ClEvent
+        }
     })
 
     combinedClEvents = clEvents.concat(dbClEvents).sort((a, b) => {

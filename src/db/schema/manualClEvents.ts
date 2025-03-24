@@ -11,6 +11,7 @@ export const manualClEvents = pgTable('manual_cl_events', {
     }).notNull(),
     end_date_time: timestamp('end_date_time', { withTimezone: true }),
     organizer: text('organizer').notNull(),
+    location: text('location'),
     host_url: text('url'),
     host_instagram: text('instagram'),
     event_url: text('event_url'),
