@@ -29,8 +29,10 @@ COPY --from=prerelease /usr/src/app/index.ts .
 COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/tsconfig.json .
 COPY --from=prerelease /usr/src/app/src src
+COPY --from=prerelease /usr/src/app/startup.sh .
+RUN chmod +x startup.sh
 
 # run the app
 USER bun
 EXPOSE 4000
-ENTRYPOINT [ "bun", "run", "index.ts" ]
+ENTRYPOINT ["./startup.sh"]
