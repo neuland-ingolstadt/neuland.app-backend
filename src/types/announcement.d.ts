@@ -27,6 +27,7 @@ interface Announcement {
     endDateTime: Date | string
     priority: number
     url: string | null
+    imageUrl: string | null
     createdAt: Date
     updatedAt: Date
 }
@@ -46,4 +47,5 @@ interface AnnouncementInput {
     endDateTime: Date
     priority: number
     url: string | null
+    imageUrl: string | null
 }

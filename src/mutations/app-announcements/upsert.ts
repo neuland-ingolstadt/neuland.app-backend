@@ -27,6 +27,7 @@ export async function upsertAppAnnouncement(
         endDateTime,
         priority,
         url,
+        imageUrl,
     } = input
 
     let announcement
@@ -46,6 +47,7 @@ export async function upsertAppAnnouncement(
                 end_date_time: endDateTime,
                 priority,
                 url,
+                image_url: imageUrl,
                 updated_at: new Date(),
             })
             .where(eq(appAnnouncements.id, id))
@@ -68,6 +70,7 @@ export async function upsertAppAnnouncement(
                 end_date_time: endDateTime,
                 priority,
                 url,
+                image_url: imageUrl,
                 created_at: new Date(),
                 updated_at: new Date(),
             })

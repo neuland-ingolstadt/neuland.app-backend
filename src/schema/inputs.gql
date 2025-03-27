@@ -110,6 +110,10 @@ input AnnouncementInput {
     URL to the announcement
     """
     url: String
+    """
+    Image URL for the announcement
+    """
+    imageUrl: String
 }
 
 """
