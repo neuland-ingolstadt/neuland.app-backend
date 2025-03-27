@@ -20,6 +20,7 @@ export async function appAnnouncementsQuery(): Promise<Announcement[]> {
         endDateTime: announcement.end_date_time,
         priority: announcement.priority,
         url: announcement.url,
+        imageUrl: announcement.image_url,
         createdAt: announcement.created_at,
         updatedAt: announcement.updated_at,
     }))

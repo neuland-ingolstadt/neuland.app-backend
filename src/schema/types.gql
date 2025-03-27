@@ -351,6 +351,10 @@ type Announcement {
     """
     url: String
     """
+    Image URL for the announcement
+    """
+    imageUrl: String
+    """
     Creation date of the announcement
     """
     createdAt: DateTime!

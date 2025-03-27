@@ -64,6 +64,13 @@
             "when": 1742816941144,
             "tag": "0008_naive_silver_sable",
             "breakpoints": true
+        },
+        {
+            "idx": 9,
+            "version": "7",
+            "when": 1743087200806,
+            "tag": "0009_lyrical_the_order",
+            "breakpoints": true
         }
     ]
 }
