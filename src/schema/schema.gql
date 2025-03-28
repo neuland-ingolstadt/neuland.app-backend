@@ -18,7 +18,7 @@ type Query {
     """
     Get the current in app announcements.
     """
-    appAnnouncements: [Announcement!]!
+    appAnnouncements(active: Boolean): [Announcement!]!
     """
     Get the university sports events. This includes all sports events from all campuses.
     """

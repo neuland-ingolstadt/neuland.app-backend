@@ -1,10 +1,17 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
 
-export async function appAnnouncementsQuery(): Promise<Announcement[]> {
+export async function appAnnouncementsQuery(
+    _: unknown,
+    args: {
+        active: boolean
+    }
+): Promise<Announcement[]> {
+    const { active } = args
     const data = await db.select().from(appAnnouncements)
+    const now = new Date()
 
-    return data.map((announcement) => ({
+    const announcements = data.map((announcement) => ({
         platform: announcement.platform as AppPlatformEnum[],
         userKind: announcement.user_kind as UserKindEnum[],
         id: announcement.id,
@@ -24,4 +31,14 @@ export async function appAnnouncementsQuery(): Promise<Announcement[]> {
         createdAt: announcement.created_at,
         updatedAt: announcement.updated_at,
     }))
+
+    // Filter active announcements if requested
+    if (active) {
+        return announcements.filter(
+            (a) =>
+                new Date(a.startDateTime) <= now &&
+                new Date(a.endDateTime) >= now
+        )
+    }
+    return announcements
 }

@@ -53,7 +53,7 @@
         "@types/jwk-to-pem": "^2.0.3",
         "@types/node": "^22.13.14",
         "@types/pdf-parse": "^1.1.4",
-        "@types/sanitize-html": "^2.13.0",
+        "@types/sanitize-html": "^2.15.0",
         "@typescript-eslint/eslint-plugin": "^8.28.0",
         "concurrently": "^9.1.2",
         "cross-env": "^7.0.3",
