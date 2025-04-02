@@ -15,8 +15,8 @@ export const neulandEvents = pgTable(
             .defaultNow()
             .notNull(),
         updated_at: timestamp('updated_at', { withTimezone: true }),
-        start_time: timestamp('start_time', { withTimezone: true }).notNull(),
-        end_time: timestamp('end_time', { withTimezone: true }).notNull(),
+        start_time: timestamp('start_time', { withTimezone: true }),
+        end_time: timestamp('end_time', { withTimezone: true }),
         rrule: text('rrule'),
     },
     (table) => [index('idx_events_start_time').on(table.start_time)]
