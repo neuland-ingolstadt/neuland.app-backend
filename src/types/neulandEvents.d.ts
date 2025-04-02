@@ -11,8 +11,8 @@ interface NeulandEvent {
     location: string | null
     createdAt: Date
     updatedAt: Date | null
-    startTime: Date
-    endTime: Date
+    startTime: Date | null
+    endTime: Date | null
     rrule: string | null
 }
 
