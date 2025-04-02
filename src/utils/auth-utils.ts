@@ -3,6 +3,7 @@ import { GraphQLError } from 'graphql'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import jwkToPem from 'jwk-to-pem'
 
+export const eventRole = 'Neuland Next Events'
 export const sportRole = 'Neuland Next Hochschulsport'
 export const announcementRole = 'Neuland Next Announcements'
 export const adminRole = 'Neuland Next Admin'

@@ -7,7 +7,7 @@
         "dev": "bun --hot run index.ts",
         "prepare": "husky",
         "docs:dev": "magidoc dev -f docs/magidoc.mjs -m bun",
-        "db:generate": "drizzle-kit generate --schema ./src/db/schema/ --dialect postgresql --out ./src/db/migrations",
+        "db:generate": "drizzle-kit generate",
         "migrate": "bun run ./src/db/migrate.ts",
         "codegen": "graphql-codegen --config codegen.ts"
     },

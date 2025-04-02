@@ -473,3 +473,45 @@ type RoomReport {
 type UpsertResponse {
     id: ID
 }
+
+"""
+Events by Neuland Ingolstadt e.V.
+"""
+type NeulandEvent {
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Title of the event in different languages
+    """
+    title: MultiLanguageString!
+    """
+    Description of the event in different languages
+    """
+    description: MultiLanguageString
+    """
+    Location where the event takes place
+    """
+    location: String
+    """
+    Creation date and time of the event
+    """
+    createdAt: DateTime!
+    """
+    Last update date and time of the event
+    """
+    updatedAt: DateTime
+    """
+    Start date and time of the event
+    """
+    startTime: DateTime!
+    """
+    End date and time of the event
+    """
+    endTime: DateTime!
+    """
+    Recurrence rule for recurring events (uses iCalendar RRULE format)
+    """
+    rrule: String
+}
