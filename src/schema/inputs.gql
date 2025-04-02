@@ -187,11 +187,11 @@ input NeulandEventInput {
     """
     Start date and time of the event
     """
-    startTime: DateTime!
+    startTime: DateTime
     """
     End date and time of the event
     """
-    endTime: DateTime!
+    endTime: DateTime
     """
     Recurrence rule for recurring events (uses iCalendar RRULE format)
     """
