@@ -15,7 +15,6 @@ export async function neulandEventsQuery(): Promise<NeulandEvent[]> {
             en: event.description_en,
         },
         location: event.location,
-        weekday: event.end_time,
         createdAt: event.created_at,
         startTime: event.start_time,
         endTime: event.end_time,
