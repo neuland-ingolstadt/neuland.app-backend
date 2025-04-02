@@ -46,7 +46,10 @@ export function checkAuthorization(
         throw new GraphQLError('Not authorized: Missing JWT payload')
     }
 
-    if (!contextValue.jwtPayload.groups.includes(requiredRole)) {
+    if (
+        !contextValue.jwtPayload.groups.includes(requiredRole) &&
+        !contextValue.jwtPayload.groups.includes(adminRole)
+    ) {
         throw new GraphQLError('Not authorized: Insufficient permissions')
     }
 }
