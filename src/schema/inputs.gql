@@ -167,3 +167,33 @@ input HostInput {
     """
     instagram: URL
 }
+
+"""
+Input type for a event by Neuland Ingolstadt e.V.
+"""
+input NeulandEventInput {
+    """
+    Title of the event in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the event in different languages
+    """
+    description: MultiLanguageStringInput
+    """
+    Location where the event takes place
+    """
+    location: String
+    """
+    Start date and time of the event
+    """
+    startTime: DateTime
+    """
+    End date and time of the event
+    """
+    endTime: DateTime
+    """
+    Recurrence rule for recurring events (uses iCalendar RRULE format)
+    """
+    rrule: String
+}

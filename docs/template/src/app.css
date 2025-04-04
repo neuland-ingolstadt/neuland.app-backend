@@ -171,3 +171,7 @@ a.bx--side-nav__link--current {
 .code-span {
     background-color: var(--code-span) !important;
 }
+
+.header-logo-wrapper {
+    padding: 4px;
+}
