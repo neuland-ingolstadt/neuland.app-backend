@@ -11,6 +11,10 @@ type Query {
     """
     clEvents: [ClEvent!]!
     """
+    Get all campus life clubs
+    """
+    clClubs: [ClClub!]!
+    """
     Get the current announcements
     """
     announcements: [Announcement!]!

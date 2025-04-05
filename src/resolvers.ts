@@ -1,6 +1,7 @@
 import { deleteUniversitySport } from '@/mutations/university-sports/delete'
 import { upsertUniversitySport } from '@/mutations/university-sports/upsert'
 import { clEvents } from '@/queries/cl-events'
+import { clClubs } from '@/queries/clubs'
 import { food } from '@/queries/food'
 import { sports } from '@/queries/sports'
 import { GraphQLScalarType, Kind } from 'graphql'
@@ -59,6 +60,7 @@ export const resolvers = {
     Query: {
         food,
         clEvents,
+        clClubs,
         appAnnouncements: appAnnouncementsQuery,
         announcements: appAnnouncementsQuery,
         universitySports: sports,
