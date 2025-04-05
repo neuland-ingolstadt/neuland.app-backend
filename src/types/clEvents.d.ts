@@ -1,3 +1,9 @@
+interface ClClub {
+    name: string
+    website: string | null
+    instagram: string | null
+}
+
 interface ClEvent {
     id: string
     organizer: string
