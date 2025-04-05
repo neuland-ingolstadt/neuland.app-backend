@@ -43,6 +43,8 @@ app.use(
             'https://dashboard.neuland.app',
             'https://dev.neuland.app',
             'https://neuland.app',
+            'https://neuland-ingolstadt.de',
+            'https://beta.neuland.ing',
         ],
     })
 )
