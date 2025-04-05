@@ -293,24 +293,6 @@ type ClEvent {
 }
 
 """
-A campus life club.
-"""
-type ClClub {
-    """
-    The name of the club
-    """
-    name: String!
-    """
-    The website URL of the club (if available)
-    """
-    website: String
-    """
-    The Instagram profile URL of the club (if available)
-    """
-    instagram: String
-}
-
-"""
 Host of the event, usually a club or student group.
 """
 type Host {
