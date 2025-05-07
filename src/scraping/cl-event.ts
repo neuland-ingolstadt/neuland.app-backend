@@ -207,6 +207,11 @@ async function getEventDetails(
     const $ = cheerio.load(await resp.text())
     const rows = $('.entry tr:not(.lastrow)').get()
 
+    if (rows.length === 0) {
+        console.debug(`No event data rows found on ${url}`)
+        return null
+    }
+
     const details = Object.fromEntries(
         rows.map((elem) => {
             const htmlContent = $(elem).find('.c1').html()
@@ -244,8 +249,24 @@ async function getEventDetails(
             ? details.Beschreibung.trim()
             : null
 
+    const parsedStartDateTime = details.Start
+        ? parseLocalDateTime(details.Start)
+        : null
+    const parsedEndDateTime = details.Ende
+        ? parseLocalDateTime(details.Ende)
+        : null
+
+    const startDateString = parsedStartDateTime
+        ? parsedStartDateTime.toISOString()
+        : 'null-start'
+    const endDateString = parsedEndDateTime
+        ? parsedEndDateTime.toISOString()
+        : 'null-end'
+
+    const eventIdString = `${trimmedOrganizer}-${trimmedEvent}-${startDateString}-${endDateString}`
+
     return {
-        id: xxh64(`${trimmedOrganizer}-${trimmedEvent}`, 123n).toString(16),
+        id: xxh64(eventIdString, 123n).toString(16),
         organizer: trimmedOrganizer, // deprecated in favor of host
         host: getHostDetails(trimmedOrganizer),
         title: trimmedEvent,
@@ -253,10 +274,10 @@ async function getEventDetails(
             de: trimmedEvent,
             en: trimmedEvent,
         },
-        begin: details.Start ? parseLocalDateTime(details.Start) : null,
-        startDateTime: details.Start ? parseLocalDateTime(details.Start) : null,
-        end: details.Ende ? parseLocalDateTime(details.Ende) : null,
-        endDateTime: details.Ende ? parseLocalDateTime(details.Ende) : null,
+        begin: parsedStartDateTime,
+        startDateTime: parsedStartDateTime,
+        end: parsedEndDateTime,
+        endDateTime: parsedEndDateTime,
         location: publicEvent ? details.Ort : null,
         description: trimmedDescription,
         descriptions:
@@ -297,14 +318,28 @@ export async function getAllEventDetails(
     username: string,
     password: string
 ): Promise<ClEvent[]> {
-    // create a fetch method that keeps cookies
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
 
     const events = await getEvents(fetch)
 
-    return events
+    // Filter out duplicate events based on their ID
+    const uniqueEvents: ClEvent[] = []
+    const seenEventIds = new Set<string>()
+
+    for (const event of events) {
+        if (event.id && !seenEventIds.has(event.id)) {
+            uniqueEvents.push(event)
+            seenEventIds.add(event.id)
+        } else if (event.id && seenEventIds.has(event.id)) {
+            console.debug('Duplicate event found, skipping:', event.id)
+        } else if (!event.id) {
+            console.warn('Event without ID found, skipping')
+        }
+    }
+
+    return uniqueEvents
 }
 
 export default async function getClEvents(): Promise<ClEvent[]> {
