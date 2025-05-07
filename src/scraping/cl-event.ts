@@ -332,8 +332,10 @@ export async function getAllEventDetails(
         if (event.id && !seenEventIds.has(event.id)) {
             uniqueEvents.push(event)
             seenEventIds.add(event.id)
+        } else if (event.id && seenEventIds.has(event.id)) {
+            console.debug('Duplicate event found, skipping:', event.id)
         } else if (!event.id) {
-            console.warn('Event without ID found, skipping:', event)
+            console.warn('Event without ID found, skipping')
         }
     }
 
