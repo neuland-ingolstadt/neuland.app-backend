@@ -297,14 +297,26 @@ export async function getAllEventDetails(
     username: string,
     password: string
 ): Promise<ClEvent[]> {
-    // create a fetch method that keeps cookies
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
 
     const events = await getEvents(fetch)
 
-    return events
+    // Filter out duplicate events based on their ID
+    const uniqueEvents: ClEvent[] = []
+    const seenEventIds = new Set<string>()
+
+    for (const event of events) {
+        if (event.id && !seenEventIds.has(event.id)) {
+            uniqueEvents.push(event)
+            seenEventIds.add(event.id)
+        } else if (!event.id) {
+            console.warn('Event without ID found, skipping:', event)
+        }
+    }
+
+    return uniqueEvents
 }
 
 export default async function getClEvents(): Promise<ClEvent[]> {
