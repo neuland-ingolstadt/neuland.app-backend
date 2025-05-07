@@ -21,6 +21,7 @@ import { upsertNeulandEvent } from './mutations/neuland-events/upsert'
 import { createRoomReport } from './mutations/room-reports/create'
 import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
+import { careerServiceEvents } from './queries/careerService'
 import { neulandEventsQuery } from './queries/neulandEvents'
 import { roomReportsQuery } from './queries/roomReports'
 
@@ -61,6 +62,7 @@ export const resolvers = {
         food,
         clEvents,
         clClubs,
+        careerServiceEvents,
         appAnnouncements: appAnnouncementsQuery,
         announcements: appAnnouncementsQuery,
         universitySports: sports,
