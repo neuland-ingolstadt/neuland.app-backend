@@ -319,7 +319,7 @@ type CareerServiceEvent {
     """
     id: ID!
     """
-    Title of the event in german
+    Title of the event in German
     """
     title: String!
     """
