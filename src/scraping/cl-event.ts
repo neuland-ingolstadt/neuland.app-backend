@@ -134,7 +134,9 @@ async function getEventDetails(
                     ? ''
                     : he.decode(
                           sanitizeHtml(
-                              htmlContent.replace(/<br\s*\/?>/gi, '\n'),
+                              htmlContent
+                                  .replace(/<br\s*\/?>/gi, '\n')
+                                  .replace(/<\/?p>/gi, '\n'),
                               {
                                   allowedTags: [],
                                   allowedAttributes: {},
