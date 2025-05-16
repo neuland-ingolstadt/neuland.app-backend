@@ -165,9 +165,18 @@ async function getEventDetails(
     const parsedStartDateTime = details.Start
         ? parseLocalDateTime(details.Start)
         : null
-    const parsedEndDateTime = details.Ende
+    let parsedEndDateTime = details.Ende
         ? parseLocalDateTime(details.Ende)
         : null
+
+    // If both start and end dates are parsed, and end is not after start, nullify end.
+    if (
+        parsedStartDateTime &&
+        parsedEndDateTime &&
+        parsedEndDateTime.getTime() <= parsedStartDateTime.getTime()
+    ) {
+        parsedEndDateTime = null
+    }
 
     const startDateString = parsedStartDateTime
         ? parsedStartDateTime.toISOString()
