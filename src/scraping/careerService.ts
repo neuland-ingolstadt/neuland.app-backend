@@ -56,6 +56,14 @@ async function getEvents(
     rows.each((_index, row) => {
         const title = $(row).find('h5').text().trim()
         const date = $(row).find('.collapse div').text().trim()
+
+        const unlimitedSlotsText = $(row)
+            .find('.col-ap-unlimited')
+            .text()
+            .trim()
+
+        const unlimitedSlots = unlimitedSlotsText.toLowerCase() === 'unbegrenzt'
+
         const availableSlotsText = $(row)
             .find('.col-ap-availableplaces')
             .text()
@@ -88,6 +96,7 @@ async function getEvents(
                 id: xxh64(title + date).toString(),
                 title,
                 date: parseLocalDateTime(date),
+                unlimitedSlots,
                 availableSlots,
                 totalSlots,
                 waitingList,

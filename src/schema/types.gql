@@ -327,21 +327,25 @@ type CareerServiceEvent {
     """
     date: DateTime!
     """
+    Unlimited slots for the event
+    """
+    unlimitedSlots: Boolean!
+    """
     Available slots for the event
     """
-    availableSlots: Int!
+    availableSlots: Int
     """
     Total slots for the event
     """
-    totalSlots: Int!
+    totalSlots: Int
     """
     Waiting list for the event
     """
-    waitingList: Int!
+    waitingList: Int
     """
     Maximum waiting list for the event
     """
-    maxWaitingList: Int!
+    maxWaitingList: Int
     """
     URL for more information about the event
     """
