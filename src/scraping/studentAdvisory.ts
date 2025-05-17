@@ -8,12 +8,12 @@ import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import { GraphQLError } from 'graphql'
 import nodeFetch from 'node-fetch'
 
-const LIST_URL = 'https://moodle.thi.de/mod/booking/view.php?id=85612'
+const LIST_URL = 'https://moodle.thi.de/mod/booking/view.php?id=86853'
 
 /**
  * Fetch a list of event details.
  * @param {object} fetch Cookie-aware implementation of `fetch`
- * @returns {CareerServiceEvent[]}
+ * @returns {StudentAdvisoryEvent[]}
  */
 async function getEvents(
     fetch: FetchCookieImpl<
@@ -21,8 +21,8 @@ async function getEvents(
         nodeFetch.RequestInit,
         nodeFetch.Response
     >
-): Promise<CareerServiceEvent[]> {
-    const data: CareerServiceEvent[] = []
+): Promise<StudentAdvisoryEvent[]> {
+    const data: StudentAdvisoryEvent[] = []
     const page = await fetch(LIST_URL)
 
     const text = await page.text()
@@ -96,7 +96,7 @@ async function getEvents(
 export async function getAllEventDetails(
     username: string,
     password: string
-): Promise<CareerServiceEvent[]> {
+): Promise<StudentAdvisoryEvent[]> {
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
@@ -104,8 +104,8 @@ export async function getAllEventDetails(
     return getEvents(fetch)
 }
 
-export default async function getCareerServiceEvents(): Promise<
-    CareerServiceEvent[]
+export default async function getStudentAdvisoryEvents(): Promise<
+    StudentAdvisoryEvent[]
 > {
     try {
         const username = Bun.env.MOODLE_USERNAME

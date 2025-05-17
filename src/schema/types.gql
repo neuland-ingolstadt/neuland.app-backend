@@ -353,6 +353,48 @@ type CareerServiceEvent {
 }
 
 """
+Student advisory Service Event data type. Information about a specific event from the student advisory service.
+"""
+type StudentAdvisoryEvent {
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Title of the event in German
+    """
+    title: String!
+    """
+    Date of the event
+    """
+    date: DateTime!
+    """
+    Unlimited slots for the event
+    """
+    unlimitedSlots: Boolean!
+    """
+    Available slots for the event
+    """
+    availableSlots: Int
+    """
+    Total slots for the event
+    """
+    totalSlots: Int
+    """
+    Waiting list for the event
+    """
+    waitingList: Int
+    """
+    Maximum waiting list for the event
+    """
+    maxWaitingList: Int
+    """
+    URL for more information about the event
+    """
+    url: String
+}
+
+"""
 Announcement data to display on top of the apps dashboard
 """
 type Announcement {

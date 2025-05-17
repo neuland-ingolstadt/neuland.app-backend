@@ -19,6 +19,10 @@ type Query {
     """
     careerServiceEvents: [CareerServiceEvent!]!
     """
+    Get all events of the student advisory service.
+    """
+    studentAdvisoryEvents: [StudentAdvisoryEvent!]!
+    """
     Get the current announcements
     """
     announcements: [Announcement!]!

@@ -2,13 +2,12 @@
  * @file Scrapes events from the `Campus Life` Moodle course and serves them at `/api/events`.
  */
 import clubsData from '@/data/clubs.json'
-import { MONTHS, type Month, login } from '@/utils/moodle-utils'
+import { login, parseLocalDateTime } from '@/utils/moodle-utils'
 import { xxh64 } from '@node-rs/xxhash'
 import * as cheerio from 'cheerio'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import { GraphQLError } from 'graphql'
 import he from 'he'
-import moment from 'moment-timezone'
 import nodeFetch from 'node-fetch'
 import sanitizeHtml from 'sanitize-html'
 
@@ -17,25 +16,6 @@ const PUBLIC_EVENT_KEY = 'Veröffentlichung des Ortes & Bescheibung in Apps' // 
 const EVENT_LIST_2_URL =
     'https://moodle.thi.de/mod/dataform/view.php?d=19&view=18&filter=9'
 const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
-
-/**
- * Parses a date like "Donnerstag, 15. Juni 2023, 10:00".
- * @param {string} str
- * @returns {Date}
- */
-function parseLocalDateTime(str: string): Date {
-    const match = str.match(/, (\d+). (\p{Letter}+) (\d+), (\d+):(\d+)$/u)
-    if (!match) throw new Error(`Invalid date string: ${str}`)
-    const [, day, month, year, hour, minute] = match
-    const typedMonth = month as Month
-
-    // Create a date string and parse it in the Europe/Berlin time zone
-    const dateString = `${day}-${MONTHS[typedMonth]}-${year} ${hour}:${minute}`
-    const date = moment.tz(dateString, 'D-M-YYYY H:mm', 'Europe/Berlin')
-
-    // Convert to UTC and return a JavaScript Date
-    return date.utc().toDate()
-}
 
 /**
  * Fetch a list of event URLs.
