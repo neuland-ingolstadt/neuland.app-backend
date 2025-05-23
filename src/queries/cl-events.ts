@@ -4,8 +4,8 @@ import { cache } from '@/index'
 import getClEvents from '@/scraping/cl-event'
 import { gte } from 'drizzle-orm'
 
-const CACHE_TTL_MOODLE = 60 * 60 * 12 // 12 hours
-const CACHE_TTL_TOTAL = 60 * 60 * 3 // 3 hours
+const CACHE_TTL_MOODLE = 60 * 60 * 8 // 8 hours
+const CACHE_TTL_TOTAL = 60 * 60 * 1 // 1 hours
 
 export async function clEvents(): Promise<ClEvent[]> {
     let combinedClEvents: ClEvent[] | undefined =
