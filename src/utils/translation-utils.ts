@@ -73,7 +73,7 @@ export async function translateMeals(
         return translateMealsFallback(meals)
     }
 
-    // creates a record of all meals (name as key) and undefined as value with all meals flattened including variants
+    // populates a flat array of all meal and variant names for translation
     const text: string[] = []
     meals.forEach((day) => {
         day.meals.forEach((meal) => {
