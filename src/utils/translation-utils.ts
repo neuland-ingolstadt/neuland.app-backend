@@ -84,21 +84,25 @@ export async function translateMeals(
         })
     })
 
-    const result = await translate({
-        auth_key: deeplApiKey,
-        // @ts-expect-error: DeepL also accepts arrays of strings, but the type definition is not correct
-        text,
-        free_api: true,
-        target_lang: 'EN-GB',
-        source_lang: 'DE',
-        split_sentences: '1',
-    })
-
-    // map the result to the original meals using the index of the text array
     const translations: Record<string, string> = {}
-    result.data.translations.forEach((translation, index) => {
-        translations[text[index]] = translation.text
-    })
+    try {
+        const result = await translate({
+            auth_key: deeplApiKey,
+            // @ts-expect-error: DeepL also accepts arrays of strings, but the type definition is not correct
+            text,
+            free_api: true,
+            target_lang: 'EN-GB',
+            source_lang: 'DE',
+            split_sentences: '1',
+        })
+
+        // map the result to the original meals using the index of the text array
+        result.data.translations.forEach((translation, index) => {
+            translations[text[index]] = translation.text
+        })
+    } catch (error) {
+        console.error('Error translating meals with DeepL:', error)
+    }
 
     return meals.map((day) => {
         const meals = day.meals.map((meal) => ({
