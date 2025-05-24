@@ -105,7 +105,7 @@ export async function translateMeals(
             ...meal,
             name: {
                 de: meal.name,
-                en: translations[meal.name],
+                en: translations[meal.name] || meal.name,
             },
             variants:
                 meal.variants !== undefined
