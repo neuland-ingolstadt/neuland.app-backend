@@ -13,7 +13,7 @@ const LIST_URL = 'https://moodle.thi.de/mod/booking/view.php?id=86853'
 /**
  * Fetch a list of event details.
  * @param {object} fetch Cookie-aware implementation of `fetch`
- * @returns {StudentAdvisoryEvent[]}
+ * @returns {StudentCounsellingEvent[]}
  */
 async function getEvents(
     fetch: FetchCookieImpl<
@@ -21,8 +21,8 @@ async function getEvents(
         nodeFetch.RequestInit,
         nodeFetch.Response
     >
-): Promise<StudentAdvisoryEvent[]> {
-    const data: StudentAdvisoryEvent[] = []
+): Promise<StudentCounsellingEvent[]> {
+    const data: StudentCounsellingEvent[] = []
     const page = await fetch(LIST_URL)
 
     const text = await page.text()
@@ -96,7 +96,7 @@ async function getEvents(
 export async function getAllEventDetails(
     username: string,
     password: string
-): Promise<StudentAdvisoryEvent[]> {
+): Promise<StudentCounsellingEvent[]> {
     const fetch = fetchCookie(nodeFetch)
 
     await login(fetch, username, password)
@@ -104,8 +104,8 @@ export async function getAllEventDetails(
     return getEvents(fetch)
 }
 
-export default async function getStudentAdvisoryEvents(): Promise<
-    StudentAdvisoryEvent[]
+export default async function getStudentCounsellingEvents(): Promise<
+    StudentCounsellingEvent[]
 > {
     try {
         const username = Bun.env.MOODLE_USERNAME

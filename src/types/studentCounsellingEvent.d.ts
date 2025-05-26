@@ -1,4 +1,4 @@
-interface StudentAdvisoryEvent {
+interface StudentCounsellingEvent {
     id: string
     title: string
     date: Date

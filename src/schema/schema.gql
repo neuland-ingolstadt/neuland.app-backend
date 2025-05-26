@@ -19,9 +19,9 @@ type Query {
     """
     careerServiceEvents: [CareerServiceEvent!]!
     """
-    Get all events of the student advisory service.
+    Get all events of the Student Counselling Office.
     """
-    studentAdvisoryEvents: [StudentAdvisoryEvent!]!
+    studentCounsellingEvents: [StudentCounsellingEvent!]!
     """
     Get the current announcements
     """

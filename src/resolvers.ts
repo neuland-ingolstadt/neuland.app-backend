@@ -24,7 +24,7 @@ import { appAnnouncementsQuery } from './queries/appAnnouncements'
 import { careerServiceEvents } from './queries/careerService'
 import { neulandEventsQuery } from './queries/neulandEvents'
 import { roomReportsQuery } from './queries/roomReports'
-import { studentAdvisoryEvents } from './queries/studentAdvisory'
+import { studentCounsellingEvents } from './queries/studentCounselling'
 
 const RestaurantLocation = {
     IngolstadtMensa: 'IngolstadtMensa',
@@ -64,7 +64,7 @@ export const resolvers = {
         clEvents,
         clClubs,
         careerServiceEvents,
-        studentAdvisoryEvents,
+        studentCounsellingEvents,
         appAnnouncements: appAnnouncementsQuery,
         announcements: appAnnouncementsQuery,
         universitySports: sports,
