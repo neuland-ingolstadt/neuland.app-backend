@@ -42,6 +42,7 @@ app.use(
             'https://dashboard.neuland.app',
             'https://dev.neuland.app',
             'https://neuland.app',
+            'https://web.neuland.app',
         ],
     })
 )
