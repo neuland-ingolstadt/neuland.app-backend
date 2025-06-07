@@ -52,7 +52,7 @@ export async function food(
                 cache.set(location, meals, CACHE_TTL)
             } catch (error) {
                 const typedError = error as Error
-                console.error(`Error fetching meals for ${location}:`, error)
+                console.error('Error fetching meals for %s:', location, error)
                 errors.push({
                     location,
                     message: typedError.message ?? 'Unknown error',
