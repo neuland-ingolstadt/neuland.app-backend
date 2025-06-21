@@ -15,6 +15,8 @@ export const neulandEvents = pgTable(
             .defaultNow()
             .notNull(),
         updated_at: timestamp('updated_at', { withTimezone: true }),
+        created_by_email: text('created_by_email'),
+        updated_by_email: text('updated_by_email'),
         start_time: timestamp('start_time', { withTimezone: true }),
         end_time: timestamp('end_time', { withTimezone: true }),
         rrule: text('rrule'),

@@ -12,7 +12,7 @@ export async function upsertAppAnnouncement(
         id: number | undefined
         input: AnnouncementInput
     },
-    contextValue: { jwtPayload?: { groups: string[] } }
+    contextValue: { jwtPayload?: { groups: string[]; email?: string } }
 ): Promise<{
     id: number
 }> {
@@ -30,6 +30,7 @@ export async function upsertAppAnnouncement(
         imageUrl,
     } = input
 
+    const email = contextValue.jwtPayload?.email ?? null
     let announcement
 
     if (id != null) {
@@ -49,6 +50,7 @@ export async function upsertAppAnnouncement(
                 url,
                 image_url: imageUrl,
                 updated_at: new Date(),
+                updated_by_email: email,
             })
             .where(eq(appAnnouncements.id, id))
 
@@ -73,6 +75,8 @@ export async function upsertAppAnnouncement(
                 image_url: imageUrl,
                 created_at: new Date(),
                 updated_at: new Date(),
+                created_by_email: email,
+                updated_by_email: email,
             })
 
             .returning({

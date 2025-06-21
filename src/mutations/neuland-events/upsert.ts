@@ -12,12 +12,13 @@ export async function upsertNeulandEvent(
         id: number | undefined
         input: NeulandEventInput
     },
-    contextValue: { jwtPayload?: { groups: string[] } }
+    contextValue: { jwtPayload?: { groups: string[]; email?: string } }
 ): Promise<{ id: number }> {
     const { title, description, location, startTime, endTime, rrule } = input
 
     checkAuthorization(contextValue, eventRole)
 
+    const email = contextValue.jwtPayload?.email ?? null
     let event
 
     if (id != null) {
@@ -33,6 +34,7 @@ export async function upsertNeulandEvent(
                 end_time: endTime,
                 rrule: rrule ?? null,
                 updated_at: new Date(),
+                updated_by_email: email,
             })
             .where(eq(neulandEvents.id, id))
             .returning({
@@ -52,6 +54,8 @@ export async function upsertNeulandEvent(
                 rrule: rrule ?? null,
                 created_at: new Date(),
                 updated_at: new Date(),
+                created_by_email: email,
+                updated_by_email: email,
             })
             .returning({
                 id: neulandEvents.id,

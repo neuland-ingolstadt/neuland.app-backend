@@ -35,4 +35,6 @@ export const appAnnouncements = pgTable('app_announcements', {
     image_url: text('image_url'),
     created_at: timestamp('created_at', { withTimezone: true }).notNull(),
     updated_at: timestamp('updated_at', { withTimezone: true }).notNull(),
+    created_by_email: text('created_by_email'),
+    updated_by_email: text('updated_by_email'),
 })

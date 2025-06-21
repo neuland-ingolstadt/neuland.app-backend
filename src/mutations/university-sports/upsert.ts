@@ -12,7 +12,7 @@ export async function upsertUniversitySport(
         id: number | undefined
         input: UniversitySportInput
     },
-    contextValue: { jwtPayload?: { groups: string[] } }
+    contextValue: { jwtPayload?: { groups: string[]; email?: string } }
 ): Promise<{ id: number }> {
     const {
         title,
@@ -30,6 +30,7 @@ export async function upsertUniversitySport(
 
     checkAuthorization(contextValue, sportRole)
 
+    const email = contextValue.jwtPayload?.email ?? null
     let event
 
     if (id != null) {
@@ -50,6 +51,7 @@ export async function upsertUniversitySport(
                 e_mail: eMail ?? null,
                 sports_category: sportsCategory ?? null,
                 updated_at: new Date(),
+                updated_by_email: email,
             })
             .where(eq(universitySports.id, id))
             .returning({
@@ -74,6 +76,8 @@ export async function upsertUniversitySport(
                 sports_category: sportsCategory ?? null,
                 created_at: new Date(),
                 updated_at: new Date(),
+                created_by_email: email,
+                updated_by_email: email,
             })
             .returning({
                 id: universitySports.id,
