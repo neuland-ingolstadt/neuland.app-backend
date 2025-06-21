@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
+import { and, gte, lte } from 'drizzle-orm'
 
 export async function appAnnouncementsQuery(
     _: unknown,
@@ -8,8 +9,19 @@ export async function appAnnouncementsQuery(
     }
 ): Promise<Announcement[]> {
     const { active } = args
-    const data = await db.select().from(appAnnouncements)
     const now = new Date()
+
+    const data = await (active
+        ? db
+              .select()
+              .from(appAnnouncements)
+              .where(
+                  and(
+                      lte(appAnnouncements.start_date_time, now),
+                      gte(appAnnouncements.end_date_time, now)
+                  )
+              )
+        : db.select().from(appAnnouncements))
 
     const announcements = data.map((announcement) => ({
         platform: announcement.platform as AppPlatformEnum[],
@@ -32,13 +44,5 @@ export async function appAnnouncementsQuery(
         updatedAt: announcement.updated_at,
     }))
 
-    // Filter active announcements if requested
-    if (active) {
-        return announcements.filter(
-            (a) =>
-                new Date(a.startDateTime) <= now &&
-                new Date(a.endDateTime) >= now
-        )
-    }
     return announcements
 }
