@@ -43,6 +43,10 @@ type Query {
     Get all events by Neuland Ingolstadt e.V.
     """
     neulandEvents: [NeulandEvent!]!
+    """
+    Get information about supported app versions.
+    """
+    appVersionInfo: AppVersionInfo
 }
 
 """
@@ -92,4 +96,8 @@ type Mutation {
     Delete a Neuland event by ID. Note: This mutation is only available for authenticated users.
     """
     deleteNeulandEvent(id: ID!): Boolean
+    """
+    Set the supported app versions. Note: This mutation is only available for authenticated users.
+    """
+    upsertAppVersion(id: ID, input: AppVersionInfoInput!): UpsertResponse
 }

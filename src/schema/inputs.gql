@@ -197,3 +197,17 @@ input NeulandEventInput {
     """
     rrule: String
 }
+
+"""
+Input type for setting the app version deprecation information.
+"""
+input AppVersionInfoInput {
+    """
+    Version where an update warning should be displayed
+    """
+    warningVersion: String!
+    """
+    Version that is no longer supported
+    """
+    deprecatedVersion: String!
+}

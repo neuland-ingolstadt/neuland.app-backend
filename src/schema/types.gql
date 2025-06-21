@@ -599,3 +599,20 @@ type NeulandEvent {
     """
     rrule: String
 }
+
+"""
+Information about deprecated app versions.
+"""
+type AppVersionInfo {
+    id: ID!
+    """
+    Version where an update warning should be shown
+    """
+    warningVersion: String!
+    """
+    Version that is no longer supported
+    """
+    deprecatedVersion: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}

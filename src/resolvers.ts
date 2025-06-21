@@ -14,6 +14,7 @@ import {
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
+import { upsertAppVersion } from './mutations/app-versions/upsert'
 import { deleteManualClEvent } from './mutations/manual-cl-events/delete'
 import { upsertManualClEvent } from './mutations/manual-cl-events/upsert'
 import { deleteNeulandEvent } from './mutations/neuland-events/delete'
@@ -21,6 +22,7 @@ import { upsertNeulandEvent } from './mutations/neuland-events/upsert'
 import { createRoomReport } from './mutations/room-reports/create'
 import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
+import { appVersionsQuery } from './queries/appVersions'
 import { careerServiceEvents } from './queries/careerService'
 import { neulandEventsQuery } from './queries/neulandEvents'
 import { roomReportsQuery } from './queries/roomReports'
@@ -70,6 +72,7 @@ export const resolvers = {
         universitySports: sports,
         roomReports: roomReportsQuery,
         neulandEvents: neulandEventsQuery,
+        appVersionInfo: appVersionsQuery,
     },
     Mutation: {
         deleteUniversitySport,
@@ -82,6 +85,7 @@ export const resolvers = {
         deleteManualClEvent,
         deleteNeulandEvent,
         upsertNeulandEvent,
+        upsertAppVersion,
     },
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
