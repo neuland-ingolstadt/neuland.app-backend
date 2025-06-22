@@ -39,7 +39,11 @@ export async function upsertNeulandEvent(
             .returning({
                 id: neulandEvents.id,
             })
-        await logAudit('neuland_events', event.id, 'update', contextValue)
+        try {
+            await logAudit('neuland_events', event.id, 'update', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed for update operation:', error)
+        }
     } else {
         ;[event] = await db
             .insert(neulandEvents)
