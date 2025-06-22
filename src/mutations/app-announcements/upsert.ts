@@ -56,12 +56,16 @@ export async function upsertAppAnnouncement(
             .returning({
                 id: appAnnouncements.id,
             })
-        await logAudit(
-            'app_announcements',
-            announcement.id,
-            'update',
-            contextValue
-        )
+        try {
+            await logAudit(
+                'app_announcements',
+                announcement.id,
+                'update',
+                contextValue
+            )
+        } catch (error) {
+            console.error('Audit logging failed for update operation:', error)
+        }
     } else {
         // Perform insert
         ;[announcement] = await db
