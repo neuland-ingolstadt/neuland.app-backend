@@ -22,7 +22,7 @@ export async function auditLogQuery(
         entity: row.entity,
         entityId: row.entity_id,
         operation: row.operation,
-        email: row.email,
+        name: row.name,
         userId: row.user_id,
         createdAt: row.created_at,
     }))

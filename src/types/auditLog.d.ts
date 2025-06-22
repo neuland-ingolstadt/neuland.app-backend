@@ -3,7 +3,7 @@ interface AuditLogEntry {
     entity: string
     entityId: number | null
     operation: string
-    email: string | null
+    name: string | null
     userId: string | null
     createdAt: Date
 }

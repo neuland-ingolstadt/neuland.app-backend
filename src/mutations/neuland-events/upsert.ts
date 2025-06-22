@@ -62,7 +62,11 @@ export async function upsertNeulandEvent(
             .returning({
                 id: neulandEvents.id,
             })
-        await logAudit('neuland_events', event.id, 'insert', contextValue)
+        try {
+            await logAudit('neuland_events', event.id, 'insert', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed for insert operation:', error)
+        }
     }
     return {
         id: event.id,
