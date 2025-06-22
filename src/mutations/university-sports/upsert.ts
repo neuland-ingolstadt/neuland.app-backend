@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
+import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 
@@ -55,6 +56,7 @@ export async function upsertUniversitySport(
             .returning({
                 id: universitySports.id,
             })
+        await logAudit('university_sports', event.id, 'update', contextValue)
     } else {
         ;[event] = await db
             .insert(universitySports)
@@ -78,6 +80,7 @@ export async function upsertUniversitySport(
             .returning({
                 id: universitySports.id,
             })
+        await logAudit('university_sports', event.id, 'insert', contextValue)
     }
     return {
         id: event.id,

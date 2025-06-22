@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { neulandEvents } from '@/db/schema/neulandEvents'
+import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, eventRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 
@@ -38,6 +39,7 @@ export async function upsertNeulandEvent(
             .returning({
                 id: neulandEvents.id,
             })
+        await logAudit('neuland_events', event.id, 'update', contextValue)
     } else {
         ;[event] = await db
             .insert(neulandEvents)
@@ -56,6 +58,7 @@ export async function upsertNeulandEvent(
             .returning({
                 id: neulandEvents.id,
             })
+        await logAudit('neuland_events', event.id, 'insert', contextValue)
     }
     return {
         id: event.id,

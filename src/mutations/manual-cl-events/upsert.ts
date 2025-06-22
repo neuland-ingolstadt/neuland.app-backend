@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { manualClEvents } from '@/db/schema/manualClEvents'
+import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 
@@ -42,6 +43,7 @@ export async function upsertManualClEvent(
             .returning({
                 id: manualClEvents.id,
             })
+        await logAudit('manual_cl_events', event.id, 'update', contextValue)
     } else {
         ;[event] = await db
             .insert(manualClEvents)
@@ -63,6 +65,7 @@ export async function upsertManualClEvent(
             .returning({
                 id: manualClEvents.id,
             })
+        await logAudit('manual_cl_events', event.id, 'insert', contextValue)
     }
     return {
         id: event.id,
