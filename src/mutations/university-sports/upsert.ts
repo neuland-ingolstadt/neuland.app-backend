@@ -56,7 +56,11 @@ export async function upsertUniversitySport(
             .returning({
                 id: universitySports.id,
             })
-        await logAudit('university_sports', event.id, 'update', contextValue)
+        try {
+            await logAudit('university_sports', event.id, 'update', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed:', error)
+        }
     } else {
         ;[event] = await db
             .insert(universitySports)
