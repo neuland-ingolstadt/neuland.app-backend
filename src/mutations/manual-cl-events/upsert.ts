@@ -43,7 +43,11 @@ export async function upsertManualClEvent(
             .returning({
                 id: manualClEvents.id,
             })
-        await logAudit('manual_cl_events', event.id, 'update', contextValue)
+        try {
+            await logAudit('manual_cl_events', event.id, 'update', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed for update operation:', error)
+        }
     } else {
         ;[event] = await db
             .insert(manualClEvents)
