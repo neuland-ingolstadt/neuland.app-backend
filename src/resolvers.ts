@@ -21,6 +21,7 @@ import { upsertNeulandEvent } from './mutations/neuland-events/upsert'
 import { createRoomReport } from './mutations/room-reports/create'
 import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
+import { auditLogQuery } from './queries/auditLog'
 import { careerServiceEvents } from './queries/careerService'
 import { neulandEventsQuery } from './queries/neulandEvents'
 import { roomReportsQuery } from './queries/roomReports'
@@ -70,6 +71,7 @@ export const resolvers = {
         universitySports: sports,
         roomReports: roomReportsQuery,
         neulandEvents: neulandEventsQuery,
+        auditLog: auditLogQuery,
     },
     Mutation: {
         deleteUniversitySport,

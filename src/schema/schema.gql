@@ -43,6 +43,10 @@ type Query {
     Get all events by Neuland Ingolstadt e.V.
     """
     neulandEvents: [NeulandEvent!]!
+    """
+    Get the audit log entries. Note: This query is only available for authenticated admin users.
+    """
+    auditLog(limit: Int, offset: Int): [AuditLogEntry!]!
 }
 
 """

@@ -599,3 +599,37 @@ type NeulandEvent {
     """
     rrule: String
 }
+
+"""
+Entry of the audit log for data mutations.
+"""
+type AuditLogEntry {
+    """
+    Unique identifier of the audit log entry
+    """
+    id: ID!
+    """
+    Entity of the audit log entry
+    """
+    entity: String!
+    """
+    Entity ID of the audit log entry
+    """
+    entityId: Int
+    """
+    Operation of the audit log entry
+    """
+    operation: String!
+    """
+    Name of the user who made the mutation
+    """
+    name: String
+    """
+    User ID of the user who made the mutation
+    """
+    userId: String
+    """
+    Creation date and time of the audit log entry
+    """
+    createdAt: DateTime!
+}
