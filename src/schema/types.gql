@@ -635,15 +635,33 @@ type AuditLogEntry {
 }
 
 """
-Amount of library seats and how many are currently available.
+Availability information for a specific seat type in the library.
+"""
+type LibrarySeatStatus {
+    """
+    Number of currently available seats
+    """
+    available: Int!
+    """
+    Total number of seats
+    """
+    total: Int!
+}
+
+"""
+Amount of seats of different types in the library and how many are currently available.
 """
 type LibrarySeatInfo {
     """
-    Number of currently available seats in the library
+    Library carrels for single work
     """
-    availableSeats: Int!
+    carrel: LibrarySeatStatus!
     """
-    Total number of seats in the library
+    Normal seats in the library
     """
-    totalSeats: Int!
+    normalSeat: LibrarySeatStatus!
+    """
+    Group work rooms in the library
+    """
+    groupWorkRoom: LibrarySeatStatus!
 }

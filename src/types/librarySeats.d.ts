@@ -1,4 +1,10 @@
+interface LibrarySeatStatus {
+    available: number
+    total: number
+}
+
 interface LibrarySeatInfo {
-    availableSeats: number
-    totalSeats: number
+    carrel: LibrarySeatStatus
+    normalSeat: LibrarySeatStatus
+    groupWorkRoom: LibrarySeatStatus
 }

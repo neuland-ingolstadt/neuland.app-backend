@@ -18,16 +18,23 @@ export async function librarySeats(): Promise<LibrarySeatInfo> {
     const rooms: Array<{ baseMapObjectName?: string; state?: number }> =
         await res.json()
 
-    const seats = rooms.filter(
-        (room) =>
-            typeof room.baseMapObjectName === 'string' &&
-            room.baseMapObjectName.includes('THI_AP')
-    )
+    const filter = (keyword: string) =>
+        rooms.filter(
+            (room) =>
+                typeof room.baseMapObjectName === 'string' &&
+                room.baseMapObjectName.includes(keyword)
+        )
 
-    const totalSeats = seats.length
-    const availableSeats = seats.filter((seat) => seat.state === 5).length
+    const count = (arr: Array<{ state?: number }>) => ({
+        total: arr.length,
+        available: arr.filter((room) => room.state === 5).length,
+    })
 
-    data = { availableSeats, totalSeats }
+    data = {
+        carrel: count(filter('THI_CAR')),
+        normalSeat: count(filter('THI_AP')),
+        groupWorkRoom: count(filter('THI_AG')),
+    }
     cache.set('librarySeats', data, CACHE_TTL)
     return data
 }

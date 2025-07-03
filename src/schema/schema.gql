@@ -44,7 +44,7 @@ type Query {
     """
     neulandEvents: [NeulandEvent!]!
     """
-    Get the amount of seats in the library and how many are currently available.
+    Get the amount of seats in the library grouped by type and how many are currently available.
     """
     librarySeats: LibrarySeatInfo!
     """
