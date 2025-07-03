@@ -48,6 +48,10 @@ type Query {
     """
     librarySeats: LibrarySeatInfo!
     """
+    Get all library seats with availability information and location.
+    """
+    librarySeatRooms: [LibrarySeatRoom!]!
+    """
     Get the audit log entries. Note: This query is only available for authenticated admin users.
     """
     auditLog(limit: Int, offset: Int): [AuditLogEntry!]!

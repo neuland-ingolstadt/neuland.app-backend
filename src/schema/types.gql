@@ -665,3 +665,25 @@ type LibrarySeatInfo {
     """
     groupWorkRoom: LibrarySeatStatus!
 }
+
+"""
+Details for a single seat in the library.
+"""
+type LibrarySeatRoom {
+    """
+    Identifier of the seat
+    """
+    roomId: ID!
+    """
+    Whether the seat is currently available
+    """
+    available: Boolean!
+    """
+    Location derived from the seat number
+    """
+    location: String!
+    """
+    Seat number
+    """
+    number: Int!
+}

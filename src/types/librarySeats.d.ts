@@ -8,3 +8,10 @@ interface LibrarySeatInfo {
     normalSeat: LibrarySeatStatus
     groupWorkRoom: LibrarySeatStatus
 }
+
+interface LibrarySeatRoom {
+    roomId: string
+    available: boolean
+    location: string
+    number: number
+}
