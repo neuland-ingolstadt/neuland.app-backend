@@ -23,7 +23,7 @@ import { resolveRoomReport } from './mutations/room-reports/resolve'
 import { appAnnouncementsQuery } from './queries/appAnnouncements'
 import { auditLogQuery } from './queries/auditLog'
 import { careerServiceEvents } from './queries/careerService'
-import { librarySeatRooms, librarySeats } from './queries/librarySeats'
+import { librarySeatDetails, libraryStatus } from './queries/libraryStatus'
 import { neulandEventsQuery } from './queries/neulandEvents'
 import { roomReportsQuery } from './queries/roomReports'
 import { studentCounsellingEvents } from './queries/studentCounselling'
@@ -72,8 +72,8 @@ export const resolvers = {
         universitySports: sports,
         roomReports: roomReportsQuery,
         neulandEvents: neulandEventsQuery,
-        librarySeats,
-        librarySeatRooms,
+        libraryStatus,
+        librarySeatDetails,
         auditLog: auditLogQuery,
     },
     Mutation: {

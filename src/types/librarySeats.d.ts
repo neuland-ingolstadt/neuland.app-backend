@@ -9,7 +9,7 @@ interface LibrarySeatInfo {
     groupWorkRoom: LibrarySeatStatus
 }
 
-interface LibrarySeatRoom {
+interface LibrarySeatDetail {
     roomId: string
     available: boolean
     location: string

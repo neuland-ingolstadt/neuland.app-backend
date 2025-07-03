@@ -1,23 +1,37 @@
 import { cache } from '@/index'
-import type { LibrarySeatInfo, LibrarySeatRoom } from '@/types/librarySeats'
+import type { LibrarySeatDetail, LibrarySeatInfo } from '@/types/libraryStatus'
+
+interface RoomState {
+    roomID?: string
+    baseMapObjectName?: string
+    state?: number
+}
+
+const ROOMS_KEY = 'libraryRooms'
 
 const CACHE_TTL = 60 * 5 // 5 minutes
 const ENDPOINT = 'https://vscout.thi.de/artec.vscout/vsfrontend/getRoomStates'
-const AVAILABLE_STATE = 5
 
-export async function librarySeats(): Promise<LibrarySeatInfo> {
-    let data: LibrarySeatInfo | undefined = await cache.get('librarySeats')
+async function fetchRoomStates(): Promise<RoomState[]> {
+    let rooms: RoomState[] | undefined = await cache.get(ROOMS_KEY)
+    if (!rooms) {
+        const res = await fetch(ENDPOINT)
+        if (!res.ok) {
+            throw new Error(`Failed to fetch library seat data: ${res.status}`)
+        }
+        rooms = await res.json()
+        cache.set(ROOMS_KEY, rooms, CACHE_TTL)
+    }
+    return rooms
+}
+
+export async function libraryStatus(): Promise<LibrarySeatInfo> {
+    let data: LibrarySeatInfo | undefined = await cache.get('libraryStatus')
     if (data) {
         return data
     }
 
-    const res = await fetch(ENDPOINT)
-    if (!res.ok) {
-        throw new Error(`Failed to fetch library seat data: ${res.status}`)
-    }
-
-    const rooms: Array<{ baseMapObjectName?: string; state?: number }> =
-        await res.json()
+    const rooms = await fetchRoomStates()
 
     const filter = (keyword: string) =>
         rooms.filter(
@@ -28,7 +42,7 @@ export async function librarySeats(): Promise<LibrarySeatInfo> {
 
     const count = (arr: Array<{ state?: number }>) => ({
         total: arr.length,
-        available: arr.filter((room) => room.state === AVAILABLE_STATE).length,
+        available: arr.filter((room) => room.state === 5).length,
     })
 
     data = {
@@ -36,27 +50,18 @@ export async function librarySeats(): Promise<LibrarySeatInfo> {
         normalSeat: count(filter('THI_AP')),
         groupWorkRoom: count(filter('THI_AG')),
     }
-    cache.set('librarySeats', data, CACHE_TTL)
+    cache.set('libraryStatus', data, CACHE_TTL)
     return data
 }
 
-export async function librarySeatRooms(): Promise<LibrarySeatRoom[]> {
-    let data: LibrarySeatRoom[] | undefined =
-        await cache.get('librarySeatRooms')
+export async function librarySeatDetails(): Promise<LibrarySeatDetail[]> {
+    let data: LibrarySeatDetail[] | undefined =
+        await cache.get('librarySeatDetails')
     if (data) {
         return data
     }
 
-    const res = await fetch(ENDPOINT)
-    if (!res.ok) {
-        throw new Error(`Failed to fetch library seat data: ${res.status}`)
-    }
-
-    const rooms: Array<{
-        roomID?: string
-        baseMapObjectName?: string
-        state?: number
-    }> = await res.json()
+    const rooms = await fetchRoomStates()
 
     data = rooms
         .filter(
@@ -67,7 +72,7 @@ export async function librarySeatRooms(): Promise<LibrarySeatRoom[]> {
         .map((room) => {
             const base = room.baseMapObjectName ?? ''
             const match = base.match(/THI_AP\.(\d+)/)
-            const number = match ? Number.parseInt(match[1], 10) : Number.NaN
+            const number = match ? Number.parseInt(match[1], 10) : NaN
 
             let location = 'Unknown'
             if (number >= 100 && number < 200) {
@@ -80,12 +85,12 @@ export async function librarySeatRooms(): Promise<LibrarySeatRoom[]> {
 
             return {
                 roomId: room.roomID ?? '',
-                available: room.state === AVAILABLE_STATE,
+                available: room.state === 5,
                 location,
                 number,
             }
         })
 
-    cache.set('librarySeatRooms', data, CACHE_TTL)
+    cache.set('librarySeatDetails', data, CACHE_TTL)
     return data
 }

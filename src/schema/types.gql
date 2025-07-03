@@ -669,7 +669,7 @@ type LibrarySeatInfo {
 """
 Details for a single seat in the library.
 """
-type LibrarySeatRoom {
+type LibrarySeatDetail {
     """
     Identifier of the seat
     """

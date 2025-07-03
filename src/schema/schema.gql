@@ -46,11 +46,11 @@ type Query {
     """
     Get the amount of seats in the library grouped by type and how many are currently available.
     """
-    librarySeats: LibrarySeatInfo!
+    libraryStatus: LibrarySeatInfo!
     """
     Get all library seats with availability information and location.
     """
-    librarySeatRooms: [LibrarySeatRoom!]!
+    librarySeatDetails: [LibrarySeatDetail!]!
     """
     Get the audit log entries. Note: This query is only available for authenticated admin users.
     """
