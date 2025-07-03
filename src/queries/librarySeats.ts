@@ -3,6 +3,7 @@ import type { LibrarySeatInfo, LibrarySeatRoom } from '@/types/librarySeats'
 
 const CACHE_TTL = 60 * 5 // 5 minutes
 const ENDPOINT = 'https://vscout.thi.de/artec.vscout/vsfrontend/getRoomStates'
+const AVAILABLE_STATE = 5
 
 export async function librarySeats(): Promise<LibrarySeatInfo> {
     let data: LibrarySeatInfo | undefined = await cache.get('librarySeats')
@@ -27,7 +28,7 @@ export async function librarySeats(): Promise<LibrarySeatInfo> {
 
     const count = (arr: Array<{ state?: number }>) => ({
         total: arr.length,
-        available: arr.filter((room) => room.state === 5).length,
+        available: arr.filter((room) => room.state === AVAILABLE_STATE).length,
     })
 
     data = {
@@ -66,7 +67,7 @@ export async function librarySeatRooms(): Promise<LibrarySeatRoom[]> {
         .map((room) => {
             const base = room.baseMapObjectName ?? ''
             const match = base.match(/THI_AP\.(\d+)/)
-            const number = match ? Number.parseInt(match[1], 10) : NaN
+            const number = match ? Number.parseInt(match[1], 10) : Number.NaN
 
             let location = 'Unknown'
             if (number >= 100 && number < 200) {
@@ -79,7 +80,7 @@ export async function librarySeatRooms(): Promise<LibrarySeatRoom[]> {
 
             return {
                 roomId: room.roomID ?? '',
-                available: room.state === 5,
+                available: room.state === AVAILABLE_STATE,
                 location,
                 number,
             }
