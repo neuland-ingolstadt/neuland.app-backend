@@ -633,3 +633,17 @@ type AuditLogEntry {
     """
     createdAt: DateTime!
 }
+
+"""
+Amount of library seats and how many are currently available.
+"""
+type LibrarySeatInfo {
+    """
+    Number of currently available seats in the library
+    """
+    availableSeats: Int!
+    """
+    Total number of seats in the library
+    """
+    totalSeats: Int!
+}

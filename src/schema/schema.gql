@@ -44,6 +44,10 @@ type Query {
     """
     neulandEvents: [NeulandEvent!]!
     """
+    Get the amount of seats in the library and how many are currently available.
+    """
+    librarySeats: LibrarySeatInfo!
+    """
     Get the audit log entries. Note: This query is only available for authenticated admin users.
     """
     auditLog(limit: Int, offset: Int): [AuditLogEntry!]!
