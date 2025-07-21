@@ -139,7 +139,6 @@ async function getEventDetails(
         .replace(/( \.)$/g, '')
         .replace(/e\. V\./g, 'e.V.')
     const trimmedEvent = details.Event.trim()
-    const tempLocationString = '(Auf der Schanz 49, 85049 Ingolstadt)'
     const trimmedDescription =
         publicEvent &&
         details.Beschreibung != null &&
@@ -185,9 +184,7 @@ async function getEventDetails(
         startDateTime: parsedStartDateTime,
         end: parsedEndDateTime,
         endDateTime: parsedEndDateTime,
-        location: publicEvent
-            ? details.Ort.replace(tempLocationString, '').trim()
-            : null,
+        location: publicEvent ? details.Ort.trim() : null,
         description: trimmedDescription,
         descriptions:
             trimmedDescription != null

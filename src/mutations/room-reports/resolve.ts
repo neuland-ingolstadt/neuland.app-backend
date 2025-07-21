@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
+import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 import { GraphQLError } from 'graphql'
@@ -27,6 +28,13 @@ export async function resolveRoomReport(
             .returning({
                 id: roomReports.id,
             })
+
+        try {
+            await logAudit('room_reports', report.id, 'update', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed for resolve operation:', error)
+        }
+
         return {
             id: report.id,
         }

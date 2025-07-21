@@ -39,7 +39,7 @@ export default {
                     content: markdown`
                         # Neuland API Documentation
 
-                        Neuland API uses **GraphQL** to provide a flexible and powerful API for [neuland.app](https://neuland.app) and [Neuland Next](https://next.neuland.app).
+                        Neuland API uses **GraphQL** to provide a flexible and powerful API for [Neuland Next](https://neuland.app) and several internal services.
                         \\
                         This documentation provides a detailed overview of the API and its capabilities.
 
@@ -70,9 +70,9 @@ export default {
                         ### Authentication
 
                         Most of the API features do not require authentication.
-                        However, some endpoints are only accessible to authenticated users.\\
-                        To authenticate, you need to provide a valid JWT token in the Authorization header.
-                        Usually this applies to internal services and administrative endpoints.
+                        However, some endpoints are only accessible to authenticated Neuland members.
+                        This applies to internal services and administrative endpoints.
+                        We do not provide any external authentication methods.
 
                         ### Interactive Playground
 
@@ -81,9 +81,21 @@ export default {
 
                         #### Legal Notice
 
-                        Our API is free to use for non-commercial purposes, like research and personal projects. It is provided as-is and without any warranty.\\
-                        Also note that the API is subject to change without notice and we cannot guarantee availability.\\
-                        If you have any questions or need help, please contact us.\\
+                        This public API is provided exclusively for **research** and **private, non-commercial use**. Any use of the API, its data, or its documentation for production, commercial, or business purposes is **strictly prohibited**. This includes, but is not limited to, integrating the API into commercial products, services, or workflows, or using it in any environment that serves end-users beyond personal or academic research.
+
+                        By accessing or using this API, you agree to the following terms:
+
+                        - **No Production Use:** You may not use the API, its endpoints, or any part of its data in any production system, public-facing application, or service intended for real-world deployment or commercial benefit.
+                        - **No Commercial Use:** The API and its documentation may not be used, either directly or indirectly, for any commercial, revenue-generating, or business-related activities.
+                        - **Permitted Use:** You may use the API solely for personal projects, academic research, experimentation, or educational purposes. If you are unsure whether your use case qualifies, please contact us for clarification.
+                        - **No Warranty:** The API is provided "as is" without any warranty of any kind, express or implied. We make no guarantees regarding availability, performance, or fitness for any particular purpose.
+                        - **Subject to Change:** The API, its endpoints, and its documentation are subject to change or discontinuation at any time without notice. We reserve the right to restrict or revoke access at our sole discretion.
+                        - **Data Privacy:** Do not use the API to process, store, or transmit any sensitive, confidential, or personal data beyond what is necessary for research or private use. You are responsible for ensuring compliance with all applicable data protection laws.
+                        - **Attribution:** If you use the API in academic work or publications, please provide appropriate attribution to Neuland Ingolstadt e.V.
+                        - **Contact:** For questions about permitted use, licensing, or to request exceptions, please contact us at info@neuland-ingolstadt.de.
+
+                        By continuing to use this API, you acknowledge and accept these terms. Unauthorized use may result in access being revoked and potential legal action.
+
                         \\
                         This API is provided by Neuland Ingolstadt e.V.
                         \\

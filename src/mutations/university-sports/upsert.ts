@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
+import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, sportRole } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 
@@ -55,6 +56,16 @@ export async function upsertUniversitySport(
             .returning({
                 id: universitySports.id,
             })
+        try {
+            await logAudit(
+                'university_sports',
+                event.id,
+                'update',
+                contextValue
+            )
+        } catch (error) {
+            console.error('Audit logging failed:', error)
+        }
     } else {
         ;[event] = await db
             .insert(universitySports)
@@ -78,6 +89,16 @@ export async function upsertUniversitySport(
             .returning({
                 id: universitySports.id,
             })
+        try {
+            await logAudit(
+                'university_sports',
+                event.id,
+                'insert',
+                contextValue
+            )
+        } catch (error) {
+            console.error('Audit logging failed for insert operation:', error)
+        }
     }
     return {
         id: event.id,

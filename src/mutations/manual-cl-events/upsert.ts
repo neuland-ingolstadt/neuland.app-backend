@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { manualClEvents } from '@/db/schema/manualClEvents'
+import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 
@@ -42,6 +43,11 @@ export async function upsertManualClEvent(
             .returning({
                 id: manualClEvents.id,
             })
+        try {
+            await logAudit('manual_cl_events', event.id, 'update', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed for update operation:', error)
+        }
     } else {
         ;[event] = await db
             .insert(manualClEvents)
@@ -63,6 +69,11 @@ export async function upsertManualClEvent(
             .returning({
                 id: manualClEvents.id,
             })
+        try {
+            await logAudit('manual_cl_events', event.id, 'insert', contextValue)
+        } catch (error) {
+            console.error('Audit logging failed for insert operation:', error)
+        }
     }
     return {
         id: event.id,

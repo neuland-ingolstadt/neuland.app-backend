@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
+import { logAudit } from '@/utils/audit-utils'
 import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
 import { eq } from 'drizzle-orm'
 
@@ -55,6 +56,16 @@ export async function upsertAppAnnouncement(
             .returning({
                 id: appAnnouncements.id,
             })
+        try {
+            await logAudit(
+                'app_announcements',
+                announcement.id,
+                'update',
+                contextValue
+            )
+        } catch (error) {
+            console.error('Audit logging failed for update operation:', error)
+        }
     } else {
         // Perform insert
         ;[announcement] = await db
@@ -78,6 +89,16 @@ export async function upsertAppAnnouncement(
             .returning({
                 id: appAnnouncements.id,
             })
+        try {
+            await logAudit(
+                'app_announcements',
+                announcement.id,
+                'insert',
+                contextValue
+            )
+        } catch (error) {
+            console.error('Audit logging failed for insert operation:', error)
+        }
     }
 
     return {
