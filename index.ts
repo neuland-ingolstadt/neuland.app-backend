@@ -1,10 +1,10 @@
 import { getUserFromToken } from '@/utils/auth-utils'
 import { ApolloServer } from '@apollo/server'
-import { expressMiddleware } from '@apollo/server/express4'
 import {
     ApolloServerPluginLandingPageLocalDefault,
     ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default'
+import { expressMiddleware } from '@as-integrations/express5'
 import cors from 'cors'
 import express from 'express'
 import { readFileSync } from 'fs'
