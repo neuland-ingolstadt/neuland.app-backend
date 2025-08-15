@@ -41,7 +41,6 @@ app.use(
             'http://localhost:3000',
             'https://dashboard.neuland.app',
             'https://dev.neuland.app',
-            'https://neuland.app',
             'https://web.neuland.app',
         ],
     })
@@ -64,8 +63,13 @@ const apolloServer = new ApolloServer({
     },
 })
 
-export const cache = new NodeCache({ stdTTL: 60 * 10 }) // 10 minutes default TTL
-
+export const cache = new NodeCache({
+    stdTTL: 60 * 10,
+    maxKeys: 1000,
+    checkperiod: 60,
+    useClones: false,
+    deleteOnExpire: true,
+})
 await apolloServer.start()
 
 app.use(
