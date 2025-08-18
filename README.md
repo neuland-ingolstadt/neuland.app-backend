@@ -3,7 +3,7 @@
 [![Uptime](https://status.neuland.app/api/badge/3/uptime/24)](https://status.neuland.app)
 [![Uptime](https://status.neuland.app/api/badge/3/avg-response/24)](https://status.neuland.app)
 
-Neuland API uses **GraphQL** to provide a flexible and powerful API for neuland.app and Neuland Next.
+Neuland API uses **GraphQL** to provide a flexible and powerful API for Neuland Next and several other services like the Neuland website.
 
 ## API Documentation
 
@@ -17,7 +17,7 @@ An architecture overview can be found [here](https://neuland.app/docs/contribute
 
 ## System Status
 
-The real-time system status is available at [status.neuland.app](https://status.neuland.app). Here you find information about the current status of the different services and APIs that Neuland Next depends on.
+The real-time system status is available at [status.neuland.app](https://status.neuland.app/status/app). Here you find information about the current status of the different services and APIs that Neuland Next depends on.
 
 | Service          | Status                                                                                       | Uptime (24h)                                                                                 |
 | ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
