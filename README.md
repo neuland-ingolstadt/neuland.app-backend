@@ -1,7 +1,7 @@
 # Neuland App Backend
 
-[![Uptime](https://status.neuland.app/api/badge/6/uptime/24)](https://status.neuland.app)
-[![Uptime](https://status.neuland.app/api/badge/6/avg-response/24)](https://status.neuland.app)
+[![Uptime](https://status.neuland.app/api/badge/3/uptime/24)](https://status.neuland.app)
+[![Uptime](https://status.neuland.app/api/badge/3/avg-response/24)](https://status.neuland.app)
 
 Neuland API uses **GraphQL** to provide a flexible and powerful API for neuland.app and Neuland Next.
 
@@ -21,9 +21,9 @@ The real-time system status is available at [status.neuland.app](https://status.
 
 | Service          | Status                                                                                       | Uptime (24h)                                                                                 |
 | ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| THI API          | ![THI API Status](https://status.neuland.app/api/badge/9/status?upColor=%2331c753)           | ![THI API Status](https://status.neuland.app/api/badge/9/uptime?upColor=%2331c753)           |
-| Neuland API      | ![Neuland API Status](https://status.neuland.app/api/badge/6/status?upColor=%2331c753)       | ![Neuland API Status](https://status.neuland.app/api/badge/6/uptime?upColor=%2331c753)       |
-| Neuland Next Web | ![Neuland Next Web Status](https://status.neuland.app/api/badge/27/status?upColor=%2331c753) | ![Neuland Next Web Status](https://status.neuland.app/api/badge/27/uptime?upColor=%2331c753) |
+| THI API          | ![THI API Status](https://status.neuland.app/api/badge/14/status?upColor=%2331c753)           | ![THI API Status](https://status.neuland.app/api/badge/14/uptime?upColor=%2331c753)           |
+| Neuland API      | ![Neuland API Status](https://status.neuland.app/api/badge/3/status?upColor=%2331c753)       | ![Neuland API Status](https://status.neuland.app/api/badge/3/uptime?upColor=%2331c753)       |
+| Neuland Next Web | ![Neuland API (Beta) Status](https://status.neuland.app/api/badge/8/status?upColor=%2331c753) | ![Neuland API (Beta) Status](https://status.neuland.app/api/badge/8/uptime?upColor=%2331c753) |
 
 ## Development
 
