@@ -59,7 +59,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
                 id: getMealDayHash(day?.date, meal.name_de),
                 category: 'Essen',
                 prices: {
-                    student: 6.5,
+                    student: 6.9,
                     employee: 7.9,
                     guest: 8.9,
                 },

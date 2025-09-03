@@ -156,5 +156,33 @@
                 }
             }
         ]
+    },
+    {
+        "category": "Salat",
+        "static": true,
+        "name": {
+            "de": "Beilagen Salat",
+            "en": "Side salad"
+        },
+        "originalLanguage": "de",
+        "prices": {
+            "employee": 2.0,
+            "student": 2.0,
+            "guest": 2.0
+        }
+    },
+    {
+        "category": "Suppe",
+        "static": true,
+        "name": {
+            "de": "Tagessuppe",
+            "en": "Daily soup"
+        },
+        "originalLanguage": "de",
+        "prices": {
+            "employee": 1.5,
+            "student": 1.0,
+            "guest": 2.0
+        }
     }
 ]
