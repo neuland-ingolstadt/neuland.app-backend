@@ -101,17 +101,24 @@ function getMealsFromBlock(text: string): CanisiusBlock[] {
  */
 export async function getCanisiusPlan(): Promise<MealData[]> {
     const pdfBuffer = await getPdf()
-    const mealPlan = await pdf(pdfBuffer).then(function (data) {
+    const mealPlan = await pdf(pdfBuffer).then((data) => {
         const text = data.text.replace(newLineRegex, ' ')
         if (isEmpty(text)) {
             // during the summer break the pdf is completely empty
             console.warn('Canisius pdf is empty, returning empty array')
             return []
         }
+
         let days = text.split(titleRegex)
         let dates: string[] | null = text.match(titleRegex)
 
         if (days === null || dates === null) {
+            if (text.toLowerCase().includes('geschlossen')) {
+                console.warn(
+                    'Canisius restaurant is closed, returning empty array'
+                )
+                return []
+            }
             throw new Error(
                 'Unexpected/Malformed pdf from the Canisius website!'
             )
