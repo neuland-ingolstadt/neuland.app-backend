@@ -1,69 +1,18 @@
-import { db } from '@/db'
-import { manualClEvents } from '@/db/schema/manualClEvents'
 import { cache } from '@/index'
 import getClEvents from '@/scraping/cl-event'
-import { gte } from 'drizzle-orm'
 
-const CACHE_TTL_MOODLE = 60 * 60 * 8 // 8 hours
-const CACHE_TTL_TOTAL = 60 * 60 * 1 // 1 hours
+const CACHE_TTL_SECONDS = 60 * 60 * 1 // 1 hour
 
 export async function clEvents(): Promise<ClEvent[]> {
-    let combinedClEvents: ClEvent[] | undefined =
-        await cache.get('combinedClEvents')
+    const cachedEvents: ClEvent[] | undefined = await cache.get('clEvents')
 
-    if (combinedClEvents !== undefined && combinedClEvents !== null) {
-        return combinedClEvents
+    if (cachedEvents !== undefined && cachedEvents !== null) {
+        return cachedEvents
     }
 
-    let clEvents: ClEvent[] | undefined = await cache.get('clEventsMoodle')
+    const events = await getClEvents()
 
-    if (clEvents === undefined || clEvents === null) {
-        clEvents = await getClEvents()
-        cache.set('clEventsMoodle', clEvents, CACHE_TTL_MOODLE)
-    }
+    cache.set('clEvents', events, CACHE_TTL_SECONDS)
 
-    const additionalClEvents = await db
-        .select()
-        .from(manualClEvents)
-        .where(gte(manualClEvents.start_date_time, new Date()))
-
-    const dbClEvents = additionalClEvents.map((event) => {
-        return {
-            id: event.id.toString(),
-            organizer: event.organizer,
-            host: {
-                name: event.organizer,
-                website: event.host_url,
-                instagram: event.host_instagram,
-            },
-            title: event.title_de,
-            titles: {
-                de: event.title_de,
-                en: event.title_en,
-            },
-            description:
-                event.description_de != null && event.description_en != null
-                    ? event.description_de
-                    : null,
-            descriptions:
-                event.description_de != null && event.description_en != null
-                    ? { de: event.description_de, en: event.description_en }
-                    : null,
-            begin: event.start_date_time,
-            end: event.end_date_time,
-            startDateTime: event.start_date_time,
-            endDateTime: event.end_date_time,
-            location: event.location,
-            eventWebsite: event.event_url,
-            isMoodleEvent: false,
-        }
-    })
-
-    combinedClEvents = clEvents.concat(dbClEvents).sort((a, b) => {
-        return a.begin.getTime() - b.begin.getTime()
-    })
-
-    cache.set('combinedClEvents', combinedClEvents, CACHE_TTL_TOTAL)
-
-    return combinedClEvents
+    return events
 }
