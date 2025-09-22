@@ -9,11 +9,11 @@ type Query {
     """
     Get the campus life events
     """
-    clEvents: [ClEvent!]!
+    clEvents: [ClEvent!]! @deprecated(reason: "Use Campus Life API instead")
     """
     Get all campus life clubs
     """
-    clClubs: [Host!]!
+    clClubs: [Host!]! @deprecated(reason: "Use Campus Life API instead")
     """
     Get all events of the career service.
     """
