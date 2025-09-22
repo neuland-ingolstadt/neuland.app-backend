@@ -1,274 +1,174 @@
 /**
- * @file Scrapes events from the `Campus Life` Moodle course and serves them at `/api/events`.
+ * @file Fetches Campus Life events from the public Campus Life API and serves them at `/api/events`.
  */
-import clubsData from '@/data/clubs.json'
-import { login, parseLocalDateTime } from '@/utils/moodle-utils'
-import { xxh64 } from '@node-rs/xxhash'
-import * as cheerio from 'cheerio'
-import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import { GraphQLError } from 'graphql'
-import he from 'he'
 import nodeFetch from 'node-fetch'
-import sanitizeHtml from 'sanitize-html'
 
-const PUBLIC_EVENT_KEY = 'Veröffentlichung des Ortes & Bescheibung in Apps' // sic (see Moodle)
+const API_BASE_URL = 'https://cl.neuland-ingolstadt.de/api/v1'
+const EVENTS_ENDPOINT = `${API_BASE_URL}/public/events`
+const ORGANIZERS_ENDPOINT = `${API_BASE_URL}/public/organizers`
 
-const EVENT_LIST_2_URL =
-    'https://moodle.thi.de/mod/dataform/view.php?d=19&view=18&filter=9'
-const EVENT_DETAILS_PREFIX = 'https://moodle.thi.de/mod/dataform/view.php'
-
-/**
- * Fetch a list of event URLs.
- * @param {object} fetch Cookie-aware implementation of `fetch`
- * @returns {string[]}
- */
-async function getEvents(
-    fetch: FetchCookieImpl<
-        nodeFetch.RequestInfo,
-        nodeFetch.RequestInit,
-        nodeFetch.Response
-    >
-): Promise<ClEvent[]> {
-    let pageNr = 0
-    const data: ClEvent[] = []
-    const now = new Date()
-
-    while (true) {
-        const pageUrl = `${EVENT_LIST_2_URL}&page=${pageNr}`
-        const event = await getEventDetails(fetch, pageUrl)
-
-        if (!event) {
-            break
-        }
-
-        const beginDate = event.begin ? new Date(event.begin) : null
-        const endDate = event.end ? new Date(event.end) : null
-
-        if (
-            // No end date and begin date is in the past
-            (beginDate && beginDate < now && !endDate) ||
-            // No begin date and end date is in the past
-            (endDate && endDate < now && !beginDate) ||
-            // Both dates are in the past
-            (beginDate && beginDate < now && endDate && endDate < now)
-        ) {
-            console.debug(
-                'No more future events found. Number of events:',
-                data.length
-            )
-            break
-        }
-
-        if ((beginDate && beginDate > now) || (endDate && endDate > now)) {
-            if (!beginDate && endDate) {
-                console.debug(
-                    'Event has only end date defined, discarding:',
-                    event
-                )
-                pageNr++
-                continue
-            }
-            data.push(event as ClEvent)
-        } else {
-            console.debug('Event does not have valid dates:', event)
-        }
-        pageNr++
-    }
-
-    // The events are fetched from future to past, so we reverse the array
-    return data.reverse()
+interface CampusLifeApiEvent {
+    id: number
+    organizer_id: number
+    title_de: string
+    title_en: string
+    description_de: string | null
+    description_en: string | null
+    start_date_time: string
+    end_date_time: string | null
+    event_url: string | null
+    location: string | null
 }
 
-/**
- * Fetches event details from an event URL.
- * @param {object} fetch Cookie-aware implementation of `fetch`
- * @param {string} url
- */
-async function getEventDetails(
-    fetch: FetchCookieImpl<
-        nodeFetch.RequestInfo,
-        nodeFetch.RequestInit,
-        nodeFetch.Response
-    >,
-    url: string
-): Promise<ScrapedClEvent | null> {
-    if (!url.startsWith(EVENT_DETAILS_PREFIX)) {
-        throw new Error('Invalid URL')
+interface CampusLifeApiOrganizer {
+    id: number
+    name: string
+    website_url: string | null
+    instagram_url: string | null
+}
+
+async function fetchJson<T>(url: string): Promise<T> {
+    const response = await nodeFetch(url, {
+        headers: {
+            Accept: 'application/json',
+        },
+    })
+
+    if (!response.ok) {
+        throw new GraphQLError(`Failed to fetch Campus Life data.`)
     }
 
-    const resp: nodeFetch.Response = await fetch(url)
-    const $ = cheerio.load(await resp.text())
-    const rows = $('.entry tr:not(.lastrow)').get()
+    return (await response.json()) as T
+}
 
-    if (rows.length === 0) {
-        console.debug(`No event data rows found on ${url}`)
+function parseDate(value: string | null): Date | null {
+    if (value == null) {
         return null
     }
 
-    const details = Object.fromEntries(
-        rows.map((elem) => {
-            const htmlContent = $(elem).find('.c1').html()
+    const parsed = new Date(value)
 
-            const adjustedC1 =
-                htmlContent === null
-                    ? ''
-                    : he.decode(
-                          sanitizeHtml(
-                              htmlContent
-                                  .replace(/\n/g, '')
-                                  .replace(/<\/p>/gi, '\n')
-                                  .replace(/<\/br>/gi, '\n')
-                                  .replace(/\n{2,}/g, '\n'),
-                              {
-                                  allowedTags: [],
-                                  allowedAttributes: {},
-                                  disallowedTagsMode: 'discard',
-                              }
-                          )
-                      )
+    if (Number.isNaN(parsed.getTime())) {
+        console.warn('Received invalid date from Campus Life API:', value)
+        return null
+    }
 
-            return [
-                $(elem).find('.c0').text().trim().replace(/:$/, ''),
-                adjustedC1.trim().replace(/:$/, ''),
-            ]
-        })
+    return parsed
+}
+
+function buildDescriptions(
+    descriptionDe: string | null,
+    descriptionEn: string | null
+): ClText | null {
+    if (descriptionDe == null && descriptionEn == null) {
+        return null
+    }
+
+    const fallback = descriptionDe ?? descriptionEn ?? ''
+
+    return {
+        de: descriptionDe ?? fallback,
+        en: descriptionEn ?? fallback,
+    }
+}
+
+function toClEvent(
+    event: CampusLifeApiEvent,
+    organizer: CampusLifeApiOrganizer | undefined
+): ClEvent | null {
+    const startDate = parseDate(event.start_date_time)
+
+    if (startDate == null) {
+        console.warn(
+            'Skipping Campus Life event without valid start date:',
+            event.id
+        )
+        return null
+    }
+
+    const endDate = parseDate(event.end_date_time)
+    const organizerName = organizer?.name ?? 'Unknown Organizer'
+
+    const host: ClHost = {
+        name: organizerName,
+        website: organizer?.website_url ?? null,
+        instagram: organizer?.instagram_url ?? null,
+    }
+
+    const description = event.description_de ?? event.description_en ?? null
+    const descriptions = buildDescriptions(
+        event.description_de,
+        event.description_en
     )
 
-    const publicEvent = details[PUBLIC_EVENT_KEY] === 'Ja'
-    const trimmedOrganizer = details.Verein.trim()
-        .replace(/( \.)$/g, '')
-        .replace(/e\. V\./g, 'e.V.')
-    const trimmedEvent = details.Event.trim()
-    const trimmedDescription =
-        publicEvent &&
-        details.Beschreibung != null &&
-        details.Beschreibung !== ''
-            ? details.Beschreibung.trim()
-            : null
-
-    const parsedStartDateTime = details.Start
-        ? parseLocalDateTime(details.Start)
-        : null
-    let parsedEndDateTime = details.Ende
-        ? parseLocalDateTime(details.Ende)
-        : null
-
-    // If both start and end dates are parsed, and end is not after start, nullify end.
-    if (
-        parsedStartDateTime &&
-        parsedEndDateTime &&
-        parsedEndDateTime.getTime() <= parsedStartDateTime.getTime()
-    ) {
-        parsedEndDateTime = null
-    }
-
-    const startDateString = parsedStartDateTime
-        ? parsedStartDateTime.toISOString()
-        : 'null-start'
-    const endDateString = parsedEndDateTime
-        ? parsedEndDateTime.toISOString()
-        : 'null-end'
-
-    const eventIdString = `${trimmedOrganizer}-${trimmedEvent}-${startDateString}-${endDateString}`
+    const title = event.title_de ?? event.title_en
 
     return {
-        id: xxh64(eventIdString, 123n).toString(16),
-        organizer: trimmedOrganizer, // deprecated in favor of host
-        host: getHostDetails(trimmedOrganizer),
-        title: trimmedEvent,
+        id: event.id.toString(),
+        organizer: organizerName,
+        host,
+        title,
         titles: {
-            de: trimmedEvent,
-            en: trimmedEvent,
+            de: event.title_de,
+            en: event.title_en,
         },
-        begin: parsedStartDateTime,
-        startDateTime: parsedStartDateTime,
-        end: parsedEndDateTime,
-        endDateTime: parsedEndDateTime,
-        location: publicEvent ? details.Ort.trim() : null,
-        description: trimmedDescription,
-        descriptions:
-            trimmedDescription != null
-                ? {
-                      de: trimmedDescription,
-                      en: trimmedDescription,
-                  }
-                : null,
-        eventWebsite: null, // not available in Moodle
-        isMoodleEvent: true,
+        description,
+        descriptions,
+        begin: startDate,
+        startDateTime: startDate,
+        end: endDate,
+        endDateTime: endDate,
+        location: event.location,
+        eventWebsite: event.event_url,
+        isMoodleEvent: false,
     }
 }
 
-function getHostDetails(host: string): ClHost {
-    const club = clubsData.find((club) => club.club === host)
-    if (!club) {
-        return {
-            name: host,
-            website: null,
-            instagram: null,
-        }
-    }
+function isUpcoming(event: ClEvent, now: Date): boolean {
+    const startTime = event.begin.getTime()
+    const endTime = event.end?.getTime() ?? null
 
-    return {
-        name: club.club,
-        website: club.website,
-        instagram: club.instagram,
-    }
-}
-
-/**
- * Fetches all event details from Moodle.
- * @param {string} username
- * @param {string} password
- */
-export async function getAllEventDetails(
-    username: string,
-    password: string
-): Promise<ClEvent[]> {
-    const fetch = fetchCookie(nodeFetch)
-
-    await login(fetch, username, password)
-
-    const events = await getEvents(fetch)
-
-    // Filter out duplicate events based on their ID
-    const uniqueEvents: ClEvent[] = []
-    const seenEventIds = new Set<string>()
-
-    for (const event of events) {
-        if (event.id && !seenEventIds.has(event.id)) {
-            uniqueEvents.push(event)
-            seenEventIds.add(event.id)
-        } else if (event.id && seenEventIds.has(event.id)) {
-            console.debug('Duplicate event found, skipping:', event.id)
-        } else if (!event.id) {
-            console.warn('Event without ID found, skipping')
-        }
-    }
-
-    return uniqueEvents
+    return (
+        startTime >= now.getTime() ||
+        (endTime != null && endTime >= now.getTime())
+    )
 }
 
 export default async function getClEvents(): Promise<ClEvent[]> {
     try {
-        const username = Bun.env.MOODLE_USERNAME
-        const password = Bun.env.MOODLE_PASSWORD
+        const [events, organizers] = await Promise.all([
+            fetchJson<CampusLifeApiEvent[]>(EVENTS_ENDPOINT),
+            fetchJson<CampusLifeApiOrganizer[]>(ORGANIZERS_ENDPOINT),
+        ])
 
-        if (username && password) {
-            const events = await getAllEventDetails(username, password)
-            return events
-        } else {
-            throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
-        }
+        const organizersById = new Map(
+            organizers.map((organizer) => [organizer.id, organizer])
+        )
+
+        const now = new Date()
+
+        const combinedEvents = events
+            .map((event) =>
+                toClEvent(event, organizersById.get(event.organizer_id))
+            )
+            .filter((event): event is ClEvent => event != null)
+            .filter((event) => isUpcoming(event, now))
+            .sort((a, b) => a.begin.getTime() - b.begin.getTime())
+
+        return combinedEvents
     } catch (e: unknown) {
         if (e instanceof GraphQLError) {
             console.error(e)
             throw e
-        } else if (e instanceof Error) {
+        }
+
+        if (e instanceof Error) {
             console.error(e)
             throw new GraphQLError('Unexpected error: ' + e.message)
-        } else {
-            console.error('Unexpected error:', e)
-            throw new GraphQLError('Unexpected error')
         }
+
+        console.error('Unexpected error:', e)
+        throw new GraphQLError('Unexpected error')
     }
 }
