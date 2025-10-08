@@ -1,7 +1,7 @@
 import { graphql } from '@/__generated__'
 import { type Day, type Meal } from '@/__generated__/graphql'
 import staticMeals from '@/data/reimanns-meals.json'
-import type { MealData, StaticMeal, TempMealData } from '@/types/food'
+import type { MealData, StaticMeal, TempMealData, Variant } from '@/types/food'
 import { executeGql } from '@/utils/api-utils'
 
 import { getMealDayHash, unifyFoodEntries } from '../utils/food-utils'
@@ -78,7 +78,7 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             variants: meal.variants?.map((variant) => ({
                 ...variant,
                 id: getMealDayHash(date, variant.name),
-            })),
+            })) as Variant[],
         }))
     }
 
