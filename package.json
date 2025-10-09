@@ -10,8 +10,8 @@
         "migrate": "bun run ./src/db/migrate.ts",
         "codegen": "graphql-codegen --config codegen.ts",
         "lint": "biome check",
-		"fmt": "biome check --fix",
-		"fmt:unsafe": "biome check --fix --unsafe"
+        "fmt": "biome check --fix",
+        "fmt:unsafe": "biome check --fix --unsafe"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
@@ -51,6 +51,7 @@
         "@magidoc/cli": "^6.2.0",
         "@types/bun": "^1.2.20",
         "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.3",
         "@types/he": "^1.2.3",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/jwk-to-pem": "^2.0.3",
