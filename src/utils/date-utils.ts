@@ -34,8 +34,8 @@ export function formatISODate(date: Date | undefined): string {
  */
 export function getMonday(date: Date): Date {
 	const newDate = new Date(date)
-	const day = date.getDay()
-	date.setHours(0, 0, 0, 0)
+	const day = newDate.getDay()
+	newDate.setHours(0, 0, 0, 0)
 	newDate.setDate(newDate.getDate() - day + (day === 0 ? -6 : 1))
 	return newDate
 }
