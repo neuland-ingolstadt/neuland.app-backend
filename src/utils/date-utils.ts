@@ -1,7 +1,7 @@
 interface DateParts {
-    year?: string
-    month?: string
-    day?: string
+	year?: string
+	month?: string
+	day?: string
 }
 
 /**
@@ -10,21 +10,21 @@ interface DateParts {
  * @returns {string}
  */
 export function formatISODate(date: Date | undefined): string {
-    if (date == null) {
-        return ''
-    }
-    const formatter = new Intl.DateTimeFormat('de-DE', {
-        timeZone: 'Europe/Berlin',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-    })
-    const parts = formatter.formatToParts(date)
-    const { year, month, day } = parts.reduce<DateParts>(
-        (allParts, part) => ({ ...allParts, [part.type]: part.value }),
-        {}
-    )
-    return `${year}-${month}-${day}`
+	if (date == null) {
+		return ''
+	}
+	const formatter = new Intl.DateTimeFormat('de-DE', {
+		timeZone: 'Europe/Berlin',
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit'
+	})
+	const parts = formatter.formatToParts(date)
+	const { year, month, day } = parts.reduce<DateParts>(
+		(allParts, part) => ({ ...allParts, [part.type]: part.value }),
+		{}
+	)
+	return `${year}-${month}-${day}`
 }
 /**
  * Returns the start of the week
@@ -33,11 +33,11 @@ export function formatISODate(date: Date | undefined): string {
  * @returns {string}
  */
 export function getMonday(date: Date): Date {
-    date = new Date(date)
-    const day = date.getDay()
-    date.setHours(0, 0, 0, 0)
-    date.setDate(date.getDate() - day + (day === 0 ? -6 : 1))
-    return date
+	const newDate = new Date(date)
+	const day = date.getDay()
+	date.setHours(0, 0, 0, 0)
+	newDate.setDate(newDate.getDate() - day + (day === 0 ? -6 : 1))
+	return newDate
 }
 
 /**
@@ -46,10 +46,10 @@ export function getMonday(date: Date): Date {
  * @returns {string}
  */
 export function getWeek(date: Date): [Date, Date] {
-    const start = getMonday(date)
-    const end = getMonday(date)
-    end.setDate(end.getDate() + 7)
-    return [start, end]
+	const start = getMonday(date)
+	const end = getMonday(date)
+	end.setDate(end.getDate() + 7)
+	return [start, end]
 }
 
 /**
@@ -59,14 +59,14 @@ export function getWeek(date: Date): [Date, Date] {
  * @returns {Date[]}
  */
 export function getDays(begin: Date, end: Date): Date[] {
-    const days = []
-    const date = new Date(begin)
+	const days = []
+	const date = new Date(begin)
 
-    while (date < end) {
-        days.push(new Date(date))
-        date.setDate(date.getDate() + 1)
-    }
-    return days
+	while (date < end) {
+		days.push(new Date(date))
+		date.setDate(date.getDate() + 1)
+	}
+	return days
 }
 
 /**
@@ -76,9 +76,9 @@ export function getDays(begin: Date, end: Date): Date[] {
  * @returns {Date}
  */
 export function addWeek(date: Date, delta: number): Date {
-    date = new Date(date)
-    date.setDate(date.getDate() + delta * 7)
-    return date
+	const newDate = new Date(date)
+	newDate.setDate(newDate.getDate() + delta * 7)
+	return newDate
 }
 
 /**
@@ -87,5 +87,5 @@ export function addWeek(date: Date, delta: number): Date {
  * @returns {string}
  */
 export function isoToPostgres(isoDate: number): string {
-    return new Date(isoDate).toISOString().replace('Z', '').replace('T', ' ')
+	return new Date(isoDate).toISOString().replace('Z', '').replace('T', ' ')
 }

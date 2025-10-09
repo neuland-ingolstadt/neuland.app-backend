@@ -110,7 +110,19 @@ http://localhost:4000/
 
 #### Commiting Changes
 
-We use husky to lint and test the code before it is committed, that's why we recommend using the ESLint and Prettier extensions in VSCode.
+We use Biome to lint and test the code before it is committed.
+
+To run the linter, run:
+
+```bash
+bun lint
+```
+
+To fix the linting errors, run:
+
+```bash
+bun fmt
+```
 
 ### Documentation
 

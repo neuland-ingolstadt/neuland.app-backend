@@ -1,188 +1,188 @@
 [
-    {
-        "category": "Essen",
-        "static": true,
-        "name": {
-            "de": "Thai Curry",
-            "en": "Thai Curry"
-        },
-        "originalLanguage": "de",
-        "prices": {
-            "employee": 6.9,
-            "student": 6.9,
-            "guest": 6.9
-        },
-        "variants": [
-            {
-                "name": {
-                    "de": "Hähnchenstreifen",
-                    "en": "Chicken strips"
-                },
-                "additional": true,
-                "prices": {
-                    "employee": 2.9,
-                    "student": 2.9,
-                    "guest": 2.9
-                }
-            }
-        ]
-    },
-    {
-        "category": "Essen",
-        "static": true,
-        "name": {
-            "de": "Beef Burger",
-            "en": "Beef Burger"
-        },
-        "originalLanguage": "de",
-        "prices": {
-            "employee": 7.9,
-            "student": 7.9,
-            "guest": 7.9
-        },
-        "variants": [
-            {
-                "name": {
-                    "de": "Menü mit Pommes und Getränk",
-                    "en": "Menu with fries and drink"
-                },
-                "prices": {
-                    "employee": 10.5,
-                    "student": 10.5,
-                    "guest": 10.5
-                }
-            }
-        ]
-    },
-    {
-        "category": "Essen",
-        "static": true,
-        "name": {
-            "de": "Currywurst",
-            "en": "Currywurst"
-        },
-        "originalLanguage": "de",
-        "prices": {
-            "employee": 4.9,
-            "student": 4.9,
-            "guest": 4.9
-        },
-        "variants": [
-            {
-                "name": {
-                    "de": "Menü mit Pommes und Getränk",
-                    "en": "Menu with fries and drink"
-                },
-                "prices": {
-                    "employee": 8.5,
-                    "student": 8.5,
-                    "guest": 8.5
-                }
-            }
-        ]
-    },
-    {
-        "static": true,
-        "category": "Salat",
-        "name": {
-            "de": "Großer gemischter Salat",
-            "en": "Large mixed salad"
-        },
-        "originalLanguage": "de",
-        "prices": {
-            "employee": 6.9,
-            "student": 6.9,
-            "guest": 6.9
-        },
-        "variants": [
-            {
-                "name": {
-                    "de": "Hähnchenstreifen",
-                    "en": "Chicken strips"
-                },
-                "additional": true,
-                "prices": {
-                    "employee": 2.9,
-                    "student": 2.9,
-                    "guest": 2.9
-                }
-            },
-            {
-                "name": {
-                    "de": "Thunfisch",
-                    "en": "Tuna"
-                },
-                "additional": true,
-                "prices": {
-                    "employee": 2.5,
-                    "student": 2.5,
-                    "guest": 2.5
-                }
-            },
-            {
-                "name": {
-                    "de": "Ei",
-                    "en": "Egg"
-                },
-                "additional": true,
-                "prices": {
-                    "employee": 0.8,
-                    "student": 0.8,
-                    "guest": 0.8
-                }
-            },
-            {
-                "name": {
-                    "de": "Mozzarellakugeln",
-                    "en": "Mozzarella balls"
-                },
-                "additional": true,
-                "prices": {
-                    "employee": 2.5,
-                    "student": 2.5,
-                    "guest": 2.5
-                }
-            },
-            {
-                "name": {
-                    "de": "Feta Käse",
-                    "en": "Feta cheese"
-                },
-                "additional": true,
-                "prices": {
-                    "employee": 2.5,
-                    "student": 2.5,
-                    "guest": 2.5
-                }
-            }
-        ]
-    },
-    {
-        "category": "Salat",
-        "static": true,
-        "name": {
-            "de": "Beilagen Salat",
-            "en": "Side salad"
-        },
-        "originalLanguage": "de",
-        "prices": {
-            "employee": 2.0,
-            "student": 2.0,
-            "guest": 2.0
-        }
-    },
-    {
-        "category": "Suppe",
-        "static": true,
-        "name": {
-            "de": "Tagessuppe",
-            "en": "Daily soup"
-        },
-        "originalLanguage": "de",
-        "prices": {
-            "employee": 1.5,
-            "student": 1.0,
-            "guest": 2.0
-        }
-    }
+	{
+		"category": "Essen",
+		"static": true,
+		"name": {
+			"de": "Thai Curry",
+			"en": "Thai Curry"
+		},
+		"originalLanguage": "de",
+		"prices": {
+			"employee": 6.9,
+			"student": 6.9,
+			"guest": 6.9
+		},
+		"variants": [
+			{
+				"name": {
+					"de": "Hähnchenstreifen",
+					"en": "Chicken strips"
+				},
+				"additional": true,
+				"prices": {
+					"employee": 2.9,
+					"student": 2.9,
+					"guest": 2.9
+				}
+			}
+		]
+	},
+	{
+		"category": "Essen",
+		"static": true,
+		"name": {
+			"de": "Beef Burger",
+			"en": "Beef Burger"
+		},
+		"originalLanguage": "de",
+		"prices": {
+			"employee": 7.9,
+			"student": 7.9,
+			"guest": 7.9
+		},
+		"variants": [
+			{
+				"name": {
+					"de": "Menü mit Pommes und Getränk",
+					"en": "Menu with fries and drink"
+				},
+				"prices": {
+					"employee": 10.5,
+					"student": 10.5,
+					"guest": 10.5
+				}
+			}
+		]
+	},
+	{
+		"category": "Essen",
+		"static": true,
+		"name": {
+			"de": "Currywurst",
+			"en": "Currywurst"
+		},
+		"originalLanguage": "de",
+		"prices": {
+			"employee": 4.9,
+			"student": 4.9,
+			"guest": 4.9
+		},
+		"variants": [
+			{
+				"name": {
+					"de": "Menü mit Pommes und Getränk",
+					"en": "Menu with fries and drink"
+				},
+				"prices": {
+					"employee": 8.5,
+					"student": 8.5,
+					"guest": 8.5
+				}
+			}
+		]
+	},
+	{
+		"static": true,
+		"category": "Salat",
+		"name": {
+			"de": "Großer gemischter Salat",
+			"en": "Large mixed salad"
+		},
+		"originalLanguage": "de",
+		"prices": {
+			"employee": 6.9,
+			"student": 6.9,
+			"guest": 6.9
+		},
+		"variants": [
+			{
+				"name": {
+					"de": "Hähnchenstreifen",
+					"en": "Chicken strips"
+				},
+				"additional": true,
+				"prices": {
+					"employee": 2.9,
+					"student": 2.9,
+					"guest": 2.9
+				}
+			},
+			{
+				"name": {
+					"de": "Thunfisch",
+					"en": "Tuna"
+				},
+				"additional": true,
+				"prices": {
+					"employee": 2.5,
+					"student": 2.5,
+					"guest": 2.5
+				}
+			},
+			{
+				"name": {
+					"de": "Ei",
+					"en": "Egg"
+				},
+				"additional": true,
+				"prices": {
+					"employee": 0.8,
+					"student": 0.8,
+					"guest": 0.8
+				}
+			},
+			{
+				"name": {
+					"de": "Mozzarellakugeln",
+					"en": "Mozzarella balls"
+				},
+				"additional": true,
+				"prices": {
+					"employee": 2.5,
+					"student": 2.5,
+					"guest": 2.5
+				}
+			},
+			{
+				"name": {
+					"de": "Feta Käse",
+					"en": "Feta cheese"
+				},
+				"additional": true,
+				"prices": {
+					"employee": 2.5,
+					"student": 2.5,
+					"guest": 2.5
+				}
+			}
+		]
+	},
+	{
+		"category": "Salat",
+		"static": true,
+		"name": {
+			"de": "Beilagen Salat",
+			"en": "Side salad"
+		},
+		"originalLanguage": "de",
+		"prices": {
+			"employee": 2.0,
+			"student": 2.0,
+			"guest": 2.0
+		}
+	},
+	{
+		"category": "Suppe",
+		"static": true,
+		"name": {
+			"de": "Tagessuppe",
+			"en": "Daily soup"
+		},
+		"originalLanguage": "de",
+		"prices": {
+			"employee": 1.5,
+			"student": 1.0,
+			"guest": 2.0
+		}
+	}
 ]
