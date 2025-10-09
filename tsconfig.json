@@ -27,5 +27,6 @@
                 "schema": "src/__generated__/schema.graphql"
             }
         ]
-    }
+    },
+    "exclude": ["node_modules", "docs", "**/*.test.ts", "**/*.spec.ts"]
 }

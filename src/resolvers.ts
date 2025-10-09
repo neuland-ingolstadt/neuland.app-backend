@@ -85,6 +85,14 @@ export const resolvers = {
         deleteNeulandEvent,
         upsertNeulandEvent,
     },
+    CareerServiceEvent: {
+        // Deprecated fields - always return null for backward compatibility
+        unlimitedSlots: () => null,
+        availableSlots: () => null,
+        totalSlots: () => null,
+        waitingList: () => null,
+        maxWaitingList: () => null,
+    },
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
     EmailAddress: EmailAddressResolver,

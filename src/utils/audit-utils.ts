@@ -9,7 +9,7 @@ export async function logAudit(
         jwtPayload?: { email?: string; sub?: string; [key: string]: unknown }
     }
 ): Promise<void> {
-    const name = contextValue.jwtPayload?.given_name ?? null
+    const name = contextValue.jwtPayload?.email ?? null
     const userId = contextValue.jwtPayload?.sub ?? null
     await db.insert(auditLog).values({
         entity,

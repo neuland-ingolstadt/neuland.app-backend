@@ -1,6 +1,11 @@
 import pluginJs from '@eslint/js'
 import globals from 'globals'
+import path from 'path'
 import tseslint from 'typescript-eslint'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export default [
     {
@@ -23,7 +28,7 @@ export default [
             ecmaVersion: 'latest',
             sourceType: 'module',
             parserOptions: {
-                tsconfigRootDir: './',
+                tsconfigRootDir: __dirname,
                 noUnusedLocals: true,
                 noUnusedParameters: true,
             },
