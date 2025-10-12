@@ -1,5 +1,6 @@
 import { cache } from '@/index'
 import getStudentCounsellingEvents from '@/scraping/studentCounselling'
+import type { StudentCounsellingEvent } from '@/types/studentCounsellingEvent'
 
 const CACHE_TTL_MOODLE = 60 * 60 * 12 // 12 hours
 

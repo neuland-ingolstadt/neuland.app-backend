@@ -1,61 +1,40 @@
 schema {
-    query: Query
+  query: Query
 }
 
-"""
-Indicates a Bean Validation constraint
-"""
-directive @constraint(
-    format: String
-    max: BigInteger
-    maxFloat: BigDecimal
-    maxLength: Int
-    min: BigInteger
-    minFloat: BigDecimal
-    minLength: Int
-    pattern: String
-) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+"""Indicates a Bean Validation constraint"""
+directive @constraint(format: String, max: BigInteger, maxFloat: BigDecimal, maxLength: Int, min: BigInteger, minFloat: BigDecimal, minLength: Int, pattern: String) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
 """
 Used to specify the role required to execute a given field or operation.
 """
 directive @rolesAllowed(value: String) on FIELD_DEFINITION
 
-"""
-Scalar for BigDecimal
-"""
+"""Scalar for BigDecimal"""
 scalar BigDecimal
 
-"""
-Scalar for BigInteger
-"""
+"""Scalar for BigInteger"""
 scalar BigInteger
 
-"""
-Scalar for Date
-"""
+"""Scalar for Date"""
 scalar Date
 
 type Day {
-    """
-    ISO-8601
-    """
-    date: Date
-    meals: [Meal]
+  """ISO-8601"""
+  date: Date
+  meals: [Meal]
 }
 
 type Meal {
-    name_de: String
-    name_en: String
+  name_de: String
+  name_en: String
 }
 
 type Menu {
-    days: [Day]
+  days: [Day]
 }
 
-"""
-Query root
-"""
+"""Query root"""
 type Query {
-    menu: Menu
+  menu: Menu
 }

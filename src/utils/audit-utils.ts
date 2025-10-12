@@ -17,6 +17,6 @@ export async function logAudit(
         operation,
         name: name,
         user_id: userId,
-        created_at: new Date(),
+        created_at: new Date()
     })
 }

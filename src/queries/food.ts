@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/** biome-ignore-all lint/suspicious/noExplicitAny: tbd */
+
+import { GraphQLError } from 'graphql'
 import { cache } from '@/index'
 import { getCanisiusPlan } from '@/scraping/canisius'
 import { getMensaPlan } from '@/scraping/mensa'
 import { getReimannsPlan } from '@/scraping/reimanns'
 import type { MealData, ReturnData } from '@/types/food'
-import { GraphQLError } from 'graphql'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
 
@@ -16,7 +17,7 @@ export async function food(
         'IngolstadtMensa',
         'NeuburgMensa',
         'Reimanns',
-        'Canisius',
+        'Canisius'
     ]
     const locations =
         args?.locations?.filter((arg) => validLocations.includes(arg)) ?? []
@@ -55,7 +56,7 @@ export async function food(
                 console.error('Error fetching meals for %s:', location, error)
                 errors.push({
                     location,
-                    message: typedError.message ?? 'Unknown error',
+                    message: typedError.message ?? 'Unknown error'
                 })
                 continue
             }
@@ -71,8 +72,8 @@ export async function food(
     return {
         foodData: Array.from(data, ([timestamp, meals]) => ({
             timestamp,
-            meals,
+            meals
         })) as any[],
-        errors,
+        errors
     }
 }

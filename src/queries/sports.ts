@@ -8,11 +8,11 @@ export async function sports(): Promise<UniversitySports[]> {
         id: sport.id,
         title: {
             de: sport.title_de,
-            en: sport.title_en,
+            en: sport.title_en
         },
         description: {
             de: sport.description_de,
-            en: sport.description_en,
+            en: sport.description_en
         },
         campus: sport.campus,
         location: sport.location,
@@ -24,6 +24,6 @@ export async function sports(): Promise<UniversitySports[]> {
         eMail: sport.e_mail,
         sportsCategory: sport.sports_category,
         createdAt: sport.created_at,
-        updatedAt: sport.updated_at,
+        updatedAt: sport.updated_at
     }))
 }

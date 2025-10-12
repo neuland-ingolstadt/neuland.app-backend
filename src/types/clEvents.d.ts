@@ -1,10 +1,10 @@
-interface ClClub {
+export interface ClClub {
     name: string
     website: string | null
     instagram: string | null
 }
 
-interface ClEvent {
+export interface ClEvent {
     id: string
     organizer: string
     host: ClHost
@@ -21,7 +21,7 @@ interface ClEvent {
     isMoodleEvent: boolean
 }
 
-interface ScrapedClEvent {
+export interface ScrapedClEvent {
     id: string
     organizer: string
     host: ClHost
@@ -49,7 +49,7 @@ interface ClText {
     en: string
 }
 
-interface ManualClEventsInput {
+export interface ManualClEventsInput {
     host: ClHost
     title: ClText
     description: ClText | null

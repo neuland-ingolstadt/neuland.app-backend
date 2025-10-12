@@ -16,12 +16,12 @@ export async function executeGql<TResult, TVariables>(
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/graphql-response+json',
+            Accept: 'application/graphql-response+json'
         },
         body: JSON.stringify({
             query,
-            variables,
-        }),
+            variables
+        })
     })
 
     if (!response.ok) {

@@ -16,7 +16,7 @@ jobs:
             - uses: actions/checkout@v4
             - name: Install modules
               run: bun install
-            - name: Run ESLint
-              run: bunx eslint .
-            - name: Run Prettier
-              run: bunx prettier --check .
+            - name: Run Biome
+              run: bun biome ci
+            - name: Run TSC
+              run: bun tsc --noEmit

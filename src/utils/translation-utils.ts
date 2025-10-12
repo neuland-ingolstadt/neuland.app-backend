@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ExtendedMealData, PreFoodData, TempMealData } from '@/types/food'
+/** biome-ignore-all lint/suspicious/noExplicitAny: tbd */
+
 import translate from 'deepl'
+import type { ExtendedMealData, PreFoodData, TempMealData } from '@/types/food'
 
 const deeplApiKey = Bun.env.DEEPL_API_KEY || ''
 const enableDevTranslations =
@@ -24,7 +25,7 @@ function translateMealsFallback(meals: PreFoodData[]): TempMealData[] {
                     en:
                         isDev && !disableFallbackWarning
                             ? `FALLBACK: ${meal.name}`
-                            : meal.name,
+                            : meal.name
                 },
                 originalLanguage: 'de',
                 variants: meal.variants?.map((variant: any) => {
@@ -35,16 +36,16 @@ function translateMealsFallback(meals: PreFoodData[]): TempMealData[] {
                             en:
                                 isDev && !disableFallbackWarning
                                     ? `FALLBACK: ${variant.name}`
-                                    : variant.name,
-                        },
+                                    : variant.name
+                        }
                     }
-                }),
+                })
             }
         })
 
         return {
             ...day,
-            meals,
+            meals
         }
     })
 }
@@ -93,7 +94,7 @@ export async function translateMeals(
             free_api: true,
             target_lang: 'EN-GB',
             source_lang: 'DE',
-            split_sentences: '1',
+            split_sentences: '1'
         })
 
         // map the result to the original meals using the index of the text array
@@ -109,7 +110,7 @@ export async function translateMeals(
             ...meal,
             name: {
                 de: meal.name,
-                en: translations[meal.name] || meal.name,
+                en: translations[meal.name] || meal.name
             },
             variants:
                 meal.variants !== undefined
@@ -117,16 +118,16 @@ export async function translateMeals(
                           ...variant,
                           name: {
                               de: variant.name,
-                              en: translations[variant.name] || variant.name,
-                          },
+                              en: translations[variant.name] || variant.name
+                          }
                       }))
                     : [],
-            originalLanguage: 'de',
+            originalLanguage: 'de'
         }))
 
         return {
             ...day,
-            meals,
+            meals
         }
     }) as TempMealData[]
 }

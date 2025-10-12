@@ -1,5 +1,6 @@
 import { cache } from '@/index'
 import getCareerServiceEvents from '@/scraping/careerService'
+import type { CareerServiceEvent } from '@/types/careerServiceEvent'
 
 const CACHE_TTL_RSS = 60 * 60 * 6 // 6 hours
 

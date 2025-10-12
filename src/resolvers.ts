@@ -1,16 +1,16 @@
+import { GraphQLScalarType, Kind } from 'graphql'
+import {
+    DateTimeResolver,
+    EmailAddressResolver,
+    LocalEndTimeResolver,
+    URLResolver
+} from 'graphql-scalars'
 import { deleteUniversitySport } from '@/mutations/university-sports/delete'
 import { upsertUniversitySport } from '@/mutations/university-sports/upsert'
 import { clEvents } from '@/queries/cl-events'
 import { clClubs } from '@/queries/clubs'
 import { food } from '@/queries/food'
 import { sports } from '@/queries/sports'
-import { GraphQLScalarType, Kind } from 'graphql'
-import {
-    DateTimeResolver,
-    EmailAddressResolver,
-    LocalEndTimeResolver,
-    URLResolver,
-} from 'graphql-scalars'
 
 import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
 import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
@@ -31,7 +31,7 @@ const RestaurantLocation = {
     IngolstadtMensa: 'IngolstadtMensa',
     NeuburgMensa: 'NeuburgMensa',
     Reimanns: 'Reimanns',
-    Canisius: 'Canisius',
+    Canisius: 'Canisius'
 }
 
 const LocationInput = new GraphQLScalarType({
@@ -51,12 +51,13 @@ const LocationInput = new GraphQLScalarType({
                 return value // Valid enum value
             }
             return value // String value
-        } else if (ast.kind === Kind.ENUM) {
+        }
+        if (ast.kind === Kind.ENUM) {
             return ast.value
         }
 
         throw new Error('LocationInput must be a string or a valid enum value')
-    },
+    }
 })
 
 export const resolvers = {
@@ -71,7 +72,7 @@ export const resolvers = {
         universitySports: sports,
         roomReports: roomReportsQuery,
         neulandEvents: neulandEventsQuery,
-        auditLog: auditLogQuery,
+        auditLog: auditLogQuery
     },
     Mutation: {
         deleteUniversitySport,
@@ -83,7 +84,7 @@ export const resolvers = {
         upsertManualClEvent,
         deleteManualClEvent,
         deleteNeulandEvent,
-        upsertNeulandEvent,
+        upsertNeulandEvent
     },
     CareerServiceEvent: {
         // Deprecated fields - always return null for backward compatibility
@@ -91,11 +92,11 @@ export const resolvers = {
         availableSlots: () => null,
         totalSlots: () => null,
         waitingList: () => null,
-        maxWaitingList: () => null,
+        maxWaitingList: () => null
     },
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
     EmailAddress: EmailAddressResolver,
     URL: URLResolver,
-    LocationInput,
+    LocationInput
 }

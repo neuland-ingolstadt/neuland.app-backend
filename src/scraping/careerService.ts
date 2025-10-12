@@ -1,9 +1,11 @@
 /**
  * @file Fetches career service events from the Handshake RSS feed.
  */
+
 import { GraphQLError } from 'graphql'
 import moment from 'moment-timezone'
 import xmljs from 'xml-js'
+import type { CareerServiceEvent } from '@/types/careerServiceEvent'
 
 const RSS_URL =
     'https://app.joinhandshake.de/external_feeds/280/public.rss?token=4EC5IbcjruYYmuRhEjJXvWduZer9aAoFVw3VsEXMAQglWtA_UoBECQ'
@@ -32,7 +34,7 @@ function parseDateFromTitle(title: string): Date | null {
         September: 8,
         Oktober: 9,
         November: 10,
-        Dezember: 11,
+        Dezember: 11
     }
 
     const month = months[monthStr]
@@ -116,7 +118,7 @@ async function getEvents(): Promise<CareerServiceEvent[]> {
             description: description,
             date: eventDate,
             url: link,
-            publishedDate: publishedDate,
+            publishedDate: publishedDate
         })
     }
 
@@ -133,12 +135,12 @@ export default async function getCareerServiceEvents(): Promise<
         if (e instanceof GraphQLError) {
             console.error(e)
             throw e
-        } else if (e instanceof Error) {
-            console.error(e)
-            throw new GraphQLError('Unexpected error: ' + e.message)
-        } else {
-            console.error('Unexpected error:', e)
-            throw new GraphQLError('Unexpected error')
         }
+        if (e instanceof Error) {
+            console.error(e)
+            throw new GraphQLError(`Unexpected error: ${e.message}`)
+        }
+        console.error('Unexpected error:', e)
+        throw new GraphQLError('Unexpected error')
     }
 }

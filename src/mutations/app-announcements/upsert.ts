@@ -1,14 +1,15 @@
+import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
+import type { AnnouncementInput } from '@/types/announcement'
 import { logAudit } from '@/utils/audit-utils'
 import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
 
 export async function upsertAppAnnouncement(
     _: unknown,
     {
         id,
-        input,
+        input
     }: {
         id: number | undefined
         input: AnnouncementInput
@@ -28,7 +29,7 @@ export async function upsertAppAnnouncement(
         endDateTime,
         priority,
         url,
-        imageUrl,
+        imageUrl
     } = input
 
     let announcement
@@ -49,12 +50,12 @@ export async function upsertAppAnnouncement(
                 priority,
                 url,
                 image_url: imageUrl,
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .where(eq(appAnnouncements.id, id))
 
             .returning({
-                id: appAnnouncements.id,
+                id: appAnnouncements.id
             })
         try {
             await logAudit(
@@ -83,11 +84,11 @@ export async function upsertAppAnnouncement(
                 url,
                 image_url: imageUrl,
                 created_at: new Date(),
-                updated_at: new Date(),
+                updated_at: new Date()
             })
 
             .returning({
-                id: appAnnouncements.id,
+                id: appAnnouncements.id
             })
         try {
             await logAudit(
@@ -102,6 +103,6 @@ export async function upsertAppAnnouncement(
     }
 
     return {
-        id: announcement.id,
+        id: announcement.id
     }
 }

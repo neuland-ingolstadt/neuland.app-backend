@@ -1,4 +1,4 @@
-interface RoomReport {
+export interface RoomReport {
     id: number
     room: string
     reason:
@@ -12,7 +12,7 @@ interface RoomReport {
     resolvedAt: Date | null
 }
 
-interface RoomReportInput {
+export interface RoomReportInput {
     room: string
     reason:
         | 'WRONG_DESCRIPTION'

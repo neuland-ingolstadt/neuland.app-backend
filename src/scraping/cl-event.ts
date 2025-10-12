@@ -1,8 +1,10 @@
 /**
  * @file Fetches Campus Life events from the public Campus Life API and serves them at `/api/events`.
  */
+
 import { GraphQLError } from 'graphql'
 import nodeFetch from 'node-fetch'
+import type { ClEvent, ClHost, ClText } from '@/types/clEvents'
 
 const API_BASE_URL = 'https://cl.neuland-ingolstadt.de/api/v1'
 const EVENTS_ENDPOINT = `${API_BASE_URL}/public/events`
@@ -31,12 +33,12 @@ interface CampusLifeApiOrganizer {
 async function fetchJson<T>(url: string): Promise<T> {
     const response = await nodeFetch(url, {
         headers: {
-            Accept: 'application/json',
-        },
+            Accept: 'application/json'
+        }
     })
 
     if (!response.ok) {
-        throw new GraphQLError(`Failed to fetch Campus Life data.`)
+        throw new GraphQLError('Failed to fetch Campus Life data.')
     }
 
     return (await response.json()) as T
@@ -69,7 +71,7 @@ function buildDescriptions(
 
     return {
         de: descriptionDe ?? fallback,
-        en: descriptionEn ?? fallback,
+        en: descriptionEn ?? fallback
     }
 }
 
@@ -93,7 +95,7 @@ function toClEvent(
     const host: ClHost = {
         name: organizerName,
         website: organizer?.website_url ?? null,
-        instagram: organizer?.instagram_url ?? null,
+        instagram: organizer?.instagram_url ?? null
     }
 
     const description = event.description_de ?? event.description_en ?? null
@@ -111,7 +113,7 @@ function toClEvent(
         title,
         titles: {
             de: event.title_de,
-            en: event.title_en,
+            en: event.title_en
         },
         description,
         descriptions,
@@ -121,7 +123,7 @@ function toClEvent(
         endDateTime: endDate,
         location: event.location,
         eventWebsite: event.event_url,
-        isMoodleEvent: false,
+        isMoodleEvent: false
     }
 }
 
@@ -139,7 +141,7 @@ export default async function getClEvents(): Promise<ClEvent[]> {
     try {
         const [events, organizers] = await Promise.all([
             fetchJson<CampusLifeApiEvent[]>(EVENTS_ENDPOINT),
-            fetchJson<CampusLifeApiOrganizer[]>(ORGANIZERS_ENDPOINT),
+            fetchJson<CampusLifeApiOrganizer[]>(ORGANIZERS_ENDPOINT)
         ])
 
         const organizersById = new Map(
@@ -165,7 +167,7 @@ export default async function getClEvents(): Promise<ClEvent[]> {
 
         if (e instanceof Error) {
             console.error(e)
-            throw new GraphQLError('Unexpected error: ' + e.message)
+            throw new GraphQLError(`Unexpected error: ${e.message}`)
         }
 
         console.error('Unexpected error:', e)

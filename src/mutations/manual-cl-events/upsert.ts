@@ -1,14 +1,15 @@
+import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { manualClEvents } from '@/db/schema/manualClEvents'
+import type { ManualClEventsInput } from '@/types/clEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
 
 export async function upsertManualClEvent(
     _: unknown,
     {
         id,
-        input,
+        input
     }: {
         id: number | undefined
         input: ManualClEventsInput
@@ -37,11 +38,11 @@ export async function upsertManualClEvent(
                 host_url: host.website ?? null,
                 host_instagram: host.instagram ?? null,
                 event_url: eventWebsite ?? null,
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .where(eq(manualClEvents.id, id))
             .returning({
-                id: manualClEvents.id,
+                id: manualClEvents.id
             })
         try {
             await logAudit('manual_cl_events', event.id, 'update', contextValue)
@@ -64,10 +65,10 @@ export async function upsertManualClEvent(
                 host_instagram: host.instagram ?? null,
                 event_url: eventWebsite ?? null,
                 created_at: new Date(),
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .returning({
-                id: manualClEvents.id,
+                id: manualClEvents.id
             })
         try {
             await logAudit('manual_cl_events', event.id, 'insert', contextValue)
@@ -76,6 +77,6 @@ export async function upsertManualClEvent(
         }
     }
     return {
-        id: event.id,
+        id: event.id
     }
 }

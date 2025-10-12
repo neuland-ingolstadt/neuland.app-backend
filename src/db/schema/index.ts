@@ -11,5 +11,5 @@ export default {
     ...roomReports,
     ...manualClEvents,
     ...auditLog,
-    ...deleteManualClEvent,
+    ...deleteManualClEvent
 }

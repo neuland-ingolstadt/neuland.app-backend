@@ -5,7 +5,7 @@ import {
     serial,
     text,
     time,
-    timestamp,
+    timestamp
 } from 'drizzle-orm/pg-core'
 
 export const campusEnum = pgEnum('campus', ['Ingolstadt', 'Neuburg'])
@@ -16,7 +16,7 @@ export const weekdayEnum = pgEnum('weekday', [
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
+    'Sunday'
 ])
 export const sportsCategoryEnum = pgEnum('sports_category', [
     'Basketball',
@@ -50,7 +50,7 @@ export const sportsCategoryEnum = pgEnum('sports_category', [
     'Parkour',
     'Hockey',
     'Hiking',
-    'Other',
+    'Other'
 ])
 
 export const universitySports = pgTable('university_sports', {
@@ -69,5 +69,5 @@ export const universitySports = pgTable('university_sports', {
     e_mail: text('e_mail'),
     sports_category: sportsCategoryEnum('sports_category').notNull(),
     created_at: timestamp('created_at', { withTimezone: true }).notNull(),
-    updated_at: timestamp('updated_at', { withTimezone: true }).notNull(),
+    updated_at: timestamp('updated_at', { withTimezone: true }).notNull()
 })

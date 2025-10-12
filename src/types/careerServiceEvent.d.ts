@@ -1,4 +1,4 @@
-interface CareerServiceEvent {
+export interface CareerServiceEvent {
     id: string
     title: string
     description: string

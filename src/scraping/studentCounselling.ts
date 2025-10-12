@@ -1,12 +1,18 @@
 /**
  * @file Scrapes events from the `Campus Life` Moodle course and serves them at `/api/events`.
  */
-import { login, parseLocalDateTimeDuration } from '@/utils/moodle-utils'
+
 import { xxh64 } from '@node-rs/xxhash'
 import * as cheerio from 'cheerio'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
 import { GraphQLError } from 'graphql'
-import nodeFetch from 'node-fetch'
+import nodeFetch, {
+    type RequestInfo,
+    type RequestInit,
+    type Response
+} from 'node-fetch'
+import type { StudentCounsellingEvent } from '@/types/studentCounsellingEvent'
+import { login, parseLocalDateTimeDuration } from '@/utils/moodle-utils'
 
 const LIST_URL = 'https://moodle.thi.de/mod/booking/view.php?id=86853'
 
@@ -16,11 +22,7 @@ const LIST_URL = 'https://moodle.thi.de/mod/booking/view.php?id=86853'
  * @returns {StudentCounsellingEvent[]}
  */
 async function getEvents(
-    fetch: FetchCookieImpl<
-        nodeFetch.RequestInfo,
-        nodeFetch.RequestInit,
-        nodeFetch.Response
-    >
+    fetch: FetchCookieImpl<RequestInfo, RequestInit, Response>
 ): Promise<StudentCounsellingEvent[]> {
     const data: StudentCounsellingEvent[] = []
     const page = await fetch(LIST_URL)
@@ -56,16 +58,16 @@ async function getEvents(
         const waitingListMatch = waitingListText.match(/(\d+) von (\d+)/)
 
         const availableSlots = availableSlotsMatch
-            ? parseInt(availableSlotsMatch[1], 10)
+            ? Number.parseInt(availableSlotsMatch[1], 10)
             : null
         const totalSlots = availableSlotsMatch
-            ? parseInt(availableSlotsMatch[2], 10)
+            ? Number.parseInt(availableSlotsMatch[2], 10)
             : null
         const waitingList = waitingListMatch
-            ? parseInt(waitingListMatch[1], 10)
+            ? Number.parseInt(waitingListMatch[1], 10)
             : null
         const maxWaitingList = waitingListMatch
-            ? parseInt(waitingListMatch[2], 10)
+            ? Number.parseInt(waitingListMatch[2], 10)
             : null
 
         // Add event to data
@@ -80,7 +82,7 @@ async function getEvents(
                 waitingList,
                 maxWaitingList,
                 // For now, just use the same URL for all events
-                url: LIST_URL,
+                url: LIST_URL
             })
         }
     })
@@ -114,19 +116,18 @@ export default async function getStudentCounsellingEvents(): Promise<
         if (username && password) {
             const events = await getAllEventDetails(username, password)
             return events
-        } else {
-            throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
         }
+        throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
     } catch (e: unknown) {
         if (e instanceof GraphQLError) {
             console.error(e)
             throw e
-        } else if (e instanceof Error) {
-            console.error(e)
-            throw new GraphQLError('Unexpected error: ' + e.message)
-        } else {
-            console.error('Unexpected error:', e)
-            throw new GraphQLError('Unexpected error')
         }
+        if (e instanceof Error) {
+            console.error(e)
+            throw new GraphQLError(`Unexpected error: ${e.message}`)
+        }
+        console.error('Unexpected error:', e)
+        throw new GraphQLError('Unexpected error')
     }
 }

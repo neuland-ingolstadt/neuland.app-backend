@@ -17,7 +17,7 @@ export function formatISODate(date: Date | undefined): string {
         timeZone: 'Europe/Berlin',
         year: 'numeric',
         month: '2-digit',
-        day: '2-digit',
+        day: '2-digit'
     })
     const parts = formatter.formatToParts(date)
     const { year, month, day } = parts.reduce<DateParts>(
@@ -33,11 +33,11 @@ export function formatISODate(date: Date | undefined): string {
  * @returns {string}
  */
 export function getMonday(date: Date): Date {
-    date = new Date(date)
-    const day = date.getDay()
-    date.setHours(0, 0, 0, 0)
-    date.setDate(date.getDate() - day + (day === 0 ? -6 : 1))
-    return date
+    const newDate = new Date(date)
+    const day = newDate.getDay()
+    newDate.setHours(0, 0, 0, 0)
+    newDate.setDate(newDate.getDate() - day + (day === 0 ? -6 : 1))
+    return newDate
 }
 
 /**
@@ -76,9 +76,9 @@ export function getDays(begin: Date, end: Date): Date[] {
  * @returns {Date}
  */
 export function addWeek(date: Date, delta: number): Date {
-    date = new Date(date)
-    date.setDate(date.getDate() + delta * 7)
-    return date
+    const newDate = new Date(date)
+    newDate.setDate(newDate.getDate() + delta * 7)
+    return newDate
 }
 
 /**
