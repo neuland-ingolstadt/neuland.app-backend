@@ -2,198 +2,198 @@
 Room report input type. Used to create a new report about incorrect room data.
 """
 input RoomReportInput {
-  """
-  Room name
-  """
-  room: String!
-  """
-  Reason for the report.
-  """
-  reason: RoomReportCategory!
-  """
-  description of the report
-  """
-  description: String
+    """
+    Room name
+    """
+    room: String!
+    """
+    Reason for the report.
+    """
+    reason: RoomReportCategory!
+    """
+    description of the report
+    """
+    description: String
 }
 
 """
 Input type for the multi language string.
 """
 input MultiLanguageStringInput {
-  en: String!
-  de: String!
+    en: String!
+    de: String!
 }
 
 """
 Input type for the university sports event.
 """
 input UniversitySportsInput {
-  """
-  Title of the sports event in different languages
-  """
-  title: MultiLanguageStringInput!
-  """
-  Description of the sports event in different languages
-  """
-  description: MultiLanguageStringInput
-  """
-  Campus where the sports event belongs to. This is not the location of the event itself.
-  """
-  campus: CampusType!
-  """
-  Location of the sports event
-  """
-  location: String!
-  """
-  Weekday of the sports event
-  """
-  weekday: WeekdayType!
-  """
-  Start time of the sports event as Unix timestamp
-  """
-  startTime: LocalTime!
-  """
-  End time of the sports event as Unix timestamp
-  """
-  endTime: LocalTime
-  """
-  True if the sports event requires registration
-  """
-  requiresRegistration: Boolean!
-  """
-  Invitation link for the sports event, e.g. a WhatsApp group
-  """
-  invitationLink: String
-  """
-  E-Mail address for registration or contact
-  """
-  eMail: EmailAddress
-  """
-  Category of the sports event (e.g. soccer, basketball, etc.)
-  """
-  sportsCategory: SportsCategoryType!
+    """
+    Title of the sports event in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the sports event in different languages
+    """
+    description: MultiLanguageStringInput
+    """
+    Campus where the sports event belongs to. This is not the location of the event itself.
+    """
+    campus: CampusType!
+    """
+    Location of the sports event
+    """
+    location: String!
+    """
+    Weekday of the sports event
+    """
+    weekday: WeekdayType!
+    """
+    Start time of the sports event as Unix timestamp
+    """
+    startTime: LocalTime!
+    """
+    End time of the sports event as Unix timestamp
+    """
+    endTime: LocalTime
+    """
+    True if the sports event requires registration
+    """
+    requiresRegistration: Boolean!
+    """
+    Invitation link for the sports event, e.g. a WhatsApp group
+    """
+    invitationLink: String
+    """
+    E-Mail address for registration or contact
+    """
+    eMail: EmailAddress
+    """
+    Category of the sports event (e.g. soccer, basketball, etc.)
+    """
+    sportsCategory: SportsCategoryType!
 }
 
 """
 Input type for the announcement.
 """
 input AnnouncementInput {
-  """
-  Platform where the announcement is displayed
-  """
-  platform: [Platform!]!
-  """
-  UserKind to target the announcement to specific user groups
-  """
-  userKind: [UserKind!]!
-  """
-  Title of the announcement in different languages
-  """
-  title: MultiLanguageStringInput!
-  """
-  Description of the announcement in different languages
-  """
-  description: MultiLanguageStringInput!
-  """
-  Start date and time when the announcement is displayed
-  """
-  startDateTime: DateTime!
-  """
-  End date and time when the announcement is displayed
-  """
-  endDateTime: DateTime!
-  """
-  Priority of the announcement, higher are more important
-  """
-  priority: Int!
-  """
-  URL to the announcement
-  """
-  url: String
-  """
-  Image URL for the announcement
-  """
-  imageUrl: String
+    """
+    Platform where the announcement is displayed
+    """
+    platform: [Platform!]!
+    """
+    UserKind to target the announcement to specific user groups
+    """
+    userKind: [UserKind!]!
+    """
+    Title of the announcement in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the announcement in different languages
+    """
+    description: MultiLanguageStringInput!
+    """
+    Start date and time when the announcement is displayed
+    """
+    startDateTime: DateTime!
+    """
+    End date and time when the announcement is displayed
+    """
+    endDateTime: DateTime!
+    """
+    Priority of the announcement, higher are more important
+    """
+    priority: Int!
+    """
+    URL to the announcement
+    """
+    url: String
+    """
+    Image URL for the announcement
+    """
+    imageUrl: String
 }
 
 """
 Input type for the manual campus life event. These events are created by the administrators and are not fetched from an external source.
 """
 input ManualCampusLifeEventInput {
-  """
-  Host / organizer of the event
-  """
-  host: HostInput!
-  """
-  Title of the event in different languages
-  """
-  title: MultiLanguageStringInput!
-  """
-  Description of the event in different languages
-  """
-  description: MultiLanguageStringInput
-  """
-  Begin date and time of the event
-  """
-  begin: DateTime!
-  """
-  End date and time of the event
-  """
-  end: DateTime
-  """
-  Location of the event
-  """
-  location: String
-  """
-  Website of the event
-  """
-  website: URL
+    """
+    Host / organizer of the event
+    """
+    host: HostInput!
+    """
+    Title of the event in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the event in different languages
+    """
+    description: MultiLanguageStringInput
+    """
+    Begin date and time of the event
+    """
+    begin: DateTime!
+    """
+    End date and time of the event
+    """
+    end: DateTime
+    """
+    Location of the event
+    """
+    location: String
+    """
+    Website of the event
+    """
+    website: URL
 }
 
 """
 Input type for the host of an event.
 """
 input HostInput {
-  """
-  Name of the event host
-  """
-  name: String!
-  """
-  URL to the event host website
-  """
-  website: URL
-  """
-  Instagram URL of the event host
-  """
-  instagram: URL
+    """
+    Name of the event host
+    """
+    name: String!
+    """
+    URL to the event host website
+    """
+    website: URL
+    """
+    Instagram URL of the event host
+    """
+    instagram: URL
 }
 
 """
 Input type for a event by Neuland Ingolstadt e.V.
 """
 input NeulandEventInput {
-  """
-  Title of the event in different languages
-  """
-  title: MultiLanguageStringInput!
-  """
-  Description of the event in different languages
-  """
-  description: MultiLanguageStringInput
-  """
-  Location where the event takes place
-  """
-  location: String
-  """
-  Start date and time of the event
-  """
-  startTime: DateTime
-  """
-  End date and time of the event
-  """
-  endTime: DateTime
-  """
-  Recurrence rule for recurring events (uses iCalendar RRULE format)
-  """
-  rrule: String
+    """
+    Title of the event in different languages
+    """
+    title: MultiLanguageStringInput!
+    """
+    Description of the event in different languages
+    """
+    description: MultiLanguageStringInput
+    """
+    Location where the event takes place
+    """
+    location: String
+    """
+    Start date and time of the event
+    """
+    startTime: DateTime
+    """
+    End date and time of the event
+    """
+    endTime: DateTime
+    """
+    Recurrence rule for recurring events (uses iCalendar RRULE format)
+    """
+    rrule: String
 }

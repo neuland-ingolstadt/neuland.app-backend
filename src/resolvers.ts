@@ -1,9 +1,9 @@
 import { GraphQLScalarType, Kind } from 'graphql'
 import {
-  DateTimeResolver,
-  EmailAddressResolver,
-  LocalEndTimeResolver,
-  URLResolver
+    DateTimeResolver,
+    EmailAddressResolver,
+    LocalEndTimeResolver,
+    URLResolver
 } from 'graphql-scalars'
 import { deleteUniversitySport } from '@/mutations/university-sports/delete'
 import { upsertUniversitySport } from '@/mutations/university-sports/upsert'
@@ -28,75 +28,75 @@ import { roomReportsQuery } from './queries/roomReports'
 import { studentCounsellingEvents } from './queries/studentCounselling'
 
 const RestaurantLocation = {
-  IngolstadtMensa: 'IngolstadtMensa',
-  NeuburgMensa: 'NeuburgMensa',
-  Reimanns: 'Reimanns',
-  Canisius: 'Canisius'
+    IngolstadtMensa: 'IngolstadtMensa',
+    NeuburgMensa: 'NeuburgMensa',
+    Reimanns: 'Reimanns',
+    Canisius: 'Canisius'
 }
 
 const LocationInput = new GraphQLScalarType({
-  name: 'LocationInput',
-  description:
-    'Custom food input scalar type for handling both enum values and strings. This is used for the migration of the food query to the new schema.',
-  parseValue(value) {
-    return value // Value from the client input variables
-  },
-  serialize(value) {
-    return value // Value sent to the client
-  },
-  parseLiteral(ast) {
-    if (ast.kind === Kind.STRING) {
-      const value = ast.value
-      if (Object.values(RestaurantLocation).includes(value)) {
-        return value // Valid enum value
-      }
-      return value // String value
-    }
-    if (ast.kind === Kind.ENUM) {
-      return ast.value
-    }
+    name: 'LocationInput',
+    description:
+        'Custom food input scalar type for handling both enum values and strings. This is used for the migration of the food query to the new schema.',
+    parseValue(value) {
+        return value // Value from the client input variables
+    },
+    serialize(value) {
+        return value // Value sent to the client
+    },
+    parseLiteral(ast) {
+        if (ast.kind === Kind.STRING) {
+            const value = ast.value
+            if (Object.values(RestaurantLocation).includes(value)) {
+                return value // Valid enum value
+            }
+            return value // String value
+        }
+        if (ast.kind === Kind.ENUM) {
+            return ast.value
+        }
 
-    throw new Error('LocationInput must be a string or a valid enum value')
-  }
+        throw new Error('LocationInput must be a string or a valid enum value')
+    }
 })
 
 export const resolvers = {
-  Query: {
-    food,
-    clEvents,
-    clClubs,
-    careerServiceEvents,
-    studentCounsellingEvents,
-    appAnnouncements: appAnnouncementsQuery,
-    announcements: appAnnouncementsQuery,
-    universitySports: sports,
-    roomReports: roomReportsQuery,
-    neulandEvents: neulandEventsQuery,
-    auditLog: auditLogQuery
-  },
-  Mutation: {
-    deleteUniversitySport,
-    upsertUniversitySport,
-    deleteAppAnnouncement,
-    upsertAppAnnouncement,
-    createRoomReport,
-    resolveRoomReport,
-    upsertManualClEvent,
-    deleteManualClEvent,
-    deleteNeulandEvent,
-    upsertNeulandEvent
-  },
-  CareerServiceEvent: {
-    // Deprecated fields - always return null for backward compatibility
-    unlimitedSlots: () => null,
-    availableSlots: () => null,
-    totalSlots: () => null,
-    waitingList: () => null,
-    maxWaitingList: () => null
-  },
-  LocalTime: LocalEndTimeResolver,
-  DateTime: DateTimeResolver,
-  EmailAddress: EmailAddressResolver,
-  URL: URLResolver,
-  LocationInput
+    Query: {
+        food,
+        clEvents,
+        clClubs,
+        careerServiceEvents,
+        studentCounsellingEvents,
+        appAnnouncements: appAnnouncementsQuery,
+        announcements: appAnnouncementsQuery,
+        universitySports: sports,
+        roomReports: roomReportsQuery,
+        neulandEvents: neulandEventsQuery,
+        auditLog: auditLogQuery
+    },
+    Mutation: {
+        deleteUniversitySport,
+        upsertUniversitySport,
+        deleteAppAnnouncement,
+        upsertAppAnnouncement,
+        createRoomReport,
+        resolveRoomReport,
+        upsertManualClEvent,
+        deleteManualClEvent,
+        deleteNeulandEvent,
+        upsertNeulandEvent
+    },
+    CareerServiceEvent: {
+        // Deprecated fields - always return null for backward compatibility
+        unlimitedSlots: () => null,
+        availableSlots: () => null,
+        totalSlots: () => null,
+        waitingList: () => null,
+        maxWaitingList: () => null
+    },
+    LocalTime: LocalEndTimeResolver,
+    DateTime: DateTimeResolver,
+    EmailAddress: EmailAddressResolver,
+    URL: URLResolver,
+    LocationInput
 }

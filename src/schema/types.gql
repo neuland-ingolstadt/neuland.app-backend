@@ -2,657 +2,657 @@
 Meal data
 """
 type Meal {
-  """
-  Name of the meal in different languages
-  """
-  name: MultiLanguageString!
-  """
-  Unique identifier of the meal on the specific day
-  """
-  id: ID!
-  """
-  Unique identifier of the meal, independent of the day
-  """
-  mealId: ID!
-  """
-  Category of the meal (main, soup or salad)
-  """
-  category: String!
-  """
-  Prices for different types of customers (student, employee, guest)
-  """
-  prices: Prices!
-  """
-  List of allergens (e.g. gluten, lactose, etc.)
-  """
-  allergens: [String]
-  """
-  List of flags (e.g. vegan, vegetarian, etc.)
-  """
-  flags: [String]
-  """
-  Nutritional values for the meal
-  """
-  nutrition: Nutrition
-  """
-  Variants or toppings of the meal, like bread, sauce, etc.
-  """
-  variants: [Variation!]
-  """
-  Original language of the meal name
-  """
-  originalLanguage: OriginalLanguage!
-  """
-  Static meals are always available, non-static meals are only available on specific days
-  """
-  static: Boolean!
-  """
-  Restaurant where the meal is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
-  """
-  restaurant: String!
+    """
+    Name of the meal in different languages
+    """
+    name: MultiLanguageString!
+    """
+    Unique identifier of the meal on the specific day
+    """
+    id: ID!
+    """
+    Unique identifier of the meal, independent of the day
+    """
+    mealId: ID!
+    """
+    Category of the meal (main, soup or salad)
+    """
+    category: String!
+    """
+    Prices for different types of customers (student, employee, guest)
+    """
+    prices: Prices!
+    """
+    List of allergens (e.g. gluten, lactose, etc.)
+    """
+    allergens: [String]
+    """
+    List of flags (e.g. vegan, vegetarian, etc.)
+    """
+    flags: [String]
+    """
+    Nutritional values for the meal
+    """
+    nutrition: Nutrition
+    """
+    Variants or toppings of the meal, like bread, sauce, etc.
+    """
+    variants: [Variation!]
+    """
+    Original language of the meal name
+    """
+    originalLanguage: OriginalLanguage!
+    """
+    Static meals are always available, non-static meals are only available on specific days
+    """
+    static: Boolean!
+    """
+    Restaurant where the meal is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
+    """
+    restaurant: String!
 }
 
 """
 Variants of a meal
 """
 type Variation {
-  """
-  Name of the variant in different languages
-  """
-  name: MultiLanguageString!
-  """
-  True if the variant is an additional topping and not a variant of the meal
-  """
-  additional: Boolean!
-  """
-  Prices for different types of customers (student, employee, guest)
-  """
-  prices: Prices!
-  """
-  Unique identifier of the variant
-  """
-  id: ID!
-  """
-  Unique identifier of the meal, independent of the day
-  """
-  mealId: ID!
-  """
-  List of allergens (e.g. gluten, lactose, etc.)
-  """
-  allergens: [String]
-  """
-  List of flags (e.g. vegan, vegetarian, etc.)
-  """
-  flags: [String]
-  """
-  Nutritional values for the variant
-  """
-  nutrition: Nutrition
-  """
-  Original language of the variant name
-  """
-  originalLanguage: OriginalLanguage!
-  """
-  Static variants are always available, non-static variants are only available on specific days
-  """
-  static: Boolean!
-  """
-  Restaurant where the variant is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
-  """
-  restaurant: String
-  """
-  Parent meal for a variant meal
-  """
-  parent: Parent
+    """
+    Name of the variant in different languages
+    """
+    name: MultiLanguageString!
+    """
+    True if the variant is an additional topping and not a variant of the meal
+    """
+    additional: Boolean!
+    """
+    Prices for different types of customers (student, employee, guest)
+    """
+    prices: Prices!
+    """
+    Unique identifier of the variant
+    """
+    id: ID!
+    """
+    Unique identifier of the meal, independent of the day
+    """
+    mealId: ID!
+    """
+    List of allergens (e.g. gluten, lactose, etc.)
+    """
+    allergens: [String]
+    """
+    List of flags (e.g. vegan, vegetarian, etc.)
+    """
+    flags: [String]
+    """
+    Nutritional values for the variant
+    """
+    nutrition: Nutrition
+    """
+    Original language of the variant name
+    """
+    originalLanguage: OriginalLanguage!
+    """
+    Static variants are always available, non-static variants are only available on specific days
+    """
+    static: Boolean!
+    """
+    Restaurant where the variant is available (IngolstadtMensa, NeuburgMensa, Reimanns, Canisius)
+    """
+    restaurant: String
+    """
+    Parent meal for a variant meal
+    """
+    parent: Parent
 }
 
 """
 Nutritional values for a meal. Currently only available at Mensa. Values are per average portion.
 """
 type Nutrition {
-  """
-  Energy in kilojoules
-  """
-  kj: Float!
-  """
-  Energy in kilocalories
-  """
-  kcal: Float!
-  """
-  Fat in grams
-  """
-  fat: Float!
-  """
-  Saturated fat in grams
-  """
-  fatSaturated: Float!
-  """
-  Carbohydrates in grams
-  """
-  carbs: Float!
-  """
-  Sugar in grams
-  """
-  sugar: Float!
-  """
-  Fiber in grams
-  """
-  fiber: Float!
-  """
-  Protein in grams
-  """
-  protein: Float!
-  """
-  Salt in grams
-  """
-  salt: Float!
+    """
+    Energy in kilojoules
+    """
+    kj: Float!
+    """
+    Energy in kilocalories
+    """
+    kcal: Float!
+    """
+    Fat in grams
+    """
+    fat: Float!
+    """
+    Saturated fat in grams
+    """
+    fatSaturated: Float!
+    """
+    Carbohydrates in grams
+    """
+    carbs: Float!
+    """
+    Sugar in grams
+    """
+    sugar: Float!
+    """
+    Fiber in grams
+    """
+    fiber: Float!
+    """
+    Protein in grams
+    """
+    protein: Float!
+    """
+    Salt in grams
+    """
+    salt: Float!
 }
 
 """
 Prices for different types of customers
 """
 type Prices {
-  """
-  Price for students
-  """
-  student: Float
-  """
-  Price for employees
-  """
-  employee: Float
-  """
-  Price for guests
-  """
-  guest: Float
+    """
+    Price for students
+    """
+    student: Float
+    """
+    Price for employees
+    """
+    employee: Float
+    """
+    Price for guests
+    """
+    guest: Float
 }
 
 """
 Provides a list of meals for a specific day
 """
 type Food {
-  """
-  Date of the meal list
-  """
-  timestamp: String!
-  """
-  List of meals
-  """
-  meals: [Meal!]
+    """
+    Date of the meal list
+    """
+    timestamp: String!
+    """
+    List of meals
+    """
+    meals: [Meal!]
 }
 
 """
 Error message for the food query
 """
 type FoodError {
-  """
-  Location of the restaurant
-  """
-  location: String!
-  """
-  Error message
-  """
-  message: String!
+    """
+    Location of the restaurant
+    """
+    location: String!
+    """
+    Error message
+    """
+    message: String!
 }
 
 type FoodResponse {
-  """
-  List of meal days
-  """
-  foodData: [Food!]
-  """
-  Error message for the food query
-  """
-  errors: [FoodError!]
+    """
+    List of meal days
+    """
+    foodData: [Food!]
+    """
+    Error message for the food query
+    """
+    errors: [FoodError!]
 }
 
 """
 Parent meal for a variant meal
 """
 type Parent {
-  """
-  Unique identifier of the parent meal
-  """
-  id: ID!
-  """
-  Category of the parent meal (main, soup or salad)
-  """
-  category: String!
-  """
-  Name of the parent meal in different languages
-  """
-  name: MultiLanguageString!
+    """
+    Unique identifier of the parent meal
+    """
+    id: ID!
+    """
+    Category of the parent meal (main, soup or salad)
+    """
+    category: String!
+    """
+    Name of the parent meal in different languages
+    """
+    name: MultiLanguageString!
 }
 
 """
 Campus Life Event data type. Information about a specific event on campus.
 """
 type ClEvent {
-  """
-  Unique identifier of the event
-  """
-  id: ID!
-  """
-  Organizer of the event
-  """
-  organizer: String! @deprecated(reason: "Use host field instead")
-  """
-  Host of the event
-  """
-  host: Host!
-  """
-  Title of the event in German
-  """
-  title: String!
-    @deprecated(
-      reason: "Use titles field instead. This field will be removed in the future."
-    )
-  """
-  Title of the event in different languages
-  """
-  titles: MultiLanguageString!
-  """
-  Begin of the event
-  """
-  begin: String
-    @deprecated(reason: "Use start field instead with DateTime type")
-  """
-  Start of the event
-  """
-  startDateTime: DateTime
-  """
-  End of the event
-  """
-  end: String @deprecated(reason: "Use end field instead with DateTime type")
-  """
-  End of the event
-  """
-  endDateTime: DateTime
-  """
-  Location of the event (only available if it's eligible for external sharing)
-  """
-  location: String
-  """
-  Description of the event (only available if it's eligible for external sharing)
-  """
-  description: String
-    @deprecated(
-      reason: "Use descriptions field instead. This field will be removed in the future."
-    )
-  """
-  Description of the event in different languages (only available if it's eligible for external sharing)
-  """
-  descriptions: MultiLanguageString
-  """
-  URL to the event website
-  """
-  eventUrl: URL
-  """
-  Boolean if the event is scraped from the moodle calendar or not.
-  """
-  isMoodleEvent: Boolean
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Organizer of the event
+    """
+    organizer: String! @deprecated(reason: "Use host field instead")
+    """
+    Host of the event
+    """
+    host: Host!
+    """
+    Title of the event in German
+    """
+    title: String!
+        @deprecated(
+            reason: "Use titles field instead. This field will be removed in the future."
+        )
+    """
+    Title of the event in different languages
+    """
+    titles: MultiLanguageString!
+    """
+    Begin of the event
+    """
+    begin: String
+        @deprecated(reason: "Use start field instead with DateTime type")
+    """
+    Start of the event
+    """
+    startDateTime: DateTime
+    """
+    End of the event
+    """
+    end: String @deprecated(reason: "Use end field instead with DateTime type")
+    """
+    End of the event
+    """
+    endDateTime: DateTime
+    """
+    Location of the event (only available if it's eligible for external sharing)
+    """
+    location: String
+    """
+    Description of the event (only available if it's eligible for external sharing)
+    """
+    description: String
+        @deprecated(
+            reason: "Use descriptions field instead. This field will be removed in the future."
+        )
+    """
+    Description of the event in different languages (only available if it's eligible for external sharing)
+    """
+    descriptions: MultiLanguageString
+    """
+    URL to the event website
+    """
+    eventUrl: URL
+    """
+    Boolean if the event is scraped from the moodle calendar or not.
+    """
+    isMoodleEvent: Boolean
 }
 
 """
 Host of the event, usually a club or student group.
 """
 type Host {
-  """
-  Name of the event host
-  """
-  name: String!
-  """
-  URL to the event host website
-  """
-  website: URL
-  """
-  Instagram URL of the event host
-  """
-  instagram: URL
+    """
+    Name of the event host
+    """
+    name: String!
+    """
+    URL to the event host website
+    """
+    website: URL
+    """
+    Instagram URL of the event host
+    """
+    instagram: URL
 }
 
 """
 Career Service Event data type. Information about a specific event from the career service.
 """
 type CareerServiceEvent {
-  """
-  Unique identifier of the event
-  """
-  id: ID!
-  """
-  Title of the event in German
-  """
-  title: String!
-  """
-  Description of the event
-  """
-  description: String!
-  """
-  Date of the event
-  """
-  date: DateTime!
-  """
-  URL for more information about the event
-  """
-  url: String!
-  """
-  Published date of the event
-  """
-  publishedDate: DateTime!
-  """
-  Unlimited slots for the event
-  """
-  unlimitedSlots: Boolean
-    @deprecated(
-      reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
-    )
-  """
-  Available slots for the event
-  """
-  availableSlots: Int
-    @deprecated(
-      reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
-    )
-  """
-  Total slots for the event
-  """
-  totalSlots: Int
-    @deprecated(
-      reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
-    )
-  """
-  Waiting list for the event
-  """
-  waitingList: Int
-    @deprecated(
-      reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
-    )
-  """
-  Maximum waiting list for the event
-  """
-  maxWaitingList: Int
-    @deprecated(
-      reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
-    )
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Title of the event in German
+    """
+    title: String!
+    """
+    Description of the event
+    """
+    description: String!
+    """
+    Date of the event
+    """
+    date: DateTime!
+    """
+    URL for more information about the event
+    """
+    url: String!
+    """
+    Published date of the event
+    """
+    publishedDate: DateTime!
+    """
+    Unlimited slots for the event
+    """
+    unlimitedSlots: Boolean
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
+    """
+    Available slots for the event
+    """
+    availableSlots: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
+    """
+    Total slots for the event
+    """
+    totalSlots: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
+    """
+    Waiting list for the event
+    """
+    waitingList: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
+    """
+    Maximum waiting list for the event
+    """
+    maxWaitingList: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
 }
 
 """
 Information about a specific event from the student Counselling Office.
 """
 type StudentCounsellingEvent {
-  """
-  Unique identifier of the event
-  """
-  id: ID!
-  """
-  Title of the event in German
-  """
-  title: String!
-  """
-  Date of the event
-  """
-  date: DateTime!
-  """
-  Unlimited slots for the event
-  """
-  unlimitedSlots: Boolean!
-  """
-  Available slots for the event
-  """
-  availableSlots: Int
-  """
-  Total slots for the event
-  """
-  totalSlots: Int
-  """
-  Waiting list for the event
-  """
-  waitingList: Int
-  """
-  Maximum waiting list for the event
-  """
-  maxWaitingList: Int
-  """
-  URL for more information about the event
-  """
-  url: String
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Title of the event in German
+    """
+    title: String!
+    """
+    Date of the event
+    """
+    date: DateTime!
+    """
+    Unlimited slots for the event
+    """
+    unlimitedSlots: Boolean!
+    """
+    Available slots for the event
+    """
+    availableSlots: Int
+    """
+    Total slots for the event
+    """
+    totalSlots: Int
+    """
+    Waiting list for the event
+    """
+    waitingList: Int
+    """
+    Maximum waiting list for the event
+    """
+    maxWaitingList: Int
+    """
+    URL for more information about the event
+    """
+    url: String
 }
 
 """
 Announcement data to display on top of the apps dashboard
 """
 type Announcement {
-  """
-  Unique identifier of the announcement
-  """
-  id: ID!
-  """
-  Platform where the announcement is displayed
-  """
-  platform: [Platform!]!
-  """
-  UserKind to target the announcement to specific user groups
-  """
-  userKind: [UserKind!]!
-  """
-  Title of the announcement in different languages
-  """
-  title: MultiLanguageString!
-  """
-  Description of the announcement in different languages
-  """
-  description: MultiLanguageString!
-  """
-  Start date and time when the announcement is displayed
-  """
-  startDateTime: DateTime!
-  """
-  End date and time when the announcement is displayed
-  """
-  endDateTime: DateTime!
-  """
-  Priority of the announcement, higher are more important
-  """
-  priority: Int!
-  """
-  URL to the announcement
-  """
-  url: String
-  """
-  Image URL for the announcement
-  """
-  imageUrl: String
-  """
-  Creation date of the announcement
-  """
-  createdAt: DateTime!
-  """
-  Last update date of the announcement
-  """
-  updatedAt: DateTime!
+    """
+    Unique identifier of the announcement
+    """
+    id: ID!
+    """
+    Platform where the announcement is displayed
+    """
+    platform: [Platform!]!
+    """
+    UserKind to target the announcement to specific user groups
+    """
+    userKind: [UserKind!]!
+    """
+    Title of the announcement in different languages
+    """
+    title: MultiLanguageString!
+    """
+    Description of the announcement in different languages
+    """
+    description: MultiLanguageString!
+    """
+    Start date and time when the announcement is displayed
+    """
+    startDateTime: DateTime!
+    """
+    End date and time when the announcement is displayed
+    """
+    endDateTime: DateTime!
+    """
+    Priority of the announcement, higher are more important
+    """
+    priority: Int!
+    """
+    URL to the announcement
+    """
+    url: String
+    """
+    Image URL for the announcement
+    """
+    imageUrl: String
+    """
+    Creation date of the announcement
+    """
+    createdAt: DateTime!
+    """
+    Last update date of the announcement
+    """
+    updatedAt: DateTime!
 }
 
 """
 String in multiple languages (German and English)
 """
 type MultiLanguageString {
-  """
-  German language code
-  """
-  de: String
-  """
-  English language code
-  """
-  en: String
+    """
+    German language code
+    """
+    de: String
+    """
+    English language code
+    """
+    en: String
 }
 
 """
 University sports event. Represents a sports event from the university sports program.
 """
 type UniversitySports {
-  """
-  Unique identifier of the sports event
-  """
-  id: ID!
-  """
-  Title of the sports event in different languages
-  """
-  title: MultiLanguageString!
-  """
-  Description of the sports event in different languages
-  """
-  description: MultiLanguageString
-  """
-  Campus where the sports event belongs to. This is not the location of the event itself.
-  """
-  campus: CampusType!
-  """
-  Location of the sports event
-  """
-  location: String!
-  """
-  Weekday of the sports event
-  """
-  weekday: WeekdayType!
-  """
-  Start time of the sports event
-  """
-  startTime: LocalTime!
-  """
-  End time of the sports event
-  """
-  endTime: LocalTime
-  """
-  True if the sports event requires registration
-  """
-  requiresRegistration: Boolean!
-  """
-  Invitation link for the sports event, e.g. a WhatsApp group
-  """
-  invitationLink: String
-  """
-  E-Mail address for registration or contact
-  """
-  eMail: EmailAddress
-  """
-  Category of the sports event (e.g. soccer, basketball, etc.)
-  """
-  sportsCategory: SportsCategoryType!
-  """
-  Creation date of the sports event
-  """
-  createdAt: DateTime!
-  """
-  Last update date of the sports event
-  """
-  updatedAt: DateTime!
+    """
+    Unique identifier of the sports event
+    """
+    id: ID!
+    """
+    Title of the sports event in different languages
+    """
+    title: MultiLanguageString!
+    """
+    Description of the sports event in different languages
+    """
+    description: MultiLanguageString
+    """
+    Campus where the sports event belongs to. This is not the location of the event itself.
+    """
+    campus: CampusType!
+    """
+    Location of the sports event
+    """
+    location: String!
+    """
+    Weekday of the sports event
+    """
+    weekday: WeekdayType!
+    """
+    Start time of the sports event
+    """
+    startTime: LocalTime!
+    """
+    End time of the sports event
+    """
+    endTime: LocalTime
+    """
+    True if the sports event requires registration
+    """
+    requiresRegistration: Boolean!
+    """
+    Invitation link for the sports event, e.g. a WhatsApp group
+    """
+    invitationLink: String
+    """
+    E-Mail address for registration or contact
+    """
+    eMail: EmailAddress
+    """
+    Category of the sports event (e.g. soccer, basketball, etc.)
+    """
+    sportsCategory: SportsCategoryType!
+    """
+    Creation date of the sports event
+    """
+    createdAt: DateTime!
+    """
+    Last update date of the sports event
+    """
+    updatedAt: DateTime!
 }
 
 """
 Get all room reports. Contains user reports of wrong room data.
 """
 type RoomReport {
-  """
-  Unique identifier of the report
-  """
-  id: ID!
-  """
-  Room name
-  """
-  room: String!
-  """
-  Reason for the report. This is a enum wiht report categories.
-  """
-  reason: RoomReportCategory!
-  """
-  description of the report
-  """
-  description: String
-  """
-  Creation date of the report
-  """
-  createdAt: DateTime!
-  """
-  Resolved date of the report or null if not resolved
-  """
-  resolvedAt: DateTime
+    """
+    Unique identifier of the report
+    """
+    id: ID!
+    """
+    Room name
+    """
+    room: String!
+    """
+    Reason for the report. This is a enum wiht report categories.
+    """
+    reason: RoomReportCategory!
+    """
+    description of the report
+    """
+    description: String
+    """
+    Creation date of the report
+    """
+    createdAt: DateTime!
+    """
+    Resolved date of the report or null if not resolved
+    """
+    resolvedAt: DateTime
 }
 
 type UpsertResponse {
-  id: ID
+    id: ID
 }
 
 """
 Events by Neuland Ingolstadt e.V.
 """
 type NeulandEvent {
-  """
-  Unique identifier of the event
-  """
-  id: ID!
-  """
-  Title of the event in different languages
-  """
-  title: MultiLanguageString!
-  """
-  Description of the event in different languages
-  """
-  description: MultiLanguageString
-  """
-  Location where the event takes place
-  """
-  location: String
-  """
-  Creation date and time of the event
-  """
-  createdAt: DateTime!
-  """
-  Last update date and time of the event
-  """
-  updatedAt: DateTime
-  """
-  Start date and time of the event
-  """
-  startTime: DateTime
-  """
-  End date and time of the event
-  """
-  endTime: DateTime
-  """
-  Recurrence rule for recurring events (uses iCalendar RRULE format)
-  """
-  rrule: String
+    """
+    Unique identifier of the event
+    """
+    id: ID!
+    """
+    Title of the event in different languages
+    """
+    title: MultiLanguageString!
+    """
+    Description of the event in different languages
+    """
+    description: MultiLanguageString
+    """
+    Location where the event takes place
+    """
+    location: String
+    """
+    Creation date and time of the event
+    """
+    createdAt: DateTime!
+    """
+    Last update date and time of the event
+    """
+    updatedAt: DateTime
+    """
+    Start date and time of the event
+    """
+    startTime: DateTime
+    """
+    End date and time of the event
+    """
+    endTime: DateTime
+    """
+    Recurrence rule for recurring events (uses iCalendar RRULE format)
+    """
+    rrule: String
 }
 
 """
 Entry of the audit log for data mutations.
 """
 type AuditLogEntry {
-  """
-  Unique identifier of the audit log entry
-  """
-  id: ID!
-  """
-  Entity of the audit log entry
-  """
-  entity: String!
-  """
-  Entity ID of the audit log entry
-  """
-  entityId: Int
-  """
-  Operation of the audit log entry
-  """
-  operation: String!
-  """
-  Name of the user who made the mutation
-  """
-  name: String
-  """
-  User ID of the user who made the mutation
-  """
-  userId: String
-  """
-  Creation date and time of the audit log entry
-  """
-  createdAt: DateTime!
+    """
+    Unique identifier of the audit log entry
+    """
+    id: ID!
+    """
+    Entity of the audit log entry
+    """
+    entity: String!
+    """
+    Entity ID of the audit log entry
+    """
+    entityId: Int
+    """
+    Operation of the audit log entry
+    """
+    operation: String!
+    """
+    Name of the user who made the mutation
+    """
+    name: String
+    """
+    User ID of the user who made the mutation
+    """
+    userId: String
+    """
+    Creation date and time of the audit log entry
+    """
+    createdAt: DateTime!
 }

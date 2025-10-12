@@ -2,144 +2,144 @@
 Enum representing the original language of a meal.
 """
 enum OriginalLanguage {
-  """
-  German language code
-  """
-  de
-  """
-  English language code
-  """
-  en
+    """
+    German language code
+    """
+    de
+    """
+    English language code
+    """
+    en
 }
 
 """
 Enum representing the kind of user. This is used to target announcements to specific user groups.
 """
 enum UserKind {
-  """
-  Student
-  """
-  STUDENT
-  """
-  Employee
-  """
-  EMPLOYEE
-  """
-  Guest
-  """
-  GUEST
+    """
+    Student
+    """
+    STUDENT
+    """
+    Employee
+    """
+    EMPLOYEE
+    """
+    Guest
+    """
+    GUEST
 }
 
 """
 Enum representing the platform of the user. This is used to target announcements to specific user groups.
 """
 enum Platform {
-  """
-  Android
-  """
-  ANDROID
-  """
-  iOS
-  """
-  IOS
-  """
-  Web
-  """
-  WEB
-  """
-  Web Development Version
-  """
-  WEB_DEV
+    """
+    Android
+    """
+    ANDROID
+    """
+    iOS
+    """
+    IOS
+    """
+    Web
+    """
+    WEB
+    """
+    Web Development Version
+    """
+    WEB_DEV
 }
 
 """
 Enum representing the different room report categories. This is used to categorize the reason for the report.
 """
 enum RoomReportCategory {
-  WRONG_DESCRIPTION
-  WRONG_LOCATION
-  NOT_EXISTING
-  MISSING
-  OTHER
+    WRONG_DESCRIPTION
+    WRONG_LOCATION
+    NOT_EXISTING
+    MISSING
+    OTHER
 }
 
 """
 Enum representing the different sports categories. This is used to categorize the sports events.
 """
 enum SportsCategoryType {
-  Basketball
-  Soccer
-  Calisthenics
-  Dancing
-  StrengthTraining
-  Running
-  Jogging
-  Handball
-  Frisbee
-  Volleyball
-  Spikeball
-  FullBodyWorkout
-  Defense
-  Yoga
-  Meditation
-  Tennis
-  Badminton
-  Swimming
-  Waterpolo
-  Cycling
-  Climbing
-  Boxing
-  Kickboxing
-  MartialArts
-  TableTennis
-  Rowing
-  Baseball
-  Skateboarding
-  Parkour
-  Hiking
-  Hockey
-  Other
+    Basketball
+    Soccer
+    Calisthenics
+    Dancing
+    StrengthTraining
+    Running
+    Jogging
+    Handball
+    Frisbee
+    Volleyball
+    Spikeball
+    FullBodyWorkout
+    Defense
+    Yoga
+    Meditation
+    Tennis
+    Badminton
+    Swimming
+    Waterpolo
+    Cycling
+    Climbing
+    Boxing
+    Kickboxing
+    MartialArts
+    TableTennis
+    Rowing
+    Baseball
+    Skateboarding
+    Parkour
+    Hiking
+    Hockey
+    Other
 }
 
 """
 Enum representing the different locations of THI. This is used to categorize the sports events.
 """
 enum CampusType {
-  Ingolstadt
-  Neuburg
+    Ingolstadt
+    Neuburg
 }
 
 """
 Enum representing the different weekdays. This is used to categorize the sports events.
 """
 enum WeekdayType {
-  Monday
-  Tuesday
-  Wednesday
-  Thursday
-  Friday
-  Saturday
-  Sunday
+    Monday
+    Tuesday
+    Wednesday
+    Thursday
+    Friday
+    Saturday
+    Sunday
 }
 
 """
 Enum representing the different restaurant locations. This is used as a parameter for the food query.
 """
 enum RestaurantLocation {
-  """
-  Ingolstadt Mensa
-  """
-  IngolstadtMensa
-  """
-  Neuburg Mensa
-  """
-  NeuburgMensa
-  """
-  Reimanns
-  """
-  Reimanns
-  """
-  Canisius
-  """
-  Canisius
+    """
+    Ingolstadt Mensa
+    """
+    IngolstadtMensa
+    """
+    Neuburg Mensa
+    """
+    NeuburgMensa
+    """
+    Reimanns
+    """
+    Reimanns
+    """
+    Canisius
+    """
+    Canisius
 }

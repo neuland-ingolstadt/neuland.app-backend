@@ -6,10 +6,10 @@ import * as universitySports from '@/db/schema/universitySports'
 import { deleteManualClEvent } from '@/mutations/manual-cl-events/delete'
 
 export default {
-  ...appAnnouncements,
-  ...universitySports,
-  ...roomReports,
-  ...manualClEvents,
-  ...auditLog,
-  ...deleteManualClEvent
+    ...appAnnouncements,
+    ...universitySports,
+    ...roomReports,
+    ...manualClEvents,
+    ...auditLog,
+    ...deleteManualClEvent
 }
