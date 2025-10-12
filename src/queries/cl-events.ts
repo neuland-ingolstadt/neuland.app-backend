@@ -5,15 +5,15 @@ import type { ClEvent } from '@/types/clEvents'
 const CACHE_TTL_SECONDS = 60 * 60 * 1 // 1 hour
 
 export async function clEvents(): Promise<ClEvent[]> {
-	const cachedEvents: ClEvent[] | undefined = await cache.get('clEvents')
+  const cachedEvents: ClEvent[] | undefined = await cache.get('clEvents')
 
-	if (cachedEvents !== undefined && cachedEvents !== null) {
-		return cachedEvents
-	}
+  if (cachedEvents !== undefined && cachedEvents !== null) {
+    return cachedEvents
+  }
 
-	const events = await getClEvents()
+  const events = await getClEvents()
 
-	cache.set('clEvents', events, CACHE_TTL_SECONDS)
+  cache.set('clEvents', events, CACHE_TTL_SECONDS)
 
-	return events
+  return events
 }

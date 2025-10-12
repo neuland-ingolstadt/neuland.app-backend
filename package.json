@@ -9,7 +9,7 @@
         "db:generate": "drizzle-kit generate",
         "migrate": "bun run ./src/db/migrate.ts",
         "codegen": "graphql-codegen --config codegen.ts",
-        "lint": "biome check",
+        "lint": "tsc --noEmit && biome check",
         "fmt": "biome check --fix",
         "fmt:unsafe": "biome check --fix --unsafe"
     },

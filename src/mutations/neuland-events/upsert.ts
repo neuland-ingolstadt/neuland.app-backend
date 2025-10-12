@@ -6,70 +6,70 @@ import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, eventRole } from '@/utils/auth-utils'
 
 export async function upsertNeulandEvent(
-	_: unknown,
-	{
-		id,
-		input
-	}: {
-		id: number | undefined
-		input: NeulandEventInput
-	},
-	contextValue: { jwtPayload?: { groups: string[] } }
+  _: unknown,
+  {
+    id,
+    input
+  }: {
+    id: number | undefined
+    input: NeulandEventInput
+  },
+  contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<{ id: number }> {
-	const { title, description, location, startTime, endTime, rrule } = input
+  const { title, description, location, startTime, endTime, rrule } = input
 
-	checkAuthorization(contextValue, eventRole)
+  checkAuthorization(contextValue, eventRole)
 
-	let event
+  let event
 
-	if (id != null) {
-		;[event] = await db
-			.update(neulandEvents)
-			.set({
-				title_de: title.de,
-				title_en: title.en,
-				description_de: description?.de ?? null,
-				description_en: description?.en ?? null,
-				location: location ?? null,
-				start_time: startTime,
-				end_time: endTime,
-				rrule: rrule ?? null,
-				updated_at: new Date()
-			})
-			.where(eq(neulandEvents.id, id))
-			.returning({
-				id: neulandEvents.id
-			})
-		try {
-			await logAudit('neuland_events', event.id, 'update', contextValue)
-		} catch (error) {
-			console.error('Audit logging failed for update operation:', error)
-		}
-	} else {
-		;[event] = await db
-			.insert(neulandEvents)
-			.values({
-				title_de: title.de,
-				title_en: title.en,
-				description_de: description?.de ?? null,
-				description_en: description?.en ?? null,
-				location: location ?? null,
-				start_time: startTime,
-				end_time: endTime,
-				rrule: rrule ?? null,
-				created_at: new Date(),
-				updated_at: new Date()
-			})
-			.returning({
-				id: neulandEvents.id
-			})
-		try {
-			await logAudit('neuland_events', event.id, 'insert', contextValue)
-		} catch (error) {
-			console.error('Audit logging failed for insert operation:', error)
-		}
-	}
-	return {
-		id: event.id
-	}
+  if (id != null) {
+    ;[event] = await db
+      .update(neulandEvents)
+      .set({
+        title_de: title.de,
+        title_en: title.en,
+        description_de: description?.de ?? null,
+        description_en: description?.en ?? null,
+        location: location ?? null,
+        start_time: startTime,
+        end_time: endTime,
+        rrule: rrule ?? null,
+        updated_at: new Date()
+      })
+      .where(eq(neulandEvents.id, id))
+      .returning({
+        id: neulandEvents.id
+      })
+    try {
+      await logAudit('neuland_events', event.id, 'update', contextValue)
+    } catch (error) {
+      console.error('Audit logging failed for update operation:', error)
+    }
+  } else {
+    ;[event] = await db
+      .insert(neulandEvents)
+      .values({
+        title_de: title.de,
+        title_en: title.en,
+        description_de: description?.de ?? null,
+        description_en: description?.en ?? null,
+        location: location ?? null,
+        start_time: startTime,
+        end_time: endTime,
+        rrule: rrule ?? null,
+        created_at: new Date(),
+        updated_at: new Date()
+      })
+      .returning({
+        id: neulandEvents.id
+      })
+    try {
+      await logAudit('neuland_events', event.id, 'insert', contextValue)
+    } catch (error) {
+      console.error('Audit logging failed for insert operation:', error)
+    }
+  }
+  return {
+    id: event.id
+  }
 }
