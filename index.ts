@@ -1,16 +1,16 @@
-import { getUserFromToken } from '@/utils/auth-utils'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { ApolloServer } from '@apollo/server'
 import {
     ApolloServerPluginLandingPageLocalDefault,
-    ApolloServerPluginLandingPageProductionDefault,
+    ApolloServerPluginLandingPageProductionDefault
 } from '@apollo/server/plugin/landingPage/default'
 import { expressMiddleware } from '@as-integrations/express5'
 import cors from 'cors'
 import express from 'express'
-import { readFileSync } from 'fs'
 import type { JwtPayload } from 'jsonwebtoken'
 import NodeCache from 'node-cache'
-import path from 'path'
+import { getUserFromToken } from '@/utils/auth-utils'
 
 import { resolvers } from './src/resolvers'
 
@@ -19,7 +19,7 @@ const schemaFiles = [
     'scalars.gql',
     'types.gql',
     'inputs.gql',
-    'schema.gql',
+    'schema.gql'
 ]
 const schemaDir = path.join(__dirname, 'src', 'schema')
 
@@ -41,8 +41,8 @@ app.use(
             'http://localhost:3000',
             'https://dashboard.neuland.app',
             'https://dev.neuland.app',
-            'https://web.neuland.app',
-        ],
+            'https://web.neuland.app'
+        ]
     })
 )
 
@@ -52,15 +52,15 @@ const apolloServer = new ApolloServer({
     plugins: [
         Bun.env.NODE_ENV === 'production'
             ? ApolloServerPluginLandingPageProductionDefault({
-                  footer: false,
+                  footer: false
               })
-            : ApolloServerPluginLandingPageLocalDefault(),
+            : ApolloServerPluginLandingPageLocalDefault()
     ],
     introspection: true,
     formatError(formattedError, error) {
         console.error(error)
         return formattedError
-    },
+    }
 })
 
 export const cache = new NodeCache({
@@ -68,7 +68,7 @@ export const cache = new NodeCache({
     maxKeys: 1000,
     checkperiod: 60,
     useClones: false,
-    deleteOnExpire: true,
+    deleteOnExpire: true
 })
 await apolloServer.start()
 
@@ -81,22 +81,21 @@ app.use(
             const authHeader = req.headers.authorization
             if (authHeader) {
                 return {
-                    jwtPayload: await getUserFromToken(authHeader),
+                    jwtPayload: await getUserFromToken(authHeader)
                 }
-            } else {
-                return {}
             }
-        },
+            return {}
+        }
     })
 )
 
 app.use(
     '/',
     express.static(path.join(__dirname, 'docs', 'out'), {
-        extensions: ['html'],
+        extensions: ['html']
     })
 )
 
 app.listen(port, () => {
-    console.log('🚀 Server ready at http://localhost:' + port + '/graphql')
+    console.log(`🚀 Server ready at http://localhost:${port}/graphql`)
 })

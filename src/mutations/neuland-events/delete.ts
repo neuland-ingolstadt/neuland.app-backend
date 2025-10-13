@@ -1,14 +1,14 @@
+import { eq } from 'drizzle-orm'
+import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { neulandEvents } from '@/db/schema/neulandEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, eventRole } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
 
 export async function deleteNeulandEvent(
     _: unknown,
     {
-        id,
+        id
     }: {
         id: number
     },

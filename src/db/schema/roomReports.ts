@@ -5,7 +5,7 @@ export const roomReportReason = pgEnum('room_report_reason', [
     'WRONG_LOCATION',
     'NOT_EXISTING',
     'MISSING',
-    'OTHER',
+    'OTHER'
 ])
 
 export const roomReports = pgTable('room_reports', {
@@ -14,5 +14,5 @@ export const roomReports = pgTable('room_reports', {
     reason: roomReportReason('reason').notNull(),
     description: text('description').notNull(),
     created_at: timestamp('created_at', { withTimezone: true }).notNull(),
-    resolved_at: timestamp('resolved_at', { withTimezone: true }),
+    resolved_at: timestamp('resolved_at', { withTimezone: true })
 })

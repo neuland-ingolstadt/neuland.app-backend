@@ -1,25 +1,25 @@
 import { graphql } from '@/__generated__'
-import { type Day, type Meal } from '@/__generated__/graphql'
+import type { Day, Meal } from '@/__generated__/graphql'
 import staticMeals from '@/data/reimanns-meals.json'
-import type { MealData, StaticMeal, TempMealData } from '@/types/food'
+import type { MealData, StaticMeal, TempMealData, Variant } from '@/types/food'
 import { executeGql } from '@/utils/api-utils'
 
 import { getMealDayHash, unifyFoodEntries } from '../utils/food-utils'
 
 const REIMANNS_ENDPOINT = 'https://reimanns-api.neuland.app/graphql'
 
-const REIMANNS_QUERY = graphql(/* GraphQL */ `
-    query Menu {
-        menu {
-            days {
-                date
-                meals {
-                    name_de
-                    name_en
-                }
-            }
+const REIMANNS_QUERY = graphql(`
+  query Menu {
+    menu {
+      days {
+        date
+        meals {
+          name_de
+          name_en
         }
+      }
     }
+  }
 `)
 
 /**
@@ -54,20 +54,20 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             day?.meals?.filter(isValidMeal).map((meal) => ({
                 name: {
                     de: meal.name_de,
-                    en: meal.name_en,
+                    en: meal.name_en
                 },
                 id: getMealDayHash(day?.date, meal.name_de),
                 category: 'Essen',
                 prices: {
                     student: 6.9,
                     employee: 7.9,
-                    guest: 8.9,
+                    guest: 8.9
                 },
                 allergens: null,
                 flags: null,
                 nutrition: null,
-                restaurant: 'Reimanns',
-            })) ?? [],
+                restaurant: 'Reimanns'
+            })) ?? []
     }))
 
     const hashedStaticMeals = (date: string): StaticMeal[] => {
@@ -77,12 +77,12 @@ export async function getReimannsPlan(): Promise<MealData[]> {
             id: getMealDayHash(date, meal.name),
             variants: meal.variants?.map((variant) => ({
                 ...variant,
-                id: getMealDayHash(date, variant.name),
-            })),
+                id: getMealDayHash(date, variant.name)
+            })) as Variant[]
         }))
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Food types need a rework anyway
+    // biome-ignore lint/suspicious/noExplicitAny: -- Food types need a rework anyway
     const final = mealPlan as any[]
     final.forEach((day) => {
         // skip days without meals (restaurant probably closed)

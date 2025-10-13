@@ -1,4 +1,4 @@
-interface StudentCounsellingEvent {
+export interface StudentCounsellingEvent {
     id: string
     title: string
     date: Date

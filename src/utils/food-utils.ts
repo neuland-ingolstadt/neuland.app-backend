@@ -1,3 +1,4 @@
+import { xxh3, xxh32 } from '@node-rs/xxhash'
 import flagContradictions from '@/data/flag-contradictions.json'
 import stopWords from '@/data/stop-words.json'
 import type {
@@ -7,9 +8,8 @@ import type {
     MealData,
     Name,
     TempMeal,
-    TempMealData,
+    TempMealData
 } from '@/types/food'
-import { xxh3, xxh32 } from '@node-rs/xxhash'
 
 /**
  * Cleans the meal flags to remove wrong flags (e.g. "veg" (vegan) and "R" (Beef) at the same time => remove "veg")
@@ -27,11 +27,11 @@ function cleanMealFlags(flags: string[] | null): string[] | null {
     )
 
     // remove contradictions
-    flags =
+    const newFlags =
         flags !== undefined
             ? flags.filter((x) => !contradictions.includes(x))
             : []
-    return flags
+    return newFlags
 }
 
 /**
@@ -43,7 +43,7 @@ function cleanMealFlags(flags: string[] | null): string[] | null {
 function capitalize(mealNames: Name): Name {
     const capitalizedEntries = Object.entries(mealNames).map(([key, value]) => [
         key,
-        value.charAt(0).toUpperCase() + value.slice(1),
+        value.charAt(0).toUpperCase() + value.slice(1)
     ])
 
     if (
@@ -70,9 +70,9 @@ export function unifyFoodEntries(entries: TempMealData[]): MealData[] {
                     ? meal.variants.map((variant) =>
                           unifyMeal(variant as TempMeal, meal)
                       )
-                    : [],
+                    : []
             }
-        }),
+        })
     }))
 }
 /**
@@ -90,7 +90,7 @@ function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
         prices: meal.prices ?? {
             student: null,
             employee: null,
-            guest: null,
+            guest: null
         },
         allergens: meal.allergens ?? null,
         flags: cleanMealFlags(meal.flags),
@@ -101,7 +101,7 @@ function unifyMeal(meal: TempMeal, parentMeal: Meal | null = null): TempMeal {
         additional: meal.additional ?? false,
         mealId: getMealHash(meal.name.de, mealCategory, meal.restaurant ?? ''),
         id: parentMeal !== null ? `${parentMeal.id}/${meal.id}` : meal.id,
-        parent: reduceParentMeal(parentMeal),
+        parent: reduceParentMeal(parentMeal)
     }
 }
 
@@ -116,7 +116,7 @@ export function mergeMealVariants(
     return entries.map((day) => {
         return {
             ...day,
-            meals: mergeDayEntries(day.meals),
+            meals: mergeDayEntries(day.meals)
         }
     })
 }
@@ -136,15 +136,14 @@ function mergeDayEntries(dayEntries: ExtendedMeal[]): ExtendedMeal[] {
         )
         return {
             meal,
-            variants: comparingKeys ?? [],
+            variants: comparingKeys ?? []
         }
     })
 
     const mergedEntries = dayEntries.filter(
         (meal) =>
             !variationKeys
-                .map((keys) => keys.variants)
-                .flat()
+                .flatMap((keys) => keys.variants)
                 .map((x) => x.name)
                 .includes(meal.name)
     )
@@ -177,10 +176,10 @@ function mergeDayEntries(dayEntries: ExtendedMeal[]): ExtendedMeal[] {
                                   meal.prices[
                                       key as 'student' | 'employee' | 'guest'
                                   ]
-                                : null,
+                                : null
                         ])
                     ),
-                    additional: true,
+                    additional: true
                 }
             })
         })
@@ -244,7 +243,7 @@ function reduceParentMeal(parentMeal: Meal | null): {
     return {
         name: parentMeal.name,
         category: parentMeal.category ?? 'main',
-        id: parentMeal.id,
+        id: parentMeal.id
     }
 }
 
@@ -279,8 +278,8 @@ export function parseGermanFloat(str: string | undefined): number | null {
     if (str === undefined) {
         return null
     }
-    const parsedFloat = parseFloat(str.replace(',', '.'))
-    return isNaN(parsedFloat) ? null : parsedFloat
+    const parsedFloat = Number.parseFloat(str.replace(',', '.'))
+    return Number.isNaN(parsedFloat) ? null : parsedFloat
 }
 
 /**

@@ -2,16 +2,16 @@ enum AppPlatformEnum {
     ANDROID = 'ANDROID',
     IOS = 'IOS',
     WEB = 'WEB',
-    WEB_DEV = 'WEB_DEV',
+    WEB_DEV = 'WEB_DEV'
 }
 
 enum UserKindEnum {
     STUDENT = 'STUDENT',
     EMPLOYEE = 'EMPLOYEE',
-    GUEST = 'GUEST',
+    GUEST = 'GUEST'
 }
 
-interface Announcement {
+export interface Announcement {
     id: number
     platform: AppPlatformEnum[]
     userKind: UserKindEnum[]
@@ -32,7 +32,7 @@ interface Announcement {
     updatedAt: Date
 }
 
-interface AnnouncementInput {
+export interface AnnouncementInput {
     platform: AppPlatformEnum[]
     userKind: UserKindEnum[]
     title: {

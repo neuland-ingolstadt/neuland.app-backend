@@ -1,13 +1,13 @@
+import http from 'node:http'
+import pdf from 'pdf-parse'
 import type { CanisiusBlock, MealData } from '@/types/food'
 import {
     getMealDayHash,
     isEmpty,
     mergeMealVariants,
-    unifyFoodEntries,
+    unifyFoodEntries
 } from '@/utils/food-utils'
 import { translateMeals } from '@/utils/translation-utils'
-import http from 'http'
-import pdf from 'pdf-parse'
 
 const url =
     'http://www.canisiusstiftung.de/wp-content/uploads/Speiseplan/speiseplan.pdf'
@@ -24,7 +24,9 @@ const priceRegex = /(?!€)(?! )+[\d.]+/g
  * @returns {number[]} The extracted prices
  */
 function getPrices(text: string): number[] {
-    return text.match(priceRegex)?.map((price) => parseFloat(price)) ?? []
+    return (
+        text.match(priceRegex)?.map((price) => Number.parseFloat(price)) ?? []
+    )
 }
 
 /**
@@ -89,8 +91,8 @@ function getMealsFromBlock(text: string): CanisiusBlock[] {
                  */
                 student: dishPrices[1],
                 employee: dishPrices[2],
-                guest: dishPrices[2],
-            },
+                guest: dishPrices[2]
+            }
         }
     })
 }
@@ -146,7 +148,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
                 allergens: null,
                 flags: null,
                 nutrition: null,
-                restaurant: 'Canisius',
+                restaurant: 'Canisius'
             }))
 
             const daySalads = salads.map((salad) => ({
@@ -158,12 +160,12 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
                 allergens: null,
                 flags: null,
                 nutrition: null,
-                restaurant: 'Canisius',
+                restaurant: 'Canisius'
             }))
 
             return {
                 timestamp: dates[index],
-                meals: dayDishes.length > 0 ? [...dayDishes, ...daySalads] : [],
+                meals: dayDishes.length > 0 ? [...dayDishes, ...daySalads] : []
             }
         })
     })

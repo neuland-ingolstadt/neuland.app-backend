@@ -1,14 +1,14 @@
+import { eq } from 'drizzle-orm'
+import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, sportRole } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
 
 export async function deleteUniversitySport(
     _: unknown,
     {
-        id,
+        id
     }: {
         id: number
     },

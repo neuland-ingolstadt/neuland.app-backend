@@ -1,6 +1,11 @@
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
 import { and, gte, lte } from 'drizzle-orm'
+import type {
+    Announcement,
+    AppPlatformEnum,
+    UserKindEnum
+} from '@/types/announcement'
 
 export async function appAnnouncementsQuery(
     _: unknown,
@@ -29,11 +34,11 @@ export async function appAnnouncementsQuery(
         id: announcement.id,
         title: {
             de: announcement.title_de,
-            en: announcement.title_en,
+            en: announcement.title_en
         },
         description: {
             de: announcement.description_de,
-            en: announcement.description_en,
+            en: announcement.description_en
         },
         startDateTime: announcement.start_date_time,
         endDateTime: announcement.end_date_time,
@@ -41,7 +46,7 @@ export async function appAnnouncementsQuery(
         url: announcement.url,
         imageUrl: announcement.image_url,
         createdAt: announcement.created_at,
-        updatedAt: announcement.updated_at,
+        updatedAt: announcement.updated_at
     }))
 
     return announcements

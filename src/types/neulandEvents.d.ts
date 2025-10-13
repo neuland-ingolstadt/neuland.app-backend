@@ -16,4 +16,7 @@ interface NeulandEvent {
     rrule: string | null
 }
 
-type NeulandEventInput = Omit<NeulandEvent, 'id' | 'createdAt' | 'updatedAt'>
+export type NeulandEventInput = Omit<
+    NeulandEvent,
+    'id' | 'createdAt' | 'updatedAt'
+>

@@ -1,132 +1,146 @@
 /**
- * @file Scrapes events from the `Campus Life` Moodle course and serves them at `/api/events`.
+ * @file Fetches career service events from the Handshake RSS feed.
  */
-import { login, parseLocalDateTimeDuration } from '@/utils/moodle-utils'
-import { xxh64 } from '@node-rs/xxhash'
-import * as cheerio from 'cheerio'
-import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
+
 import { GraphQLError } from 'graphql'
-import nodeFetch from 'node-fetch'
+import moment from 'moment-timezone'
+import xmljs from 'xml-js'
+import type { CareerServiceEvent } from '@/types/careerServiceEvent'
 
-const LIST_URL = 'https://moodle.thi.de/mod/booking/view.php?id=85612'
+const RSS_URL =
+    'https://app.joinhandshake.de/external_feeds/280/public.rss?token=4EC5IbcjruYYmuRhEjJXvWduZer9aAoFVw3VsEXMAQglWtA_UoBECQ'
 
-/**
- * Fetch a list of event details.
- * @param {object} fetch Cookie-aware implementation of `fetch`
- * @returns {CareerServiceEvent[]}
- */
-async function getEvents(
-    fetch: FetchCookieImpl<
-        nodeFetch.RequestInfo,
-        nodeFetch.RequestInit,
-        nodeFetch.Response
-    >
-): Promise<CareerServiceEvent[]> {
-    const data: CareerServiceEvent[] = []
-    const page = await fetch(LIST_URL)
+function parseDateFromTitle(title: string): Date | null {
+    // Extract date pattern from title (e.g., "Donnerstag, 9. Oktober 2025, 08:00 - 18:00 CEST")
+    const match = title.match(
+        /(\w+),\s+(\d+)\.\s+(\w+)\s+(\d+),\s+(\d+):(\d+)\s+-\s+(\d+):(\d+)\s+(CEST|CET)/
+    )
 
-    const text = await page.text()
-    const $ = cheerio.load(text)
+    if (!match) {
+        return null
+    }
 
-    // Select all rows except empty ones
-    const rows = $('tr:not(.emptyrow)')
+    const [, , day, monthStr, year, startHour, startMinute] = match
 
-    rows.each((_index, row) => {
-        const title = $(row).find('h5').text().trim()
-        const date = $(row).find('.collapse div').text().trim()
+    const months: { [key: string]: number } = {
+        Januar: 0,
+        Februar: 1,
+        März: 2,
+        April: 3,
+        Mai: 4,
+        Juni: 5,
+        Juli: 6,
+        August: 7,
+        September: 8,
+        Oktober: 9,
+        November: 10,
+        Dezember: 11
+    }
 
-        const unlimitedSlotsText = $(row)
-            .find('.col-ap-unlimited')
-            .text()
-            .trim()
+    const month = months[monthStr]
+    if (month === undefined) {
+        return null
+    }
 
-        const unlimitedSlots = unlimitedSlotsText.toLowerCase() === 'unbegrenzt'
+    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')} ${startHour}:${startMinute}`
+    const date = moment.tz(dateString, 'YYYY-MM-DD HH:mm', 'Europe/Berlin')
 
-        const availableSlotsText = $(row)
-            .find('.col-ap-availableplaces')
-            .text()
-            .trim()
-        const waitingListText = $(row)
-            .find('.col-ap-waitingplacesavailable')
-            .text()
-            .trim()
-
-        // Extract available and waiting places numbers
-        const availableSlotsMatch = availableSlotsText.match(/(\d+) von (\d+)/)
-        const waitingListMatch = waitingListText.match(/(\d+) von (\d+)/)
-
-        const availableSlots = availableSlotsMatch
-            ? parseInt(availableSlotsMatch[1], 10)
-            : null
-        const totalSlots = availableSlotsMatch
-            ? parseInt(availableSlotsMatch[2], 10)
-            : null
-        const waitingList = waitingListMatch
-            ? parseInt(waitingListMatch[1], 10)
-            : null
-        const maxWaitingList = waitingListMatch
-            ? parseInt(waitingListMatch[2], 10)
-            : null
-
-        // Add event to data
-        if (title && date) {
-            data.push({
-                id: xxh64(title + date).toString(),
-                title,
-                date: parseLocalDateTimeDuration(date),
-                unlimitedSlots,
-                availableSlots,
-                totalSlots,
-                waitingList,
-                maxWaitingList,
-                // For now, just use the same URL for all events
-                url: LIST_URL,
-            })
-        }
-    })
-
-    return data.reverse() // Reverse to maintain future-to-past order
+    return date.utc().toDate()
 }
 
-/**
- * Fetches all event details from Moodle.
- * @param {string} username
- * @param {string} password
- */
-export async function getAllEventDetails(
-    username: string,
-    password: string
-): Promise<CareerServiceEvent[]> {
-    const fetch = fetchCookie(nodeFetch)
+function extractCleanTitle(fullTitle: string): string {
+    const match = fullTitle.match(/^(.+?)\s+\([^)]+\)$/)
+    return match ? match[1].trim() : fullTitle
+}
 
-    await login(fetch, username, password)
+interface RssResult {
+    rss: {
+        channel: {
+            item: Array<{
+                title: { _text: string }
+                description: { _text: string }
+                guid: { _text: string }
+                link: { _text: string }
+                pubDate: { _text: string }
+            }>
+        }
+    }
+}
 
-    return getEvents(fetch)
+async function getEvents(): Promise<CareerServiceEvent[]> {
+    const response = await fetch(RSS_URL)
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch RSS feed: ${response.statusText}`)
+    }
+
+    const xmlText = await response.text()
+    const result = xmljs.xml2js(xmlText, { compact: true }) as RssResult
+
+    const channel = result?.rss?.channel
+    if (!channel) {
+        throw new Error('Invalid RSS feed structure')
+    }
+
+    let items = channel.item
+    if (!items) {
+        return []
+    }
+    if (!Array.isArray(items)) {
+        items = [items]
+    }
+
+    const events: CareerServiceEvent[] = []
+
+    for (const item of items) {
+        const fullTitle = item.title?._text || ''
+        const description = item.description?._text || ''
+        const guid = item.guid?._text || ''
+        const link = item.link?._text || ''
+        const pubDate = item.pubDate?._text || ''
+
+        const eventDate = parseDateFromTitle(fullTitle)
+        if (!eventDate) {
+            console.warn(
+                `Could not parse date from title: ${fullTitle}, skipping event`
+            )
+            continue
+        }
+
+        const cleanTitle = extractCleanTitle(fullTitle)
+
+        // Parse publishedDate using moment for consistency
+        const publishedDate = moment(pubDate).toDate()
+
+        events.push({
+            id: guid.replace('gid://handshake/Event/', ''),
+            title: cleanTitle,
+            description: description,
+            date: eventDate,
+            url: link,
+            publishedDate: publishedDate
+        })
+    }
+
+    return events
 }
 
 export default async function getCareerServiceEvents(): Promise<
     CareerServiceEvent[]
 > {
     try {
-        const username = Bun.env.MOODLE_USERNAME
-        const password = Bun.env.MOODLE_PASSWORD
-
-        if (username && password) {
-            const events = await getAllEventDetails(username, password)
-            return events
-        } else {
-            throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
-        }
+        const events = await getEvents()
+        return events
     } catch (e: unknown) {
         if (e instanceof GraphQLError) {
             console.error(e)
             throw e
-        } else if (e instanceof Error) {
-            console.error(e)
-            throw new GraphQLError('Unexpected error: ' + e.message)
-        } else {
-            console.error('Unexpected error:', e)
-            throw new GraphQLError('Unexpected error')
         }
+        if (e instanceof Error) {
+            console.error(e)
+            throw new GraphQLError(`Unexpected error: ${e.message}`)
+        }
+        console.error('Unexpected error:', e)
+        throw new GraphQLError('Unexpected error')
     }
 }

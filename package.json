@@ -5,11 +5,13 @@
     "scripts": {
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
-        "prepare": "husky",
         "docs:dev": "magidoc dev -f docs/magidoc.mjs -m bun",
         "db:generate": "drizzle-kit generate",
         "migrate": "bun run ./src/db/migrate.ts",
-        "codegen": "graphql-codegen --config codegen.ts"
+        "codegen": "graphql-codegen --config codegen.ts",
+        "lint": "tsc --noEmit && biome check",
+        "fmt": "biome check --fix",
+        "fmt:unsafe": "biome check --fix --unsafe"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
@@ -41,41 +43,25 @@
     },
     "devDependencies": {
         "@0no-co/graphqlsp": "^1.15.0",
+        "@biomejs/biome": "2.2.5",
         "@commitlint/cli": "^19.8.1",
         "@commitlint/config-conventional": "^19.8.1",
-        "@eslint/eslintrc": "^3.3.1",
-        "@eslint/js": "^9.33.0",
         "@graphql-codegen/cli": "5.0.3",
         "@graphql-codegen/schema-ast": "^4.1.0",
         "@magidoc/cli": "^6.2.0",
-        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/bun": "^1.2.20",
         "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.3",
         "@types/he": "^1.2.3",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/jwk-to-pem": "^2.0.3",
         "@types/node": "^22.17.2",
         "@types/pdf-parse": "^1.1.5",
         "@types/sanitize-html": "^2.16.0",
-        "@typescript-eslint/eslint-plugin": "^8.39.1",
         "concurrently": "^9.2.0",
         "cross-env": "^7.0.3",
         "drizzle-kit": "^0.28.1",
-        "eslint": "^9.33.0",
-        "eslint-config-prettier": "^9.1.2",
         "globals": "^15.15.0",
-        "husky": "^9.1.7",
-        "lint-staged": "^15.5.2",
-        "prettier": "^3.6.2",
-        "typescript": "^5.9.2",
-        "typescript-eslint": "^8.39.1"
-    },
-    "lint-staged": {
-        "**/*.{js,jsx,ts,tsx,mjs}": [
-            "bunx eslint --fix"
-        ],
-        "**/*.{js,jsx,ts,tsx,json,yml,gql,graphql,md,mjs}": [
-            "bunx prettier --write"
-        ]
+        "typescript": "^5.9.2"
     }
 }

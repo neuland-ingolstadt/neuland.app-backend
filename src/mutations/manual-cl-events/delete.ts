@@ -1,14 +1,14 @@
+import { eq } from 'drizzle-orm'
+import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { manualClEvents } from '@/db/schema/manualClEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
 
 export async function deleteManualClEvent(
     _: unknown,
     {
-        id,
+        id
     }: {
         id: number
     },

@@ -10,27 +10,27 @@ async function main() {
     try {
         const connectionConfig = {
             host: process.env.DB_HOST || 'localhost',
-            port: parseInt(process.env.DB_PORT || '5432', 10),
+            port: Number.parseInt(process.env.DB_PORT || '5432', 10),
             database: process.env.POSTGRES_DB || 'app',
             user: process.env.POSTGRES_USER || 'postgres',
-            password: process.env.POSTGRES_PASSWORD || 'postgres',
+            password: process.env.POSTGRES_PASSWORD || 'postgres'
         }
 
         console.log('Connection config:', {
             ...connectionConfig,
-            password: '******',
+            password: '******'
         })
 
         // Create connection with more detailed options
         const client = postgres(CONNECTION_STRING, {
             max: 1,
             idle_timeout: 20,
-            connect_timeout: 10,
+            connect_timeout: 10
         })
 
         console.log('Running migrations...')
         await migrate(drizzle(client), {
-            migrationsFolder: './src/db/migrations',
+            migrationsFolder: './src/db/migrations'
         })
         console.log('Migrations completed successfully')
 

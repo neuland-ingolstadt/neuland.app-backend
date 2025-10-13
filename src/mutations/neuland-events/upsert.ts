@@ -1,14 +1,15 @@
+import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { neulandEvents } from '@/db/schema/neulandEvents'
+import type { NeulandEventInput } from '@/types/neulandEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, eventRole } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
 
 export async function upsertNeulandEvent(
     _: unknown,
     {
         id,
-        input,
+        input
     }: {
         id: number | undefined
         input: NeulandEventInput
@@ -33,11 +34,11 @@ export async function upsertNeulandEvent(
                 start_time: startTime,
                 end_time: endTime,
                 rrule: rrule ?? null,
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .where(eq(neulandEvents.id, id))
             .returning({
-                id: neulandEvents.id,
+                id: neulandEvents.id
             })
         try {
             await logAudit('neuland_events', event.id, 'update', contextValue)
@@ -57,10 +58,10 @@ export async function upsertNeulandEvent(
                 end_time: endTime,
                 rrule: rrule ?? null,
                 created_at: new Date(),
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .returning({
-                id: neulandEvents.id,
+                id: neulandEvents.id
             })
         try {
             await logAudit('neuland_events', event.id, 'insert', contextValue)
@@ -69,6 +70,6 @@ export async function upsertNeulandEvent(
         }
     }
     return {
-        id: event.id,
+        id: event.id
     }
 }

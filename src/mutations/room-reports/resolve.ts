@@ -1,15 +1,15 @@
+import { eq } from 'drizzle-orm'
+import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
 import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
 
 export async function resolveRoomReport(
     _: unknown,
     {
         id,
-        resolved,
+        resolved
     }: {
         id: number
         resolved: boolean
@@ -22,11 +22,11 @@ export async function resolveRoomReport(
         const [report] = await db
             .update(roomReports)
             .set({
-                resolved_at: resolved ? new Date() : null,
+                resolved_at: resolved ? new Date() : null
             })
             .where(eq(roomReports.id, id))
             .returning({
-                id: roomReports.id,
+                id: roomReports.id
             })
 
         try {
@@ -36,7 +36,7 @@ export async function resolveRoomReport(
         }
 
         return {
-            id: report.id,
+            id: report.id
         }
     } catch (error) {
         if (error instanceof TypeError) {

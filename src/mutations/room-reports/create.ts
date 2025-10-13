@@ -1,11 +1,12 @@
+import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
-import { GraphQLError } from 'graphql'
+import type { RoomReportInput } from '@/types/roomReport'
 
 export async function createRoomReport(
     _: unknown,
     {
-        input,
+        input
     }: {
         input: RoomReportInput
     }
@@ -15,12 +16,12 @@ export async function createRoomReport(
         'WRONG_LOCATION',
         'NOT_EXISTING',
         'MISSING',
-        'OTHER',
+        'OTHER'
     ]
     const { room, reason, description } = input
     if (!validReasons.includes(reason)) {
         throw new GraphQLError(
-            'Invalid report reason. Must be one of: ' + validReasons.join(', ')
+            `Invalid report reason. Must be one of: ${validReasons.join(', ')}`
         )
     }
     try {
@@ -30,14 +31,14 @@ export async function createRoomReport(
                 room,
                 reason,
                 description,
-                created_at: new Date(),
+                created_at: new Date()
             })
             .returning({
-                id: roomReports.id,
+                id: roomReports.id
             })
         console.log(report)
         return {
-            id: report.id,
+            id: report.id
         }
     } catch (error) {
         console.error(error)

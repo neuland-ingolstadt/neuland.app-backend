@@ -1,5 +1,7 @@
 /* eslint-disable */
-import * as types from './graphql'
+import * as types from './graphql';
+
+
 
 /**
  * Map of all GraphQL operations in the project.
@@ -12,18 +14,19 @@ import * as types from './graphql'
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
-const documents = {
-    '\n    query Menu {\n        menu {\n            days {\n                date\n                meals {\n                    name_de\n                    name_en\n                }\n            }\n        }\n    }\n':
-        types.MenuDocument,
-}
+type Documents = {
+    "\n  query Menu {\n    menu {\n      days {\n        date\n        meals {\n          name_de\n          name_en\n        }\n      }\n    }\n  }\n": typeof types.MenuDocument,
+};
+const documents: Documents = {
+    "\n  query Menu {\n    menu {\n      days {\n        date\n        meals {\n          name_de\n          name_en\n        }\n      }\n    }\n  }\n": types.MenuDocument,
+};
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(
-    source: '\n    query Menu {\n        menu {\n            days {\n                date\n                meals {\n                    name_de\n                    name_en\n                }\n            }\n        }\n    }\n'
-): typeof import('./graphql').MenuDocument
+export function graphql(source: "\n  query Menu {\n    menu {\n      days {\n        date\n        meals {\n          name_de\n          name_en\n        }\n      }\n    }\n  }\n"): typeof import('./graphql').MenuDocument;
+
 
 export function graphql(source: string) {
-    return (documents as any)[source] ?? {}
+  return (documents as any)[source] ?? {};
 }

@@ -1,14 +1,14 @@
+import { eq } from 'drizzle-orm'
 import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, sportRole } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
 
 export async function upsertUniversitySport(
     _: unknown,
     {
         id,
-        input,
+        input
     }: {
         id: number | undefined
         input: UniversitySportInput
@@ -26,7 +26,7 @@ export async function upsertUniversitySport(
         requiresRegistration,
         invitationLink,
         eMail,
-        sportsCategory,
+        sportsCategory
     } = input
 
     checkAuthorization(contextValue, sportRole)
@@ -50,11 +50,11 @@ export async function upsertUniversitySport(
                 invitation_link: invitationLink ?? null,
                 e_mail: eMail ?? null,
                 sports_category: sportsCategory ?? null,
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .where(eq(universitySports.id, id))
             .returning({
-                id: universitySports.id,
+                id: universitySports.id
             })
         try {
             await logAudit(
@@ -84,10 +84,10 @@ export async function upsertUniversitySport(
                 e_mail: eMail ?? null,
                 sports_category: sportsCategory ?? null,
                 created_at: new Date(),
-                updated_at: new Date(),
+                updated_at: new Date()
             })
             .returning({
-                id: universitySports.id,
+                id: universitySports.id
             })
         try {
             await logAudit(
@@ -101,6 +101,6 @@ export async function upsertUniversitySport(
         }
     }
     return {
-        id: event.id,
+        id: event.id
     }
 }

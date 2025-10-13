@@ -1,10 +1,10 @@
+import xmljs from 'xml-js'
 import type {
     ExtendedMealData,
     MealData,
     XMLMensa,
-    XMLSourceData,
+    XMLSourceData
 } from '@/types/food'
-import xmljs from 'xml-js'
 
 import { formatISODate } from '../utils/date-utils'
 import {
@@ -12,7 +12,7 @@ import {
     mergeMealVariants,
     parseGermanFloat,
     parseXmlFloat,
-    unifyFoodEntries,
+    unifyFoodEntries
 } from '../utils/food-utils'
 import { translateMeals } from '../utils/translation-utils'
 
@@ -27,7 +27,8 @@ function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
     let sourceDays = sourceData.speiseplan.tag as XMLMensa[]
     if (sourceDays == null) {
         return []
-    } else if (!Array.isArray(sourceDays)) {
+    }
+    if (!Array.isArray(sourceDays)) {
         sourceDays = [sourceDays]
     }
     const days = sourceDays
@@ -51,7 +52,9 @@ function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
                         text = text.replace(addInText, ' ')
 
                         const newAllergens = addIn.split(',')
-                        newAllergens.forEach((newAll) => allergens.add(newAll))
+                        newAllergens.forEach(
+                            (newAll) => void allergens.add(newAll)
+                        )
                     }
                 }
 
@@ -86,7 +89,7 @@ function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
                     sugar: parseXmlFloat(item.zucker),
                     fiber: parseXmlFloat(item.ballaststoffe),
                     protein: parseXmlFloat(item.eiweiss),
-                    salt: parseXmlFloat(item.salz),
+                    salt: parseXmlFloat(item.salz)
                 }
 
                 return {
@@ -96,20 +99,20 @@ function parseDataFromXml(xml: string, location: string): ExtendedMealData[] {
                     prices: {
                         student: parseGermanFloat(item.preis1._text),
                         employee: parseGermanFloat(item.preis2._text),
-                        guest: parseGermanFloat(item.preis3._text),
+                        guest: parseGermanFloat(item.preis3._text)
                     },
                     allergens: [...allergens].sort((a, b) =>
                         a.localeCompare(b)
                     ),
                     flags,
                     nutrition,
-                    restaurant: location,
+                    restaurant: location
                 }
             })
 
             return {
                 timestamp: formatISODate(date),
-                meals,
+                meals
             }
         })
         .filter((x) => x !== null) as ExtendedMealData[]
@@ -126,14 +129,14 @@ export async function getMensaPlan(location: string): Promise<MealData[]> {
         IngolstadtMensa:
             'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/mensa-ingolstadt.xml',
         NeuburgMensa:
-            'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/cafeteria-neuburg.xml',
+            'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/xml/cafeteria-neuburg.xml'
     }
 
     const url = urls[location as keyof typeof urls]
     const resp = await fetch(url)
 
     if (resp.status !== 200) {
-        throw new Error('Data source returned an error: ' + (await resp.text()))
+        throw new Error(`Data source returned an error: ${await resp.text()}`)
     }
     const mealPlan = parseDataFromXml(await resp.text(), location)
     const mergedMeals = mergeMealVariants(mealPlan)

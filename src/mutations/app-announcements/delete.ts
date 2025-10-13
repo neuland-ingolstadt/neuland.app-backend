@@ -1,14 +1,14 @@
+import { eq } from 'drizzle-orm'
+import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
 import { logAudit } from '@/utils/audit-utils'
 import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
-import { eq } from 'drizzle-orm'
-import { GraphQLError } from 'graphql'
 
 export async function deleteAppAnnouncement(
     _: unknown,
     {
-        id,
+        id
     }: {
         id: number
     },

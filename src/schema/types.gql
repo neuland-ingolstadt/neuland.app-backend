@@ -323,33 +323,56 @@ type CareerServiceEvent {
     """
     title: String!
     """
+    Description of the event
+    """
+    description: String!
+    """
     Date of the event
     """
     date: DateTime!
     """
+    URL for more information about the event
+    """
+    url: String!
+    """
+    Published date of the event
+    """
+    publishedDate: DateTime!
+    """
     Unlimited slots for the event
     """
-    unlimitedSlots: Boolean!
+    unlimitedSlots: Boolean
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
     """
     Available slots for the event
     """
     availableSlots: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
     """
     Total slots for the event
     """
     totalSlots: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
     """
     Waiting list for the event
     """
     waitingList: Int
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
     """
     Maximum waiting list for the event
     """
     maxWaitingList: Int
-    """
-    URL for more information about the event
-    """
-    url: String
+        @deprecated(
+            reason: "This field is no longer available. Career service events are now sourced from Handshake RSS feed which doesn't provide slot information."
+        )
 }
 
 """

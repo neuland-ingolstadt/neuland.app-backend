@@ -1,7 +1,7 @@
+import { desc } from 'drizzle-orm'
 import { db } from '@/db'
 import { auditLog } from '@/db/schema/auditLog'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
-import { desc } from 'drizzle-orm'
 
 export async function auditLogQuery(
     _: unknown,
@@ -24,6 +24,6 @@ export async function auditLogQuery(
         operation: row.operation,
         name: row.name,
         userId: row.user_id,
-        createdAt: row.created_at,
+        createdAt: row.created_at
     }))
 }

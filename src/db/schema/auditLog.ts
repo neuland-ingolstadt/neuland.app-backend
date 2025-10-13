@@ -7,5 +7,5 @@ export const auditLog = pgTable('audit_log', {
     operation: text('operation').notNull(),
     name: text('name'),
     user_id: text('user_id'),
-    created_at: timestamp('created_at', { withTimezone: true }).notNull(),
+    created_at: timestamp('created_at', { withTimezone: true }).notNull()
 })

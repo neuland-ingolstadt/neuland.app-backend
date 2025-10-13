@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/** biome-ignore-all lint/suspicious/noExplicitAny: tbd */
 export interface PreFoodData {
     timestamp: string
     meals: PreMeal[]
@@ -80,7 +80,7 @@ interface Nutrition {
 
 export enum OriginalLanguage {
     De = 'de',
-    En = 'en',
+    En = 'en'
 }
 
 export interface Prices {
@@ -122,11 +122,11 @@ export interface XMLMensa {
     _attributes: Attributes
     item: Item[]
 }
-interface XMLSpeiseplan {
+export interface XMLSpeiseplan {
     tag: XMLMensa[]
 }
 
-interface XMLSourceData {
+export interface XMLSourceData {
     speiseplan: XMLSpeiseplan
 }
 interface Attributes {

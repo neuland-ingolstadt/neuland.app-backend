@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
+import type { RoomReport } from '@/types/roomReport'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
 
 export async function roomReportsQuery(
@@ -16,6 +17,6 @@ export async function roomReportsQuery(
         reason: report.reason,
         description: report.description,
         createdAt: report.created_at,
-        resolvedAt: report.resolved_at || null,
+        resolvedAt: report.resolved_at || null
     }))
 }
