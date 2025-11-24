@@ -5,7 +5,6 @@
 import { xxh64 } from '@node-rs/xxhash'
 import * as cheerio from 'cheerio'
 import fetchCookie, { type FetchCookieImpl } from 'fetch-cookie'
-import { GraphQLError } from 'graphql'
 import nodeFetch, {
     type RequestInfo,
     type RequestInit,
@@ -109,25 +108,6 @@ export async function getAllEventDetails(
 export default async function getStudentCounsellingEvents(): Promise<
     StudentCounsellingEvent[]
 > {
-    try {
-        const username = Bun.env.MOODLE_USERNAME
-        const password = Bun.env.MOODLE_PASSWORD
-
-        if (username && password) {
-            const events = await getAllEventDetails(username, password)
-            return events
-        }
-        throw new GraphQLError('MOODLE_CREDENTIALS_NOT_CONFIGURED')
-    } catch (e: unknown) {
-        if (e instanceof GraphQLError) {
-            console.error(e)
-            throw e
-        }
-        if (e instanceof Error) {
-            console.error(e)
-            throw new GraphQLError(`Unexpected error: ${e.message}`)
-        }
-        console.error('Unexpected error:', e)
-        throw new GraphQLError('Unexpected error')
-    }
+    // Source temporarily offline: return empty list to avoid repeated login attempts
+    return []
 }
