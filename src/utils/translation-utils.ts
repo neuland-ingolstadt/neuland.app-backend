@@ -102,7 +102,17 @@ export async function translateMeals(
             translations[text[index]] = translation.text
         })
     } catch (error) {
-        console.error('Error translating meals with DeepL:', error)
+        const errorMessage =
+            error instanceof Error
+                ? error.message
+                : typeof error === 'object' &&
+                    error !== null &&
+                    'message' in error
+                  ? String(error.message)
+                  : 'Unknown error'
+        console.error('Error translating meals with DeepL:', errorMessage)
+        console.warn('Falling back to untranslated meals')
+        return translateMealsFallback(meals)
     }
 
     return meals.map((day) => {
