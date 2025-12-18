@@ -7,7 +7,7 @@ export const eventRole = 'Neuland Next Events'
 export const sportRole = 'Neuland Next Hochschulsport'
 export const announcementRole = 'Neuland Next Announcements'
 export const adminRole = 'Neuland Next Admin'
-const jwkUrl = 'https://sso.informatik.sexy/application/o/api-dashboard/jwks/'
+const jwkUrl = 'https://auth.informatik.sexy/application/o/api-dashboard/jwks/'
 
 async function getPublicKey(): Promise<string> {
     const response = await axios.get(jwkUrl)
