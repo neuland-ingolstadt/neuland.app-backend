@@ -1,7 +1,7 @@
 # Neuland App Backend
 
-[![Uptime](https://status.neuland.app/api/badge/3/uptime/24)](https://status.neuland.app/status/app)
-[![Uptime](https://status.neuland.app/api/badge/3/avg-response/24)](https://status.neuland.app/status/app)
+[![Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-api/health/badge.svg)](https://status.neuland.ing)
+[![Uptime](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-api/uptimes/24h/badge.svg)](https://status.neuland.ing)
 
 Neuland API uses **GraphQL** to provide a flexible and powerful API for Neuland Next and several other services like the Neuland website.
 
@@ -17,13 +17,14 @@ An architecture overview can be found [here](https://neuland.app/docs/contribute
 
 ## System Status
 
-The real-time system status is available at [status.neuland.app](https://status.neuland.app/status/app). Here you find information about the current status of the different services and APIs that Neuland Next depends on.
+The real-time system status is available at [status.neuland.ing](https://status.neuland.ing). Here you find information about the current status of the different services and APIs that Neuland Next depends on.
 
 | Service          | Status                                                                                        | Uptime (24h)                                                                                  |
 | ---------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| THI API          | ![THI API Status](https://status.neuland.app/api/badge/14/status?upColor=%2331c753)           | ![THI API Status](https://status.neuland.app/api/badge/14/uptime?upColor=%2331c753)           |
-| Neuland API      | ![Neuland API Status](https://status.neuland.app/api/badge/3/status?upColor=%2331c753)        | ![Neuland API Status](https://status.neuland.app/api/badge/3/uptime?upColor=%2331c753)        |
-| Neuland Next Web | ![Neuland API (Beta) Status](https://status.neuland.app/api/badge/8/status?upColor=%2331c753) | ![Neuland API (Beta) Status](https://status.neuland.app/api/badge/8/uptime?upColor=%2331c753) |
+| THI API          | ![THI API Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_thi-api/health/badge.svg)           | ![THI API Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_thi-api/uptimes/24h/badge.svg)           |
+| Neuland API      | ![Neuland API Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-api/health/badge.svg)        | ![Neuland API Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-api/uptimes/24h/badge.svg)        |
+| Neuland API (dev)     | ![Neuland Next Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-api-(beta)/health/badge.svg) | ![Neuland Next Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-api-(beta)/uptimes/24h/badge.svg) |
+| Neuland Next Web | ![Neuland API (Beta) Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-next-web/health/badge.svg) | ![Neuland API (Beta) Status](https://status.neuland.ing/api/v1/endpoints/neuland-app_neuland-next-web/uptimes/24h/badge.svg) |
 
 ## Development
 
