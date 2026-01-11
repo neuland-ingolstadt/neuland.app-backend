@@ -133,9 +133,12 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
         }
 
         // Split text at date positions to get day segments
+        // Start each segment after the date pattern (date index + date length)
         const days: string[] = []
         for (let i = 0; i < dateMatches.length; i++) {
-            const start = dateMatches[i].index
+            const dateStart = dateMatches[i].index
+            const dateLength = dateMatches[i].date.length
+            const start = dateStart + dateLength // Start after the date
             const end =
                 i < dateMatches.length - 1
                     ? dateMatches[i + 1].index
