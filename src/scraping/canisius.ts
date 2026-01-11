@@ -11,7 +11,6 @@ import { translateMeals } from '@/utils/translation-utils'
 
 const url =
     'http://www.canisiusstiftung.de/wp-content/uploads/Speiseplan/speiseplan.pdf'
-const titleRegex = /[A-Z][a-z]*, den [0-9]{1,2}.[0-9]{1,2}.[0-9]{4}/gm
 const dateRegex = /[0-9]{1,2}.[0-9]{1,2}.[0-9]{4}/gm
 const newLineRegex = /(?:\r\n|\r|\n)/g
 const dishSplitterRegex =
@@ -50,21 +49,6 @@ async function getPdf(): Promise<Buffer> {
             reject(err)
         })
     })
-}
-
-/**
- * Extracts the date from the title
- * @param {string} title The title to extract the date from
- * @returns {string} The extracted date
- */
-function getDateFromTitle(title: string): string {
-    const match = title.match(dateRegex)
-    if (match === null) {
-        throw new Error('No date found in title')
-    }
-    const date = match[0].split('.')
-    // return date in format YYYY-MM-DD
-    return `${date[2]}-${date[1]}-${date[0]}`
 }
 
 /**
@@ -111,38 +95,77 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
             return []
         }
 
-        let days = text.split(titleRegex)
-        let dates: string[] | null = text.match(titleRegex)
+        // Use regex to find all date positions with their matches
+        const dateMatches: Array<{ date: string; index: number }> = []
+        const globalDateRegex = new RegExp(dateRegex.source, 'g')
 
-        if (days === null || dates === null) {
+        let match: RegExpMatchArray | null = globalDateRegex.exec(text)
+        while (match !== null && dateMatches.length < 5) {
+            if (match.index !== undefined) {
+                dateMatches.push({
+                    date: match[0],
+                    index: match.index
+                })
+            }
+            match = globalDateRegex.exec(text)
+        }
+
+        if (dateMatches.length < 5) {
             if (text.toLowerCase().includes('geschlossen')) {
                 console.warn(
                     'Canisius restaurant is closed, returning empty array'
                 )
                 return []
             }
-            throw new Error(
-                'Unexpected/Malformed pdf from the Canisius website!'
+            return []
+        }
+
+        // Sort by position to ensure correct order
+        dateMatches.sort((a, b) => a.index - b.index)
+
+        // Extract and format dates (DD.MM.YYYY -> YYYY-MM-DD) in the correct order
+        const extractedDates: string[] = []
+        for (const dateMatch of dateMatches) {
+            const dateParts = dateMatch.date.split('.')
+            extractedDates.push(
+                `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
             )
         }
-        dates = dates.map(getDateFromTitle)
 
-        // keep days only
-        days = days.slice(1, 6)
+        // Split text at date positions to get day segments
+        const days: string[] = []
+        for (let i = 0; i < dateMatches.length; i++) {
+            const start = dateMatches[i].index
+            const end =
+                i < dateMatches.length - 1
+                    ? dateMatches[i + 1].index
+                    : text.length
+            const daySegment = text.substring(start, end)
+            days.push(daySegment)
+        }
+
+        if (days.length < 5 || extractedDates.length < 5) {
+            return []
+        }
 
         // split last day into friday and weekly salad menu
-        const fridaySaladSplit = days[4].split('Salate der Saison vom Büfett')
+        const fridaySaladSplit = days[4]?.split('Salate der Saison vom Büfett')
 
-        days[4] = fridaySaladSplit[0]
-
-        const salads = getMealsFromBlock(String(fridaySaladSplit[1]))
+        let salads: CanisiusBlock[] = []
+        if (fridaySaladSplit && fridaySaladSplit.length >= 2) {
+            days[4] = fridaySaladSplit[0]
+            salads = getMealsFromBlock(String(fridaySaladSplit[1]))
+        } else {
+            // No salad menu found, just use the day as is
+            days[4] = days[4] || ''
+        }
 
         // trim whitespace and split into dishes
         const dishes = days.map(getMealsFromBlock)
         return dishes.map((day, index) => {
             const dayDishes = day.map((dish) => ({
                 name: dish.name,
-                id: getMealDayHash(dates[index], dish.name),
+                id: getMealDayHash(extractedDates[index], dish.name),
                 category: 'Essen',
                 prices: dish.prices,
                 allergens: null,
@@ -153,7 +176,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
 
             const daySalads = salads.map((salad) => ({
                 name: salad.name,
-                id: getMealDayHash(dates[index], salad.name),
+                id: getMealDayHash(extractedDates[index], salad.name),
                 originalLanguage: 'de',
                 category: 'Salat',
                 prices: salad.prices,
@@ -164,7 +187,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
             }))
 
             return {
-                timestamp: dates[index],
+                timestamp: extractedDates[index],
                 meals: dayDishes.length > 0 ? [...dayDishes, ...daySalads] : []
             }
         })
