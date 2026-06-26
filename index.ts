@@ -41,7 +41,8 @@ app.use(
             'http://localhost:3000',
             'https://dashboard.neuland.app',
             'https://dev.neuland.app',
-            'https://web.neuland.app'
+            'https://web.neuland.app',
+            /^https:\/\/[\w.-]+\.expo\.app$/
         ]
     })
 )
