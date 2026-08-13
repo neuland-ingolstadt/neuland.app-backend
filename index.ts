@@ -39,6 +39,7 @@ app.use(
     cors({
         origin: [
             'http://localhost:3000',
+            'http://localhost:8081',
             'https://dashboard.neuland.app',
             'https://dev.neuland.app',
             'https://web.neuland.app',
