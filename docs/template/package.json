@@ -31,7 +31,7 @@
         "@sveltejs/vite-plugin-svelte": "3.1.2",
         "@types/lodash": "4.17.25",
         "@types/marked": "6.0.0",
-        "@types/prismjs": "1.26.4",
+        "@types/prismjs": "1.26.6",
         "carbon-components-svelte": "0.85.2",
         "carbon-icons-svelte": "12.11.1",
         "carbon-preprocess-svelte": "0.11.7",
