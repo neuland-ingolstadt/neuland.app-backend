@@ -34,7 +34,7 @@
         "@types/prismjs": "1.26.4",
         "carbon-components-svelte": "0.85.2",
         "carbon-icons-svelte": "12.11.1",
-        "carbon-preprocess-svelte": "0.11.7",
+        "carbon-preprocess-svelte": "0.11.43",
         "fuse.js": "7.0.0",
         "graphql": "16.9.0",
         "lodash": "4.17.21",
