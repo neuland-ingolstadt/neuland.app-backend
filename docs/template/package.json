@@ -39,7 +39,7 @@
         "graphql": "16.9.0",
         "lodash": "4.17.21",
         "marked": "14.1.2",
-        "marked-gfm-heading-id": "4.1.0",
+        "marked-gfm-heading-id": "4.1.4",
         "prism-svelte": "0.5.0",
         "prismjs": "1.30.0",
         "svelte": "4.2.19",
