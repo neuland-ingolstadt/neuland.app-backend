@@ -20,7 +20,7 @@
         "@magidoc/plugin-fuse-graphql": "6.1.0",
         "@magidoc/plugin-fuse-markdown": "6.1.0",
         "@magidoc/plugin-query-generator": "6.1.0",
-        "@magidoc/plugin-reverse-schema-mapper": "6.1.0",
+        "@magidoc/plugin-reverse-schema-mapper": "6.4.5",
         "@magidoc/plugin-starter-common": "6.1.0",
         "@magidoc/plugin-starter-variables": "6.1.0",
         "@magidoc/plugin-svelte-marked": "6.1.0",
