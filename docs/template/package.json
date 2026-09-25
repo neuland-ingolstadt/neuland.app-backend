@@ -42,7 +42,7 @@
         "marked-gfm-heading-id": "4.1.0",
         "prism-svelte": "0.5.0",
         "prismjs": "1.30.0",
-        "svelte": "4.2.19",
+        "svelte": "5.55.7",
         "svelte-check": "4.0.4",
         "svelte-markdown": "0.4.1",
         "tslib": "2.7.0",
