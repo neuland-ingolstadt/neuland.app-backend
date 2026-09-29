@@ -1,14 +1,14 @@
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
 import type { RoomReport } from '@/types/roomReport'
-import { adminRole, checkAuthorization } from '@/utils/auth-utils'
+import { checkAuthorization, reportsRole } from '@/utils/auth-utils'
 
 export async function roomReportsQuery(
     _: unknown,
     __: unknown,
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<RoomReport[]> {
-    checkAuthorization(contextValue, adminRole)
+    checkAuthorization(contextValue, reportsRole)
     const data = await db.select().from(roomReports)
 
     return data.map((report) => ({

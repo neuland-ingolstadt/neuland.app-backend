@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
 import { logAudit } from '@/utils/audit-utils'
-import { adminRole, checkAuthorization } from '@/utils/auth-utils'
+import { checkAuthorization, reportsRole } from '@/utils/auth-utils'
 
 export async function resolveRoomReport(
     _: unknown,
@@ -16,7 +16,7 @@ export async function resolveRoomReport(
     },
     contextValue: { jwtPayload?: { groups: string[] } }
 ): Promise<{ id: number }> {
-    checkAuthorization(contextValue, adminRole)
+    checkAuthorization(contextValue, reportsRole)
 
     try {
         const [report] = await db
