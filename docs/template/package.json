@@ -24,7 +24,7 @@
         "@magidoc/plugin-starter-common": "6.4.5",
         "@magidoc/plugin-starter-variables": "6.1.0",
         "@magidoc/plugin-svelte-marked": "6.1.0",
-        "@magidoc/plugin-svelte-prismjs": "6.1.0",
+        "@magidoc/plugin-svelte-prismjs": "6.4.5",
         "@magidoc/rollup-plugin-gql-schema": "6.1.0",
         "@sveltejs/adapter-static": "3.0.10",
         "@sveltejs/kit": "2.6.1",
