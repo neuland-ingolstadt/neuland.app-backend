@@ -2,6 +2,7 @@ import axios from 'axios'
 import { GraphQLError } from 'graphql'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import jwkToPem from 'jwk-to-pem'
+import { logger } from '@/utils/logger'
 
 export const adminRole = 'next-dashboard-admin'
 export const sportRole = 'next-dashboard-sports'
@@ -24,7 +25,7 @@ export async function getUserFromToken(bearer: string): Promise<JwtPayload> {
         const payload = jwt.verify(token, publicKey, { algorithms: ['RS256'] })
         return payload as JwtPayload
     } catch (error) {
-        console.error('Failed to verify token:', error)
+        logger.warn('Failed to verify token', { err: error })
         throw new Error('Failed to verify token')
     }
 }
@@ -39,7 +40,9 @@ export function checkAuthorization(
         process.env.NODE_ENV !== 'production' &&
         Bun.env.BYPASS_AUTH_IN_DEV === 'true'
     ) {
-        console.warn('Authorization check skipped in development environment')
+        logger.warn('Authorization check skipped in development environment', {
+            requiredRole
+        })
         return
     }
 

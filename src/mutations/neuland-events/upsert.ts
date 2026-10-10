@@ -4,6 +4,7 @@ import { neulandEvents } from '@/db/schema/neulandEvents'
 import type { NeulandEventInput } from '@/types/neulandEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, eventRole } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function upsertNeulandEvent(
     _: unknown,
@@ -43,7 +44,11 @@ export async function upsertNeulandEvent(
         try {
             await logAudit('neuland_events', event.id, 'update', contextValue)
         } catch (error) {
-            console.error('Audit logging failed for update operation:', error)
+            logger.warn('Audit logging failed for update operation', {
+                entity: 'neuland_events',
+                entityId: event.id,
+                err: error
+            })
         }
     } else {
         ;[event] = await db
@@ -66,7 +71,11 @@ export async function upsertNeulandEvent(
         try {
             await logAudit('neuland_events', event.id, 'insert', contextValue)
         } catch (error) {
-            console.error('Audit logging failed for insert operation:', error)
+            logger.warn('Audit logging failed for insert operation', {
+                entity: 'neuland_events',
+                entityId: event.id,
+                err: error
+            })
         }
     }
     return {

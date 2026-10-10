@@ -4,6 +4,7 @@ import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, reportsRole } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function resolveRoomReport(
     _: unknown,
@@ -32,7 +33,11 @@ export async function resolveRoomReport(
         try {
             await logAudit('room_reports', report.id, 'update', contextValue)
         } catch (error) {
-            console.error('Audit logging failed for resolve operation:', error)
+            logger.warn('Audit logging failed for resolve operation', {
+                entity: 'room_reports',
+                entityId: report.id,
+                err: error
+            })
         }
 
         return {

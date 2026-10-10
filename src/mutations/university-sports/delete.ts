@@ -4,6 +4,7 @@ import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, sportRole } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function deleteUniversitySport(
     _: unknown,
@@ -25,10 +26,11 @@ export async function deleteUniversitySport(
             try {
                 await logAudit('university_sports', id, 'delete', contextValue)
             } catch (error) {
-                console.error(
-                    'Audit logging failed for delete operation:',
-                    error
-                )
+                logger.warn('Audit logging failed for delete operation', {
+                    entity: 'university_sports',
+                    entityId: id,
+                    err: error
+                })
             }
         }
 

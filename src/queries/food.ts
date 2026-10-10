@@ -6,6 +6,7 @@ import { getCanisiusPlan } from '@/scraping/canisius'
 import { getMensaPlan } from '@/scraping/mensa'
 import { getReimannsPlan } from '@/scraping/reimanns'
 import type { MealData, ReturnData } from '@/types/food'
+import { logger } from '@/utils/logger'
 
 const CACHE_TTL = 60 * 30 // 30 minutes
 
@@ -53,7 +54,10 @@ export async function food(
                 cache.set(location, meals, CACHE_TTL)
             } catch (error) {
                 const typedError = error as Error
-                console.error('Error fetching meals for %s:', location, error)
+                logger.error('Error fetching meals', {
+                    location,
+                    err: error
+                })
                 errors.push({
                     location,
                     message: typedError.message ?? 'Unknown error'

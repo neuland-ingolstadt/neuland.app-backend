@@ -4,6 +4,7 @@ import { appAnnouncements } from '@/db/schema/appAnnouncements'
 import type { AnnouncementInput } from '@/types/announcement'
 import { logAudit } from '@/utils/audit-utils'
 import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function upsertAppAnnouncement(
     _: unknown,
@@ -65,7 +66,11 @@ export async function upsertAppAnnouncement(
                 contextValue
             )
         } catch (error) {
-            console.error('Audit logging failed for update operation:', error)
+            logger.warn('Audit logging failed for update operation', {
+                entity: 'app_announcements',
+                entityId: announcement.id,
+                err: error
+            })
         }
     } else {
         // Perform insert
@@ -98,7 +103,11 @@ export async function upsertAppAnnouncement(
                 contextValue
             )
         } catch (error) {
-            console.error('Audit logging failed for insert operation:', error)
+            logger.warn('Audit logging failed for insert operation', {
+                entity: 'app_announcements',
+                entityId: announcement.id,
+                err: error
+            })
         }
     }
 

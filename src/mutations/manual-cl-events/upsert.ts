@@ -4,6 +4,7 @@ import { manualClEvents } from '@/db/schema/manualClEvents'
 import type { ManualClEventsInput } from '@/types/clEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function upsertManualClEvent(
     _: unknown,
@@ -18,7 +19,7 @@ export async function upsertManualClEvent(
 ): Promise<{ id: number }> {
     const { host, title, description, begin, end, location, eventWebsite } =
         input
-    console.log('upsertManualClEvent', id, input, contextValue)
+    logger.debug('Upserting manual campus life event', { id: id ?? null })
     checkAuthorization(contextValue, adminRole)
 
     let event
@@ -47,7 +48,11 @@ export async function upsertManualClEvent(
         try {
             await logAudit('manual_cl_events', event.id, 'update', contextValue)
         } catch (error) {
-            console.error('Audit logging failed for update operation:', error)
+            logger.warn('Audit logging failed for update operation', {
+                entity: 'manual_cl_events',
+                entityId: event.id,
+                err: error
+            })
         }
     } else {
         ;[event] = await db
@@ -73,7 +78,11 @@ export async function upsertManualClEvent(
         try {
             await logAudit('manual_cl_events', event.id, 'insert', contextValue)
         } catch (error) {
-            console.error('Audit logging failed for insert operation:', error)
+            logger.warn('Audit logging failed for insert operation', {
+                entity: 'manual_cl_events',
+                entityId: event.id,
+                err: error
+            })
         }
     }
     return {

@@ -4,6 +4,7 @@ import { db } from '@/db'
 import { appAnnouncements } from '@/db/schema/appAnnouncements'
 import { logAudit } from '@/utils/audit-utils'
 import { announcementRole, checkAuthorization } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function deleteAppAnnouncement(
     _: unknown,
@@ -25,10 +26,11 @@ export async function deleteAppAnnouncement(
             try {
                 await logAudit('app_announcements', id, 'delete', contextValue)
             } catch (error) {
-                console.error(
-                    'Audit logging failed for delete operation:',
-                    error
-                )
+                logger.warn('Audit logging failed for delete operation', {
+                    entity: 'app_announcements',
+                    entityId: id,
+                    err: error
+                })
             }
         }
 

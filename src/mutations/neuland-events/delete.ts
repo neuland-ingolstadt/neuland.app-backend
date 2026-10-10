@@ -4,6 +4,7 @@ import { db } from '@/db'
 import { neulandEvents } from '@/db/schema/neulandEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, eventRole } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function deleteNeulandEvent(
     _: unknown,
@@ -25,10 +26,11 @@ export async function deleteNeulandEvent(
             try {
                 await logAudit('neuland_events', id, 'delete', contextValue)
             } catch (error) {
-                console.error(
-                    'Audit logging failed for delete operation:',
-                    error
-                )
+                logger.warn('Audit logging failed for delete operation', {
+                    entity: 'neuland_events',
+                    entityId: id,
+                    err: error
+                })
             }
         }
 

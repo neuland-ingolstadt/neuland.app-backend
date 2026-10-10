@@ -3,6 +3,7 @@ import { db } from '@/db'
 import { universitySports } from '@/db/schema/universitySports'
 import { logAudit } from '@/utils/audit-utils'
 import { checkAuthorization, sportRole } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function upsertUniversitySport(
     _: unknown,
@@ -64,7 +65,11 @@ export async function upsertUniversitySport(
                 contextValue
             )
         } catch (error) {
-            console.error('Audit logging failed:', error)
+            logger.warn('Audit logging failed for update operation', {
+                entity: 'university_sports',
+                entityId: event.id,
+                err: error
+            })
         }
     } else {
         ;[event] = await db
@@ -97,7 +102,11 @@ export async function upsertUniversitySport(
                 contextValue
             )
         } catch (error) {
-            console.error('Audit logging failed for insert operation:', error)
+            logger.warn('Audit logging failed for insert operation', {
+                entity: 'university_sports',
+                entityId: event.id,
+                err: error
+            })
         }
     }
     return {

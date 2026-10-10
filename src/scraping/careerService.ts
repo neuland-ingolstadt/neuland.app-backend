@@ -6,6 +6,7 @@ import { GraphQLError } from 'graphql'
 import moment from 'moment-timezone'
 import xmljs from 'xml-js'
 import type { CareerServiceEvent } from '@/types/careerServiceEvent'
+import { logger } from '@/utils/logger'
 
 const RSS_URL =
     'https://app.joinhandshake.de/external_feeds/280/public.rss?token=4EC5IbcjruYYmuRhEjJXvWduZer9aAoFVw3VsEXMAQglWtA_UoBECQ'
@@ -101,8 +102,11 @@ async function getEvents(): Promise<CareerServiceEvent[]> {
 
         const eventDate = parseDateFromTitle(fullTitle)
         if (!eventDate) {
-            console.warn(
-                `Could not parse date from title: ${fullTitle}, skipping event`
+            logger.warn(
+                'Could not parse date from career service title, skipping event',
+                {
+                    title: fullTitle
+                }
             )
             continue
         }
@@ -133,14 +137,14 @@ export default async function getCareerServiceEvents(): Promise<
         return events
     } catch (e: unknown) {
         if (e instanceof GraphQLError) {
-            console.error(e)
+            logger.error('Career service request failed', { err: e })
             throw e
         }
         if (e instanceof Error) {
-            console.error(e)
+            logger.error('Unexpected career service error', { err: e })
             throw new GraphQLError(`Unexpected error: ${e.message}`)
         }
-        console.error('Unexpected error:', e)
+        logger.error('Unexpected career service error', { err: e })
         throw new GraphQLError('Unexpected error')
     }
 }

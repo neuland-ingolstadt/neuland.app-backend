@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: tbd */
 
 import type { ExtendedMealData, PreFoodData, TempMealData } from '@/types/food'
+import { logger } from '@/utils/logger'
 
 const deeplApiKey = Bun.env.DEEPL_API_KEY || ''
 const deeplServerUrl =
@@ -63,18 +64,16 @@ export async function translateMeals(
     meals: ExtendedMealData[]
 ): Promise<TempMealData[]> {
     if (isDev && !enableDevTranslations) {
-        console.warn('DeepL is disabled in development mode.')
-        console.warn(
-            'To enable DeepL in development mode, set ENABLE_DEV_TRANSLATIONS=true in your .env.local file.'
-        )
+        logger.warn('DeepL is disabled in development mode.', {
+            hint: 'Set ENABLE_DEV_TRANSLATIONS=true to enable it.'
+        })
         return translateMealsFallback(meals)
     }
 
     if (deeplApiKey === '') {
-        console.warn('DeepL is not configured.')
-        console.warn(
-            'To enable DeepL, set the deeplApiKey in your .env.local file.'
-        )
+        logger.warn('DeepL is not configured.', {
+            hint: 'Set DEEPL_API_KEY to enable translations.'
+        })
         return translateMealsFallback(meals)
     }
 
@@ -149,8 +148,12 @@ export async function translateMeals(
                     'message' in error
                   ? String(error.message)
                   : 'Unknown error'
-        console.error('Error translating meals with DeepL:', errorMessage)
-        console.warn('Falling back to untranslated meals')
+        logger.error(
+            'DeepL translation failed, falling back to untranslated meals',
+            {
+                err: errorMessage
+            }
+        )
         return translateMealsFallback(meals)
     }
 

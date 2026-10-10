@@ -2,6 +2,7 @@ import { GraphQLError } from 'graphql'
 import { db } from '@/db'
 import { roomReports } from '@/db/schema/roomReports'
 import type { RoomReportInput } from '@/types/roomReport'
+import { logger } from '@/utils/logger'
 
 export async function createRoomReport(
     _: unknown,
@@ -36,12 +37,12 @@ export async function createRoomReport(
             .returning({
                 id: roomReports.id
             })
-        console.log(report)
+        logger.debug('Room report created', { id: report.id, room })
         return {
             id: report.id
         }
     } catch (error) {
-        console.error(error)
+        logger.error('Failed to create room report', { err: error })
         throw new GraphQLError(`Failed to create room report: ${error}`)
     }
 }

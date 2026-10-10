@@ -5,6 +5,7 @@
 import { GraphQLError } from 'graphql'
 import nodeFetch from 'node-fetch'
 import type { ClEvent, ClHost, ClText } from '@/types/clEvents'
+import { logger } from '@/utils/logger'
 
 const API_BASE_URL = 'https://cl.neuland-ingolstadt.de/api/v1'
 const EVENTS_ENDPOINT = `${API_BASE_URL}/public/events`
@@ -52,7 +53,7 @@ function parseDate(value: string | null): Date | null {
     const parsed = new Date(value)
 
     if (Number.isNaN(parsed.getTime())) {
-        console.warn('Received invalid date from Campus Life API:', value)
+        logger.warn('Received invalid date from Campus Life API', { value })
         return null
     }
 
@@ -82,10 +83,9 @@ function toClEvent(
     const startDate = parseDate(event.start_date_time)
 
     if (startDate == null) {
-        console.warn(
-            'Skipping Campus Life event without valid start date:',
-            event.id
-        )
+        logger.warn('Skipping Campus Life event without valid start date', {
+            eventId: event.id
+        })
         return null
     }
 
@@ -161,16 +161,16 @@ export default async function getClEvents(): Promise<ClEvent[]> {
         return combinedEvents
     } catch (e: unknown) {
         if (e instanceof GraphQLError) {
-            console.error(e)
+            logger.error('Campus Life request failed', { err: e })
             throw e
         }
 
         if (e instanceof Error) {
-            console.error(e)
+            logger.error('Unexpected Campus Life error', { err: e })
             throw new GraphQLError(`Unexpected error: ${e.message}`)
         }
 
-        console.error('Unexpected error:', e)
+        logger.error('Unexpected Campus Life error', { err: e })
         throw new GraphQLError('Unexpected error')
     }
 }

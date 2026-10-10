@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { ApolloServer } from '@apollo/server'
@@ -11,6 +12,7 @@ import express from 'express'
 import type { JwtPayload } from 'jsonwebtoken'
 import NodeCache from 'node-cache'
 import { getUserFromToken } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 import { resolvers } from './src/resolvers'
 
@@ -28,7 +30,10 @@ const typeDefs = schemaFiles.map((file) => {
     try {
         return readFileSync(filePath, { encoding: 'utf-8' })
     } catch (error) {
-        console.error(`Error reading file ${filePath}:`, error)
+        logger.error('Failed to read GraphQL schema file', {
+            file: filePath,
+            err: error
+        })
         throw error
     }
 })
@@ -56,11 +61,54 @@ const apolloServer = new ApolloServer({
             ? ApolloServerPluginLandingPageProductionDefault({
                   footer: false
               })
-            : ApolloServerPluginLandingPageLocalDefault()
+            : ApolloServerPluginLandingPageLocalDefault(),
+        {
+            async requestDidStart(requestContext) {
+                const start = Date.now()
+                const operationName =
+                    requestContext.request.operationName ?? 'anonymous'
+                return {
+                    async willSendResponse(context) {
+                        const durationMs = Date.now() - start
+                        const errors = context.response.body
+                            ? 'errors' in context.response.body &&
+                              Array.isArray(context.response.body.errors)
+                                ? context.response.body.errors.map(
+                                      (e) => e.message
+                                  )
+                                : []
+                            : []
+                        if (errors.length > 0) {
+                            logger.warn(
+                                'GraphQL operation completed with errors',
+                                {
+                                    operationName,
+                                    durationMs,
+                                    errors
+                                }
+                            )
+                        } else {
+                            logger.debug('GraphQL operation completed', {
+                                operationName,
+                                durationMs
+                            })
+                        }
+                    },
+                    async didEncounterErrors(context) {
+                        for (const err of context.errors) {
+                            logger.error('GraphQL operation error', {
+                                operationName,
+                                err
+                            })
+                        }
+                    }
+                }
+            }
+        }
     ],
     introspection: true,
     formatError(formattedError, error) {
-        console.error(error)
+        logger.error('GraphQL formatted error', { err: error })
         return formattedError
     }
 })
@@ -73,6 +121,23 @@ export const cache = new NodeCache({
     deleteOnExpire: true
 })
 await apolloServer.start()
+
+app.use((req, res, next) => {
+    const requestId = (req.headers['x-request-id'] as string) ?? randomUUID()
+    res.setHeader('x-request-id', requestId)
+    const start = Date.now()
+    const path = req.originalUrl.split('?')[0]
+    res.on('finish', () => {
+        logger.info('HTTP request', {
+            requestId,
+            method: req.method,
+            path,
+            status: res.statusCode,
+            durationMs: Date.now() - start
+        })
+    })
+    next()
+})
 
 app.use(
     '/graphql',
@@ -99,5 +164,20 @@ app.use(
 )
 
 app.listen(port, () => {
-    console.log(`🚀 Server ready at http://localhost:${port}/graphql`)
+    logger.info(`Server ready at http://localhost:${port}/graphql`, {
+        port,
+        env: Bun.env.NODE_ENV ?? 'development',
+        logLevel: Bun.env.LOG_LEVEL ?? 'default',
+        logFormat: Bun.env.LOG_FORMAT ?? 'default'
+    })
+})
+
+process.on('unhandledRejection', (reason) => {
+    logger.error('Unhandled promise rejection', {
+        err: reason instanceof Error ? reason : new Error(String(reason))
+    })
+})
+
+process.on('uncaughtException', (error) => {
+    logger.error('Uncaught exception', { err: error })
 })

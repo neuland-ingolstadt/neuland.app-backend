@@ -7,6 +7,7 @@ import {
     mergeMealVariants,
     unifyFoodEntries
 } from '@/utils/food-utils'
+import { logger } from '@/utils/logger'
 import { translateMeals } from '@/utils/translation-utils'
 
 const url =
@@ -91,7 +92,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
         const text = data.text.replace(newLineRegex, ' ')
         if (isEmpty(text)) {
             // during the summer break the pdf is completely empty
-            console.warn('Canisius pdf is empty, returning empty array')
+            logger.warn('Canisius pdf is empty, returning empty array')
             return []
         }
 
@@ -112,7 +113,7 @@ export async function getCanisiusPlan(): Promise<MealData[]> {
 
         if (dateMatches.length < 5) {
             if (text.toLowerCase().includes('geschlossen')) {
-                console.warn(
+                logger.warn(
                     'Canisius restaurant is closed, returning empty array'
                 )
                 return []

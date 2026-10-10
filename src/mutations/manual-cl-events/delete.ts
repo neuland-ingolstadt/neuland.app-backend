@@ -4,6 +4,7 @@ import { db } from '@/db'
 import { manualClEvents } from '@/db/schema/manualClEvents'
 import { logAudit } from '@/utils/audit-utils'
 import { adminRole, checkAuthorization } from '@/utils/auth-utils'
+import { logger } from '@/utils/logger'
 
 export async function deleteManualClEvent(
     _: unknown,
@@ -25,10 +26,11 @@ export async function deleteManualClEvent(
             try {
                 await logAudit('manual_cl_events', id, 'delete', contextValue)
             } catch (error) {
-                console.error(
-                    'Audit logging failed for delete operation:',
-                    error
-                )
+                logger.warn('Audit logging failed for delete operation', {
+                    entity: 'manual_cl_events',
+                    entityId: id,
+                    err: error
+                })
             }
         }
 

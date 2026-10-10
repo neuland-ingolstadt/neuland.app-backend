@@ -1,11 +1,11 @@
 import { drizzle } from 'drizzle-orm/postgres-js'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 import postgres from 'postgres'
-
+import { logger } from '@/utils/logger'
 import { CONNECTION_STRING } from '.'
 
 async function main() {
-    console.log('Attempting to connect to database...')
+    logger.info('Attempting to connect to database...')
 
     try {
         const connectionConfig = {
@@ -16,7 +16,7 @@ async function main() {
             password: process.env.POSTGRES_PASSWORD || 'postgres'
         }
 
-        console.log('Connection config:', {
+        logger.info('Database connection config', {
             ...connectionConfig,
             password: '******'
         })
@@ -28,20 +28,20 @@ async function main() {
             connect_timeout: 10
         })
 
-        console.log('Running migrations...')
+        logger.info('Running migrations...')
         await migrate(drizzle(client), {
             migrationsFolder: './src/db/migrations'
         })
-        console.log('Migrations completed successfully')
+        logger.info('Migrations completed successfully')
 
         await client.end()
     } catch (err) {
-        console.error('Migration failed:', err)
+        logger.error('Migration failed', { err })
         process.exit(1)
     }
 }
 
 main().catch((err) => {
-    console.error('Unhandled error during migration:', err)
+    logger.error('Unhandled error during migration', { err })
     process.exit(1)
 })
