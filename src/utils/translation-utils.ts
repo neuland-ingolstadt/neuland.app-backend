@@ -1,9 +1,13 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: tbd */
 
-import translate from 'deepl'
 import type { ExtendedMealData, PreFoodData, TempMealData } from '@/types/food'
 
 const deeplApiKey = Bun.env.DEEPL_API_KEY || ''
+const deeplServerUrl =
+    Bun.env.DEEPL_SERVER_URL ||
+    (deeplApiKey.endsWith(':fx')
+        ? 'https://api-free.deepl.com'
+        : 'https://api.deepl.com')
 const enableDevTranslations =
     Bun.env.ENABLE_DEV_TRANSLATIONS === 'true' || false
 const disableFallbackWarning =
@@ -87,20 +91,55 @@ export async function translateMeals(
 
     const translations: Record<string, string> = {}
     try {
-        const result = await translate({
-            auth_key: deeplApiKey,
-            // @ts-expect-error: DeepL also accepts arrays of strings, but the type definition is not correct
-            text,
-            free_api: true,
-            target_lang: 'EN-GB',
-            source_lang: 'DE',
-            split_sentences: '1'
+        const response = await fetch(`${deeplServerUrl}/v2/translate`, {
+            method: 'POST',
+            headers: {
+                Authorization: `DeepL-Auth-Key ${deeplApiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                text,
+                target_lang: 'EN-GB',
+                source_lang: 'DE',
+                split_sentences: '1'
+            })
         })
 
+        if (!response.ok) {
+            let details = ''
+            try {
+                const errorBody = (await response.json()) as {
+                    message?: string
+                }
+                if (errorBody?.message) {
+                    details = `: ${errorBody.message}`
+                }
+            } catch {
+                // response body is not JSON, ignore
+            }
+            const traceId = response.headers.get('x-trace-id')
+            throw new Error(
+                `DeepL API request failed with status ${response.status}${details}` +
+                    (traceId ? ` (trace id: ${traceId})` : '')
+            )
+        }
+
+        const result = (await response.json()) as {
+            translations: Array<{
+                text: string
+                detected_source_language: string
+            }>
+        }
+
         // map the result to the original meals using the index of the text array
-        result.data.translations.forEach((translation, index) => {
-            translations[text[index]] = translation.text
-        })
+        result.translations.forEach(
+            (
+                translation: { text: string; detected_source_language: string },
+                index: number
+            ) => {
+                translations[text[index]] = translation.text
+            }
+        )
     } catch (error) {
         const errorMessage =
             error instanceof Error
