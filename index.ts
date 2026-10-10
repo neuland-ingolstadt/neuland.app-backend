@@ -38,6 +38,7 @@ const typeDefs = schemaFiles.map((file) => {
     }
 })
 const port = process.env.PORT || 4000
+const slowRequestMs = Number(Bun.env.SLOW_REQUEST_MS ?? 1000)
 
 const app = express()
 app.use(
@@ -107,8 +108,8 @@ const apolloServer = new ApolloServer({
         }
     ],
     introspection: true,
-    formatError(formattedError, error) {
-        logger.error('GraphQL formatted error', { err: error })
+    formatError(formattedError) {
+        // Errors are already logged with operation context in didEncounterErrors
         return formattedError
     }
 })
@@ -128,13 +129,23 @@ app.use((req, res, next) => {
     const start = Date.now()
     const path = req.originalUrl.split('?')[0]
     res.on('finish', () => {
-        logger.info('HTTP request', {
+        const durationMs = Date.now() - start
+        const context = {
             requestId,
             method: req.method,
             path,
             status: res.statusCode,
-            durationMs: Date.now() - start
-        })
+            durationMs
+        }
+        if (res.statusCode >= 500) {
+            logger.error('HTTP request failed', context)
+        } else if (res.statusCode >= 400) {
+            logger.warn('HTTP request client error', context)
+        } else if (durationMs >= slowRequestMs) {
+            logger.warn('Slow HTTP request', context)
+        } else {
+            logger.debug('HTTP request', context)
+        }
     })
     next()
 })
