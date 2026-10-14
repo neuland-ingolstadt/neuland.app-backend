@@ -37,6 +37,20 @@ bun i
 Set the necessary environment variables in a `.env.local` file.
 You can use the `.env.local.example` file as a template.
 
+### OpenTelemetry traces (optional)
+
+HTTP and GraphQL spans are exported via OTLP/HTTP when a collector endpoint is configured:
+
+```bash
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+# optional overrides:
+# OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces
+# OTEL_EXPORTER_OTLP_HEADERS=Authorization=Bearer%20token
+# OTEL_SERVICE_NAME=neuland.app-backend
+```
+
+Tracing is disabled when neither `OTEL_EXPORTER_OTLP_ENDPOINT` nor `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` is set.
+
 ### Database Setup
 
 For local development, you can quickly spin up a PostgreSQL database using Docker:

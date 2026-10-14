@@ -56,6 +56,10 @@ This document helps AI agents quickly understand the stack, structure, and commo
 - `DB_HOST` (local dev: `localhost`, Docker: `postgres`)
 - `DB_PORT` (default `5432`)
 - `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` (defaults in compose: `postgres`/`postgres`/`app`)
+- `OTEL_EXPORTER_OTLP_ENDPOINT` — base OTLP HTTP collector URL (e.g. `http://localhost:4318`); enables tracing when set. Paths are normalized to `/v1/traces`.
+- `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` — full traces URL (overrides the base endpoint if set)
+- `OTEL_EXPORTER_OTLP_HEADERS` — optional comma-separated `key=value` headers for the exporter
+- `OTEL_SERVICE_NAME` — resource `service.name` (default `neuland.app-backend`)
 
 ## Authentication Context
 - Requests with `Authorization: Bearer <token>` are decoded by `src/utils/auth-utils.ts` via `getUserFromToken`. The decoded payload (if present) is available on GraphQL context as `jwtPayload` and is used by resolvers that require auth.

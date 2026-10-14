@@ -11,10 +11,20 @@ import cors from 'cors'
 import express from 'express'
 import type { JwtPayload } from 'jsonwebtoken'
 import NodeCache from 'node-cache'
+import {
+    getRequestOtelContext,
+    initTracing,
+    setGraphQLOperationType,
+    shutdownTracing,
+    startGraphQLSpan,
+    withHttpSpan
+} from '@/otel'
 import { getUserFromToken } from '@/utils/auth-utils'
 import { logger } from '@/utils/logger'
 
 import { resolvers } from './src/resolvers'
+
+initTracing()
 
 const schemaFiles = [
     'enums.gql',
@@ -39,6 +49,11 @@ const typeDefs = schemaFiles.map((file) => {
 })
 const port = process.env.PORT || 4000
 const slowRequestMs = Number(Bun.env.SLOW_REQUEST_MS ?? 1000)
+
+type GraphQLContext = {
+    jwtPayload?: JwtPayload
+    otelContext?: ReturnType<typeof getRequestOtelContext>
+}
 
 const app = express()
 app.use(
@@ -68,7 +83,23 @@ const apolloServer = new ApolloServer({
                 const start = Date.now()
                 const operationName =
                     requestContext.request.operationName ?? 'anonymous'
+                const graphqlContext =
+                    requestContext.contextValue as GraphQLContext
+                const traceHandle = startGraphQLSpan(
+                    operationName,
+                    graphqlContext.otelContext
+                )
+
                 return {
+                    async didResolveOperation(context) {
+                        if (context.operation) {
+                            setGraphQLOperationType(
+                                traceHandle,
+                                context.operation.operation,
+                                operationName
+                            )
+                        }
+                    },
                     async willSendResponse(context) {
                         const durationMs = Date.now() - start
                         const errors = context.response.body
@@ -94,6 +125,7 @@ const apolloServer = new ApolloServer({
                                 durationMs
                             })
                         }
+                        traceHandle?.end(errors)
                     },
                     async didEncounterErrors(context) {
                         for (const err of context.errors) {
@@ -102,6 +134,7 @@ const apolloServer = new ApolloServer({
                                 err
                             })
                         }
+                        traceHandle?.recordErrors(context.errors)
                     }
                 }
             }
@@ -127,13 +160,13 @@ app.use((req, res, next) => {
     const requestId = (req.headers['x-request-id'] as string) ?? randomUUID()
     res.setHeader('x-request-id', requestId)
     const start = Date.now()
-    const path = req.originalUrl.split('?')[0]
+    const requestPath = req.originalUrl.split('?')[0]
     res.on('finish', () => {
         const durationMs = Date.now() - start
         const context = {
             requestId,
             method: req.method,
-            path,
+            path: requestPath,
             status: res.statusCode,
             durationMs
         }
@@ -147,7 +180,7 @@ app.use((req, res, next) => {
             logger.debug('HTTP request', context)
         }
     })
-    next()
+    withHttpSpan(req, res, requestId, next)
 })
 
 app.use(
@@ -155,14 +188,16 @@ app.use(
     cors(),
     express.json(),
     expressMiddleware(apolloServer, {
-        context: async ({ req }): Promise<{ jwtPayload?: JwtPayload }> => {
+        context: async ({ req }): Promise<GraphQLContext> => {
+            const otelContext = getRequestOtelContext(req)
             const authHeader = req.headers.authorization
             if (authHeader) {
                 return {
-                    jwtPayload: await getUserFromToken(authHeader)
+                    jwtPayload: await getUserFromToken(authHeader),
+                    otelContext
                 }
             }
-            return {}
+            return { otelContext }
         }
     })
 )
@@ -181,6 +216,19 @@ app.listen(port, () => {
         logLevel: Bun.env.LOG_LEVEL ?? 'default',
         logFormat: Bun.env.LOG_FORMAT ?? 'default'
     })
+})
+
+async function gracefulShutdown(signal: string) {
+    logger.info('Shutting down', { signal })
+    await shutdownTracing()
+    process.exit(0)
+}
+
+process.on('SIGTERM', () => {
+    void gracefulShutdown('SIGTERM')
+})
+process.on('SIGINT', () => {
+    void gracefulShutdown('SIGINT')
 })
 
 process.on('unhandledRejection', (reason) => {
