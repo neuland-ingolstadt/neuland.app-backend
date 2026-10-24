@@ -62,8 +62,6 @@ interface UniversitySports {
     invitationLink: string | null
     eMail: string | null
     sportsCategory: SportsCategoryType | null
-    createdAt: Date
-    updatedAt: Date
 }
 
 interface UniversitySportInput {

@@ -461,14 +461,6 @@ type Announcement {
     Image URL for the announcement
     """
     imageUrl: String
-    """
-    Creation date of the announcement
-    """
-    createdAt: DateTime!
-    """
-    Last update date of the announcement
-    """
-    updatedAt: DateTime!
 }
 
 """
@@ -537,14 +529,6 @@ type UniversitySports {
     Category of the sports event (e.g. soccer, basketball, etc.)
     """
     sportsCategory: SportsCategoryType!
-    """
-    Creation date of the sports event
-    """
-    createdAt: DateTime!
-    """
-    Last update date of the sports event
-    """
-    updatedAt: DateTime!
 }
 
 """

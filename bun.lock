@@ -7,6 +7,7 @@
       "dependencies": {
         "@apollo/server": "^5.5.1",
         "@as-integrations/express5": "^1.1.2",
+        "@neuland-ingolstadt/backend-core-api": "1.1.2",
         "@node-rs/xxhash": "^1.7.8",
         "@opentelemetry/api": "^1.9.1",
         "@opentelemetry/context-async-hooks": "^2.12.0",
@@ -31,6 +32,7 @@
         "moment": "^2.31.0",
         "moment-timezone": "^0.5.48",
         "node-cache": "^5.1.2",
+        "openapi-fetch": "^0.17.0",
         "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
         "postgres": "^3.4.9",
         "sanitize-html": "^2.18.1",
@@ -352,6 +354,8 @@
     "@magidoc/plugin-starter-variables": ["@magidoc/plugin-starter-variables@6.4.5", "", { "optionalDependencies": { "zod": "4.4.3" } }, "sha512-bzs0xa5qYf8yEFHCShwS6B3NQG3FTxqAsw+HKcdRHxnkir85zbeVe94dhEwztlTXvNs2W57bD2mLmKrEJcW5mw=="],
 
     "@magidoc/rollup-plugin-gql-schema": ["@magidoc/rollup-plugin-gql-schema@6.4.5", "", { "dependencies": { "axios": "1.16.0", "fast-glob": "3.3.3", "graphql": "16.14.0" } }, "sha512-T3W5/1zLRSb3l+kDr12xrftM1zRMI47SihIaFmKzflsWTrpagEv11l5Hf3sBAVX1H44G0WjQAZ7Lg1UuYtOaSQ=="],
+
+    "@neuland-ingolstadt/backend-core-api": ["@neuland-ingolstadt/backend-core-api@1.1.2", "", {}, "sha512-RTtpLiq1V6l2mVZzQplo1tf5sBRbHJpiGs4YWzLqK98G0icJHaJOqA+P9b+BQboTXIug8DPf8fDW7M/60C7P2g=="],
 
     "@node-rs/xxhash": ["@node-rs/xxhash@1.7.8", "", { "optionalDependencies": { "@node-rs/xxhash-android-arm-eabi": "1.7.8", "@node-rs/xxhash-android-arm64": "1.7.8", "@node-rs/xxhash-darwin-arm64": "1.7.8", "@node-rs/xxhash-darwin-x64": "1.7.8", "@node-rs/xxhash-freebsd-x64": "1.7.8", "@node-rs/xxhash-linux-arm-gnueabihf": "1.7.8", "@node-rs/xxhash-linux-arm64-gnu": "1.7.8", "@node-rs/xxhash-linux-arm64-musl": "1.7.8", "@node-rs/xxhash-linux-x64-gnu": "1.7.8", "@node-rs/xxhash-linux-x64-musl": "1.7.8", "@node-rs/xxhash-win32-arm64-msvc": "1.7.8", "@node-rs/xxhash-win32-ia32-msvc": "1.7.8", "@node-rs/xxhash-win32-x64-msvc": "1.7.8" } }, "sha512-sXiVUI18qaCei5Y5qXty7xfEKrk4Vx89qKNZkG2sGWZG/iTThO3Xmnp5IjQpXCy941IksVDcl41HhvWRuhDLyw=="],
 
@@ -1096,6 +1100,10 @@
     "once": ["once@1.4.0", "", { "dependencies": { "wrappy": "1" } }, "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w=="],
 
     "onetime": ["onetime@5.1.2", "", { "dependencies": { "mimic-fn": "^2.1.0" } }, "sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg=="],
+
+    "openapi-fetch": ["openapi-fetch@0.17.0", "", { "dependencies": { "openapi-typescript-helpers": "^0.1.0" } }, "sha512-PsbZR1wAPcG91eEthKhN+Zn92FMHxv+/faECIwjXdxfTODGSGegYv0sc1Olz+HYPvKOuoXfp+0pA2XVt2cI0Ig=="],
+
+    "openapi-typescript-helpers": ["openapi-typescript-helpers@0.1.0", "", {}, "sha512-OKTGPthhivLw/fHz6c3OPtg72vi86qaMlqbJuVJ23qOvQ+53uw1n7HdmkJFibloF7QEjDrDkzJiOJuockM/ljw=="],
 
     "ora": ["ora@5.4.1", "", { "dependencies": { "bl": "^4.1.0", "chalk": "^4.1.0", "cli-cursor": "^3.1.0", "cli-spinners": "^2.5.0", "is-interactive": "^1.0.0", "is-unicode-supported": "^0.1.0", "log-symbols": "^4.1.0", "strip-ansi": "^6.0.0", "wcwidth": "^1.0.1" } }, "sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ=="],
 

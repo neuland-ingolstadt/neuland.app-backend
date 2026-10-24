@@ -28,8 +28,6 @@ export interface Announcement {
     priority: number
     url: string | null
     imageUrl: string | null
-    createdAt: Date
-    updatedAt: Date
 }
 
 export interface AnnouncementInput {

@@ -5,27 +5,10 @@ import {
     LocalEndTimeResolver,
     URLResolver
 } from 'graphql-scalars'
-import { deleteUniversitySport } from '@/mutations/university-sports/delete'
-import { upsertUniversitySport } from '@/mutations/university-sports/upsert'
-import { clEvents } from '@/queries/cl-events'
-import { clClubs } from '@/queries/clubs'
+import { createRoomReport } from '@/mutations/room-reports/create'
+import { appAnnouncementsQuery } from '@/queries/appAnnouncements'
 import { food } from '@/queries/food'
 import { sports } from '@/queries/sports'
-
-import { deleteAppAnnouncement } from './mutations/app-announcements/delete'
-import { upsertAppAnnouncement } from './mutations/app-announcements/upsert'
-import { deleteManualClEvent } from './mutations/manual-cl-events/delete'
-import { upsertManualClEvent } from './mutations/manual-cl-events/upsert'
-import { deleteNeulandEvent } from './mutations/neuland-events/delete'
-import { upsertNeulandEvent } from './mutations/neuland-events/upsert'
-import { createRoomReport } from './mutations/room-reports/create'
-import { resolveRoomReport } from './mutations/room-reports/resolve'
-import { appAnnouncementsQuery } from './queries/appAnnouncements'
-import { auditLogQuery } from './queries/auditLog'
-import { careerServiceEvents } from './queries/careerService'
-import { neulandEventsQuery } from './queries/neulandEvents'
-import { roomReportsQuery } from './queries/roomReports'
-import { studentCounsellingEvents } from './queries/studentCounselling'
 
 const RestaurantLocation = {
     IngolstadtMensa: 'IngolstadtMensa',
@@ -63,36 +46,11 @@ const LocationInput = new GraphQLScalarType({
 export const resolvers = {
     Query: {
         food,
-        clEvents,
-        clClubs,
-        careerServiceEvents,
-        studentCounsellingEvents,
         appAnnouncements: appAnnouncementsQuery,
-        announcements: appAnnouncementsQuery,
-        universitySports: sports,
-        roomReports: roomReportsQuery,
-        neulandEvents: neulandEventsQuery,
-        auditLog: auditLogQuery
+        universitySports: sports
     },
     Mutation: {
-        deleteUniversitySport,
-        upsertUniversitySport,
-        deleteAppAnnouncement,
-        upsertAppAnnouncement,
-        createRoomReport,
-        resolveRoomReport,
-        upsertManualClEvent,
-        deleteManualClEvent,
-        deleteNeulandEvent,
-        upsertNeulandEvent
-    },
-    CareerServiceEvent: {
-        // Deprecated fields - always return null for backward compatibility
-        unlimitedSlots: () => null,
-        availableSlots: () => null,
-        totalSlots: () => null,
-        waitingList: () => null,
-        maxWaitingList: () => null
+        createRoomReport
     },
     LocalTime: LocalEndTimeResolver,
     DateTime: DateTimeResolver,
