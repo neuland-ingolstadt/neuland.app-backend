@@ -6,8 +6,6 @@
         "start": "bun run index.ts",
         "dev": "bun --hot run index.ts",
         "docs:dev": "magidoc dev -f docs/magidoc.mjs -m bun",
-        "db:generate": "drizzle-kit generate",
-        "migrate": "bun run ./src/db/migrate.ts",
         "codegen": "graphql-codegen --config codegen.ts",
         "lint": "tsc --noEmit && biome check",
         "fmt": "biome check --fix",
@@ -32,7 +30,6 @@
         "axios": "^1.20.0",
         "cheerio": "^1.2.0",
         "cors": "^2.8.6",
-        "drizzle-orm": "^0.36.4",
         "express": "^5.3.0",
         "fetch-cookie": "^3.2.0",
         "graphql": "^16.14.2",
@@ -44,9 +41,7 @@
         "moment": "^2.31.0",
         "moment-timezone": "^0.5.48",
         "node-cache": "^5.1.2",
-        "openapi-fetch": "^0.17.0",
         "pdf-parse": "https://github.com/neuland-ingolstadt/pdf-parse.git",
-        "postgres": "^3.4.9",
         "sanitize-html": "^2.18.1",
         "xml-js": "^1.6.11"
     },
@@ -69,7 +64,6 @@
         "@types/sanitize-html": "^2.16.2",
         "concurrently": "^9.2.5",
         "cross-env": "^7.0.3",
-        "drizzle-kit": "^0.28.1",
         "globals": "^15.15.0",
         "typescript": "^5.9.3"
     }

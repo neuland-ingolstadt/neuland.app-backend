@@ -1,1 +1,0 @@
-ALTER TABLE "app_announcements" ADD COLUMN "image_url" text;
